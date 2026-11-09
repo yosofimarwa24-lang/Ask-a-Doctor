@@ -513,15 +513,36 @@ a{text-decoration:none;color:inherit}
 
 @media(max-width:950px){
     .hero-grid{gap:30px}
-    .hero-visual{min-height:420px}
+    .hero-visual{
+        min-height:420px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        padding:0 8px;
+    }
     .orbit-three{width:380px;height:380px}
     .orbit-two{width:330px;height:330px}
 
+    .medical-core{
+        position:relative;
+        z-index:3;
+        flex:0 0 135px;
+        width:135px;
+        height:135px;
+        margin-left:0;
+    }
+    .core-inner{width:88px;height:88px;font-size:40px}
+
     .hero-doctor-photo{
-        width:245px;
-        height:310px;
-        right:5px;
-        bottom:35px;
+        position:relative;
+        z-index:4;
+        flex:0 0 260px;
+        width:260px;
+        height:330px;
+        right:auto;
+        bottom:auto;
+        margin-right:0;
     }
 
     .booking-grid{gap:35px}
@@ -534,30 +555,44 @@ a{text-decoration:none;color:inherit}
     .hero-content{text-align:center}
     .hero-description{margin-left:auto;margin-right:auto}
     .hero-actions{justify-content:center}
-    .hero-visual{min-height:390px;margin-top:15px}
-    .medical-core{width:145px;height:145px}
-    .core-inner{width:95px;height:95px;font-size:43px}
+    .hero-visual{
+        min-height:350px;
+        margin-top:15px;
+        gap:8px;
+        padding:0 5px;
+    }
+    .medical-core{
+        position:relative;
+        z-index:3;
+        flex:0 0 105px;
+        width:105px;
+        height:105px;
+        margin:0;
+    }
+    .core-inner{width:70px;height:70px;font-size:34px}
     .orbit-one{width:220px;height:220px}
     .orbit-two{width:290px;height:290px}
     .orbit-three{width:340px;height:340px}
 
     .hero-doctor-photo{
-        width:205px;
-        height:270px;
-        right:50%;
-        bottom:45px;
-        transform:translateX(50%);
-        animation:none;
+        position:relative;
+        z-index:4;
+        flex:0 0 190px;
+        width:190px;
+        height:255px;
+        right:auto;
+        bottom:auto;
+        margin:0;
+        transform:none;
+        animation:doctorPhotoFloat 5s ease-in-out infinite;
     }
 
-    .hero-doctor-photo:hover{
-        transform:translateX(50%);
-    }
+    .hero-doctor-photo:hover{transform:none}
 
-    .floating-doctor{top:35px;left:0}
+    .floating-doctor{top:8px;left:0}
     .floating-online{top:5px;right:0}
-    .floating-secure{bottom:55px;right:0}
-    .medical-floating{padding:10px}
+    .floating-secure{bottom:5px;right:0}
+    .medical-floating{padding:8px;z-index:5}
     .trust-grid{grid-template-columns:1fr;gap:5px}
     .trust-item{
         justify-content:flex-start;border-right:none;
@@ -574,6 +609,10 @@ a{text-decoration:none;color:inherit}
 }
 
 @media(max-width:430px){
+    .hero-visual{min-height:315px;gap:5px;padding:0 2px}
+    .medical-core{flex-basis:90px;width:90px;height:90px}
+    .core-inner{width:60px;height:60px;font-size:29px}
+    .hero-doctor-photo{flex-basis:175px;width:175px;height:235px}
     .form-grid{grid-template-columns:1fr;gap:0}
     .form-group.full{grid-column:auto}
     .process-grid{grid-template-columns:1fr}
