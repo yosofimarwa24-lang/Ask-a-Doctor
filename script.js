@@ -316,11 +316,3 @@ window.addEventListener("scroll",()=>{
         scrollTicking=false;
     });
 },{passive:true});
-
-/* INITIALIZE */
-
-renderMethods();
-renderSpecialties();
-setMinimumDate();
-setupCardAnimations();
-observeRevealElements();
