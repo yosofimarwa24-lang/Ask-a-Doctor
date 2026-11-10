@@ -1,0 +1,325 @@
+</head>
+
+<body>
+
+<div id="specialties-root"></div>
+
+<!-- REACT 18 -->
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel">
+
+const { useState, useEffect, useRef } = React;
+
+/* SPECIALTY DATA */
+
+const specialtiesData = [
+    {
+        id: 1,
+        name: "Cardiology",
+        icon: "bi-heart-pulse",
+        image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=500&q=85"
+    },
+    {
+        id: 2,
+        name: "Dermatology",
+        icon: "bi-person-hearts",
+        image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=500&q=85"
+    },
+    {
+        id: 3,
+        name: "Dentistry",
+        icon: "bi-emoji-smile",
+        image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=500&q=85"
+    },
+    {
+        id: 4,
+        name: "Pediatrics",
+        icon: "bi-balloon-heart",
+        image: "https://images.unsplash.com/photo-1632053002928-191b8a4b4d0b?auto=format&fit=crop&w=500&q=85"
+    },
+    {
+        id: 5,
+        name: "Ophthalmology",
+        icon: "bi-eye",
+        image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=500&q=85"
+    },
+    {
+        id: 6,
+        name: "Mental Health",
+        icon: "bi-brain",
+        image: "https://images.unsplash.com/photo-1527137342181-19aab11a8ee8?auto=format&fit=crop&w=500&q=85"
+    }
+];
+
+
+/* CARD COMPONENT */
+
+function SpecialtyCard({ specialty, active, onSelect, index }) {
+
+    const cardRef = useRef(null);
+
+    const handleMouseMove = (event) => {
+
+        if (window.innerWidth <= 600) return;
+
+        const card = cardRef.current;
+        if (!card) return;
+
+        const rect = card.getBoundingClientRect();
+
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((y - centerY) / centerY) * -4;
+        const rotateY = ((x - centerX) / centerX) * 4;
+
+        card.style.transform =
+            `translateY(-9px) perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    };
+
+    const handleMouseLeave = () => {
+        if (cardRef.current) {
+            cardRef.current.style.transform = "";
+        }
+    };
+
+    const handleClick = (event) => {
+
+        const rect = event.currentTarget.getBoundingClientRect();
+
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+
+        event.currentTarget.appendChild(ripple);
+
+        ripple.addEventListener("animationend", () => {
+            ripple.remove();
+        });
+
+        onSelect(specialty);
+    };
+
+    const handleImageError = (event) => {
+
+        const img = event.currentTarget;
+        img.onerror = null;
+
+        const fallback = document.createElement("div");
+        fallback.className = "image-fallback";
+        fallback.innerHTML = `<i class="bi ${specialty.icon}"></i>`;
+
+        img.replaceWith(fallback);
+    };
+
+    return (
+        <div
+            ref={cardRef}
+            className="specialty-card"
+            data-index={index}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
+            onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    onSelect(specialty);
+                }
+            }}
+            role="button"
+            tabIndex="0"
+            aria-pressed={active}
+        >
+
+            <span className="shine-effect"></span>
+
+            <div className="specialty-image-space">
+
+                <img
+                    src={specialty.image}
+                    alt={`${specialty.name} medical specialty`}
+                    loading="eager"
+                    decoding="async"
+                    onError={handleImageError}
+                />
+
+            </div>
+
+            <h3 className="specialty-name">
+                {specialty.name}
+            </h3>
+
+        </div>
+    );
+}
+
+
+/* MAIN COMPONENT */
+
+function MedicalSpecialties() {
+
+    const [selectedSpecialty, setSelectedSpecialty] = useState(null);
+
+    const gridRef = useRef(null);
+
+    /* SCROLL REVEAL */
+
+    useEffect(() => {
+
+        const grid = gridRef.current;
+        if (!grid) return;
+
+        const cards = grid.querySelectorAll(".specialty-card");
+
+        if (!("IntersectionObserver" in window)) {
+            cards.forEach(card => card.classList.add("reveal"));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    const card = entry.target;
+                    const index = Number(card.dataset.index);
+
+                    setTimeout(() => {
+                        card.classList.add("reveal");
+                    }, index * 110);
+
+                    observer.unobserve(card);
+                }
+
+            });
+
+        }, {
+            threshold: 0.1
+        });
+
+        cards.forEach(card => observer.observe(card));
+
+        return () => observer.disconnect();
+
+    }, []);
+
+    /* SELECT SPECIALTY */
+
+    const handleSelect = (specialty) => {
+
+        setSelectedSpecialty(specialty);
+
+        document.dispatchEvent(
+            new CustomEvent("specialtySelected", {
+                detail: {
+                    specialty: specialty.name,
+                    id: specialty.id
+                }
+            })
+        );
+
+    };
+
+    return (
+
+        <section className="specialties-section" id="specialties">
+
+            <div className="light-bubble bubble-one"></div>
+            <div className="light-bubble bubble-two"></div>
+            <div className="light-bubble bubble-three"></div>
+
+            <div className="stethoscope-position"></div>
+            <div className="leaves-position"></div>
+
+            <div className="specialties-container">
+
+                <div className="section-heading">
+
+                    <div className="heading-line"></div>
+
+                    <h2 className="section-title">
+                        Medical Specialties
+                    </h2>
+
+                    <div className="heading-line right"></div>
+
+                </div>
+
+                <p className="section-subtitle">
+                    Explore our medical departments
+                </p>
+
+                <div className="specialties-grid" ref={gridRef}>
+
+                    {specialtiesData.map((specialty, index) => (
+
+                        <SpecialtyCard
+                            key={specialty.id}
+                            specialty={specialty}
+                            index={index}
+                            active={selectedSpecialty?.id === specialty.id}
+                            onSelect={handleSelect}
+                        />
+
+                    ))}
+
+                </div>
+
+                <div
+                    className={`selection-message ${
+                        selectedSpecialty ? "show" : ""
+                    }`}
+                    aria-live="polite"
+                >
+
+                    <i className="bi bi-check-circle-fill"></i>
+
+                    Selected Specialty:
+
+                    <strong>
+                        {selectedSpecialty?.name}
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <div className="bottom-decoration"></div>
+
+        </section>
+
+    );
+}
+
+
+/* RENDER */
+
+const rootElement = document.getElementById("specialties-root");
+
+if (rootElement) {
+    const root = ReactDOM.createRoot(rootElement);
+    root.render(<MedicalSpecialties />);
+}
+
+
+/* CUSTOM EVENT */
+
+document.addEventListener("specialtySelected", (event) => {
+
+    console.log("Selected Specialty:", event.detail.specialty);
+
+});
+
+</script>
+
+</body>
+</html>
