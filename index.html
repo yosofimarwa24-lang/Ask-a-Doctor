@@ -16,6 +16,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -959,10 +965,348 @@ doctorsRoot.render(<DoctorsSection />);
 
 </script>
 
+<!-- HERO -->
 
+<section class="consultation-section" id="consultation">
+<div class="container hero-grid">
 
+    <div class="hero-content reveal">
+        <div class="eyebrow">
+            <i class="fa-solid fa-heart-pulse"></i>
+            YOUR HEALTH, OUR PRIORITY
+        </div>
 
+        <h1>Expert Care, <span>Anywhere.</span></h1>
 
+        <p class="hero-description">
+            Get professional medical advice from trusted doctors
+            without leaving your home. Your health deserves
+            convenient, compassionate and reliable care.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#booking" class="primary-btn">
+                Book a Consultation
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="#methods" class="text-link">
+                Explore Services
+                <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="hero-visual reveal" id="heroVisual">
+
+        <div class="medical-glow"></div>
+
+        <!-- Doctor photograph -->
+        <div class="hero-doctor-photo">
+            <img
+                src="./image/650770214950426883.jpg"
+                alt="Professional female doctor"
+                loading="eager"
+                onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(145deg,#dcefff,#a9d9f7)';"
+            >
+            <div class="photo-caption">
+                <span class="photo-status"></span>
+                Trusted Medical Care
+            </div>
+        </div>
+
+        <div class="medical-orbit orbit-one"></div>
+        <div class="medical-orbit orbit-two"></div>
+        <div class="medical-orbit orbit-three"></div>
+
+        <div class="medical-core">
+            <div class="core-inner">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <span class="pulse-ring"></span>
+            <span class="pulse-ring delay"></span>
+        </div>
+
+        <div class="medical-plus plus-one">+</div>
+        <div class="medical-plus plus-two">+</div>
+        <div class="medical-plus plus-three">+</div>
+
+        <div class="medical-floating floating-doctor">
+            <span class="floating-icon blue">
+                <i class="fa-solid fa-user-doctor"></i>
+            </span>
+        
+        </div>
+
+        <div class="medical-floating floating-secure">
+            <span class="floating-icon cyan">
+                <i class="fa-solid fa-shield-heart"></i>
+            </span>
+            <div>
+                <strong>100% Secure</strong>
+                <small>Your privacy matters</small>
+            </div>
+        </div>
+
+        <div class="medical-floating floating-online">
+            <span class="online-dot"></span>
+            <div>
+                <strong>Online Now</strong>
+                <small>Ready to help you</small>
+            </div>
+        </div>
+
+        <div class="medical-bottom-label">
+            <i class="fa-solid fa-heart"></i>
+            Healthcare Without Limits
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- STATISTICS -->
+
+<section class="trust-section">
+<div class="container trust-grid">
+
+    <div class="trust-item reveal">
+        <i class="fa-regular fa-clock"></i>
+        <div>
+            <strong class="counter-number" data-target="24" data-format="hours">0</strong>
+            <p>Access to Care</p>
+        </div>
+    </div>
+
+    <div class="trust-item reveal">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+            <strong class="counter-number" data-target="100" data-suffix="%">0%</strong>
+            <p>Private Conversations</p>
+        </div>
+    </div>
+
+    <div class="trust-item reveal">
+        <i class="fa-solid fa-calendar-check"></i>
+        <div>
+            <strong class="easy-text">Easy</strong>
+            <p>Online Booking</p>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- METHODS -->
+
+<section class="methods-section" id="methods">
+<div class="container">
+
+    <div class="section-heading reveal">
+        <div class="section-tag">CONSULTATION OPTIONS</div>
+        <h2>Choose How You Want to Connect</h2>
+        <p>
+            Get the medical support you need through a
+            consultation method that works best for you.
+        </p>
+    </div>
+
+    <div class="methods-grid" id="methodsGrid"></div>
+
+</div>
+</section>
+
+<!-- BOOKING -->
+
+<section class="booking-section" id="booking">
+<div class="container booking-grid">
+
+    <div class="booking-aside reveal">
+        <div class="section-tag">START YOUR CONSULTATION</div>
+
+        <h2>Your Health Journey Starts Here.</h2>
+
+        <p>
+            Booking an online consultation is simple.
+            Choose your specialty, select a doctor and
+            request a convenient appointment.
+        </p>
+
+        <!-- Booking photograph -->
+        <div class="booking-photo">
+            <img
+                src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=900&q=85"
+                alt="Medical professional providing care"
+                loading="lazy"
+                onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#dcefff,#a9d9f7)';"
+            >
+            <div class="booking-photo-label">
+                <i class="fa-solid fa-heart-pulse"></i>
+                Care That Comes to You
+            </div>
+        </div>
+
+        <div class="aside-benefit">
+            <i class="fa-solid fa-check"></i>
+            Qualified medical professionals
+        </div>
+        <div class="aside-benefit">
+            <i class="fa-solid fa-check"></i>
+            Convenient online appointments
+        </div>
+        <div class="aside-benefit">
+            <i class="fa-solid fa-check"></i>
+            Private and secure communication
+        </div>
+        <div class="aside-benefit">
+            <i class="fa-solid fa-check"></i>
+            Easy appointment requests
+        </div>
+    </div>
+
+    <div class="booking-card reveal">
+        <h3>Book Your Appointment</h3>
+        <p class="form-intro">
+            Complete the form and request your consultation.
+        </p>
+
+        <form id="bookingForm" novalidate>
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName"
+                        placeholder="Your full name"
+                        required minlength="2">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email"
+                        placeholder="example@email.com"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="specialty">Medical Specialty</label>
+                    <select id="specialty" required>
+                        <option value="">Choose specialty</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="doctor">Select Doctor</label>
+                    <select id="doctor" required disabled>
+                        <option value="">Choose a specialty first</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Preferred Time</label>
+                    <select id="time" required>
+                        <option value="">Choose a time</option>
+                        <option>09:00 AM</option>
+                        <option>10:00 AM</option>
+                        <option>11:00 AM</option>
+                        <option>12:00 PM</option>
+                        <option>02:00 PM</option>
+                        <option>03:00 PM</option>
+                        <option>04:00 PM</option>
+                        <option>05:00 PM</option>
+                    </select>
+                </div>
+
+                <div class="form-group full">
+                    <label for="message">Describe Your Concern</label>
+                    <textarea id="message"
+                        placeholder="Briefly describe how we can help you..."
+                        maxlength="500"></textarea>
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                Request Appointment
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+
+            <div id="formMessage" class="form-message"
+                 role="status" aria-live="polite"></div>
+
+            <div class="secure-tag">
+                <i class="fa-solid fa-lock"></i>
+                Your information is kept private.
+            </div>
+        </form>
+    </div>
+
+</div>
+</section>
+
+<!-- PROCESS -->
+
+<section class="process-section">
+<div class="container">
+
+    <div class="section-heading reveal">
+        <div class="section-tag">HOW IT WORKS</div>
+        <h2>Four Simple Steps to Better Care</h2>
+        <p>Getting medical support online has never been easier.</p>
+    </div>
+
+    <div class="process-grid">
+
+        <div class="step-card">
+            <div class="step-number">01</div>
+            <h3>Choose a Doctor</h3>
+            <p>Find a medical professional in your preferred specialty.</p>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">02</div>
+            <h3>Book a Time</h3>
+            <p>Select a date and time that fits your schedule.</p>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">03</div>
+            <h3>Connect Online</h3>
+            <p>Meet your doctor through your selected consultation method.</p>
+        </div>
+
+        <div class="step-card">
+            <div class="step-number">04</div>
+            <h3>Get Guidance</h3>
+            <p>Receive professional guidance for your health concerns.</p>
+        </div>
+
+    </div>
+</div>
+</section>
+
+<!-- FINAL CTA -->
+
+<section class="final-cta">
+<div class="container">
+    <div class="cta-box reveal">
+
+        <div class="cta-content">
+            <h2>Care Is Just a Click Away.</h2>
+            <p>Take the first step towards better health today.</p>
+        </div>
+
+        <a href="#booking" class="primary-btn">
+            Book Your Consultation
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+</div>
+</section>
+<script src="script.js"></script>
 
 </body>
 </html>
