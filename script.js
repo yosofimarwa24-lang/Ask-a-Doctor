@@ -441,6 +441,7 @@
       startAutoSlide();
     }
     
+    
   });
 
 })();
