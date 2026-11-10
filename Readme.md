@@ -2,6 +2,7 @@
 
 A responsive web application designed to connect patients with doctors, allowing them to access healthcare services and chat with medical professionals online. This project was developed as a collaborative team assignment.
 
+
 ## 👥 Team Members
 We are a dedicated team of **5 members** working together using Git and GitHub for version control and collaboration.
 
