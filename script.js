@@ -440,6 +440,8 @@
     } else {
       startAutoSlide();
     }
+    
   });
 
 })();
+
