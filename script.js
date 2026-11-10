@@ -441,7 +441,7 @@
       startAutoSlide();
     }
     
-    
+  
   });
 
 })();
