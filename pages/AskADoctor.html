@@ -1,285 +1,89 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="theme-color" content="#12345a" />
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#12345a" />
 <title>Medical Assistant | Ask a Doctor</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  font-family: "DM Sans", Arial, sans-serif;
-  color: #183653;
-  background: #f3f8fd;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-text-size-adjust: 100%;
-}
-
+:root { font-family: "DM Sans", Arial, sans-serif; color: #183653; background: #f3f8fd; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; }
 * { box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
-body {
-  margin: 0;
-  min-width: 320px;
-}
-
+body { margin: 0; min-width: 320px; }
 button, textarea, input, select { font: inherit; }
 
-/* ───────── Page ───────── */
-.mc-page {
-  min-height: 100vh;
-  min-height: 100dvh;
-  position: relative;
-  overflow: hidden;
-  padding: 64px 22px 40px;
-  background:
-    radial-gradient(ellipse at 8% 15%, rgba(53,198,212,.15), transparent 32%),
-    radial-gradient(ellipse at 92% 75%, rgba(36,120,229,.11), transparent 34%),
-    linear-gradient(135deg, #f5faff 0%, #ffffff 52%, #edf6ff 100%);
-  background-size: 140% 140%;
-  animation: mc-bg-shift 26s ease-in-out infinite alternate;
-}
+/* Page */
+.mc-page { min-height: 100vh; min-height: 100dvh; position: relative; overflow: hidden; padding: 64px 22px 40px;
+  background: radial-gradient(ellipse at 8% 15%, rgba(53,198,212,.15), transparent 32%), radial-gradient(ellipse at 92% 75%, rgba(36,120,229,.11), transparent 34%), linear-gradient(135deg, #f5faff 0%, #ffffff 52%, #edf6ff 100%);
+  background-size: 140% 140%; animation: mc-bg-shift 26s ease-in-out infinite alternate; }
+.mc-shell { width: min(100%, 1120px); margin: 0 auto; position: relative; z-index: 1; }
 
-.mc-shell {
-  width: min(100%, 1120px);
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
+/* Top nav */
+.mc-nav { display: flex; gap: 10px; margin-bottom: 18px; }
+.mc-nav a { text-decoration: none; padding: 9px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; border: 1px solid #dceaf7; color: #2878b8; background: rgba(255,255,255,.9); transition: .2s ease; }
+.mc-nav a:hover { background: #eaf3ff; transform: translateY(-2px); }
+.mc-nav a.mc-nav-alert { color: #b42318; border-color: #ffd1ca; background: #fff4f2; }
+.mc-nav a.mc-nav-alert:hover { background: #ffe8e4; }
 
-/* ───────── Animated background ───────── */
-.mc-bg {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.mc-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(1px);
-}
-.mc-orb-one {
-  width: 280px; height: 280px;
-  top: 170px; left: -150px;
-  border: 1px solid rgba(36,120,229,.15);
-  box-shadow: 0 0 0 28px rgba(36,120,229,.03), 0 0 0 58px rgba(36,120,229,.02);
-  animation: mc-drift 18s ease-in-out infinite alternate;
-}
-.mc-orb-two {
-  width: 210px; height: 210px;
-  right: -105px; bottom: 120px;
-  border: 1px solid rgba(53,198,212,.24);
-  box-shadow: 0 0 0 25px rgba(53,198,212,.04), 0 0 0 50px rgba(53,198,212,.022);
-  animation: mc-drift 22s ease-in-out infinite alternate-reverse;
-}
-
-.mc-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 2px solid rgba(53,198,212,.35);
-  opacity: 0;
-  animation: mc-pulse-ring 7s ease-out infinite;
-}
+/* Background */
+.mc-bg { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.mc-orb { position: absolute; border-radius: 50%; filter: blur(1px); }
+.mc-orb-one { width: 280px; height: 280px; top: 170px; left: -150px; border: 1px solid rgba(36,120,229,.15); box-shadow: 0 0 0 28px rgba(36,120,229,.03), 0 0 0 58px rgba(36,120,229,.02); animation: mc-drift 18s ease-in-out infinite alternate; }
+.mc-orb-two { width: 210px; height: 210px; right: -105px; bottom: 120px; border: 1px solid rgba(53,198,212,.24); box-shadow: 0 0 0 25px rgba(53,198,212,.04), 0 0 0 50px rgba(53,198,212,.022); animation: mc-drift 22s ease-in-out infinite alternate-reverse; }
+.mc-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(53,198,212,.35); opacity: 0; animation: mc-pulse-ring 7s ease-out infinite; }
 .mc-ring-a { width: 160px; height: 160px; top: 16%; right: 8%; }
 .mc-ring-b { width: 120px; height: 120px; bottom: 18%; left: 7%; animation-delay: -3.5s; border-color: rgba(36,120,229,.3); }
-
-.mc-ecg {
-  position: absolute;
-  left: 0; right: 0;
-  height: 120px;
+.mc-ecg { position: absolute; left: 0; right: 0; height: 120px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120' viewBox='0 0 260 120'%3E%3Cpath d='M0 60H70L82 60L92 55L100 60H118L126 71L136 12L148 106L158 60H182L194 49L206 60H260' fill='none' stroke='%2335c6d4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 260px 120px;
-  opacity: .24;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
-  animation: mc-ecg-scroll 13s linear infinite;
-}
+  background-repeat: repeat-x; background-size: 260px 120px; opacity: .24;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  animation: mc-ecg-scroll 13s linear infinite; }
 .mc-ecg-a { top: 20%; }
 .mc-ecg-b { bottom: 8%; opacity: .16; transform: scaleX(-1); animation-duration: 19s; }
-
-.mc-float {
-  position: absolute;
-  bottom: -70px;
-  width: var(--s);
-  height: var(--s);
-  opacity: 0;
-  animation: mc-float-up linear infinite;
-}
-.mc-float-cross::before, .mc-float-cross::after {
-  content: "";
-  position: absolute;
-  background: rgba(53,198,212,.45);
-  border-radius: 3px;
-}
+.mc-float { position: absolute; bottom: -70px; width: var(--s); height: var(--s); opacity: 0; animation: mc-float-up linear infinite; }
+.mc-float-cross::before, .mc-float-cross::after { content: ""; position: absolute; background: rgba(53,198,212,.45); border-radius: 3px; }
 .mc-float-cross::before { left: 36%; right: 36%; top: 0; bottom: 0; }
-.mc-float-cross::after  { top: 36%; bottom: 36%; left: 0; right: 0; }
-.mc-float-pill {
-  width: calc(var(--s) * 1.7);
-  height: calc(var(--s) * .6);
-  border-radius: 99px;
-  background: linear-gradient(90deg, rgba(36,120,229,.38) 50%, rgba(255,255,255,.7) 50%);
-  border: 1px solid rgba(36,120,229,.3);
-  transform: rotate(35deg);
-}
-.mc-float-drop {
-  border-radius: 50% 50% 50% 0;
-  background: rgba(36,120,229,.3);
-  rotate: -45deg;
-}
-.mc-float-dot {
-  border-radius: 50%;
-  background: rgba(53,198,212,.4);
-}
+.mc-float-cross::after { top: 36%; bottom: 36%; left: 0; right: 0; }
+.mc-float-pill { width: calc(var(--s) * 1.7); height: calc(var(--s) * .6); border-radius: 99px; background: linear-gradient(90deg, rgba(36,120,229,.38) 50%, rgba(255,255,255,.7) 50%); border: 1px solid rgba(36,120,229,.3); transform: rotate(35deg); }
+.mc-float-drop { border-radius: 50% 50% 50% 0; background: rgba(36,120,229,.3); rotate: -45deg; }
+.mc-float-dot { border-radius: 50%; background: rgba(53,198,212,.4); }
 
-/* ───────── Intro ───────── */
+/* Intro */
 .mc-intro { text-align: center; margin: 0 auto 30px; animation: mc-rise .7s ease both; }
-.mc-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: #2878b8;
-  background: rgba(255,255,255,.85);
-  border: 1px solid #dceaf7;
-  border-radius: 30px;
-  padding: 9px 16px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.6px;
-}
-.mc-eyebrow-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #35c6d4; box-shadow: 0 0 0 4px rgba(53,198,212,.15);
-  animation: mc-dot-pulse 2s ease-in-out infinite;
-}
-.mc-intro h1 {
-  margin: 18px 0 12px;
-  color: #12345a;
-  font-size: clamp(32px, 5.4vw, 52px);
-  line-height: 1.12;
-  letter-spacing: -1.8px;
-  font-weight: 800;
-}
-.mc-intro h1 span {
-  background: linear-gradient(100deg, #2478e5, #35b9c9);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.mc-intro p {
-  max-width: 620px;
-  margin: 0 auto;
-  color: #5f7790;
-  font-size: clamp(14px, 1.6vw, 16px);
-  line-height: 1.75;
-}
+.mc-eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #2878b8; background: rgba(255,255,255,.85); border: 1px solid #dceaf7; border-radius: 30px; padding: 9px 16px; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; }
+.mc-eyebrow a { display: inline-flex; padding: 4px; margin: -4px; }
+.mc-eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: #35c6d4; box-shadow: 0 0 0 4px rgba(53,198,212,.15); animation: mc-dot-pulse 2s ease-in-out infinite; display: block; }
+.mc-intro h1 { margin: 18px 0 12px; color: #12345a; font-size: clamp(32px, 5.4vw, 52px); line-height: 1.12; letter-spacing: -1.8px; font-weight: 800; }
+.mc-intro h1 span { background: linear-gradient(100deg, #2478e5, #35b9c9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.mc-intro p { max-width: 620px; margin: 0 auto; color: #5f7790; font-size: clamp(14px, 1.6vw, 16px); line-height: 1.75; }
 
-/* ───────── Layout ───────── */
-.mc-layout {
-  display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-.mc-side {
-  display: grid;
-  gap: 18px;
-  position: sticky;
-  top: 20px;
-  animation: mc-rise .7s .1s ease both;
-}
+/* Layout */
+.mc-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 22px; align-items: start; }
+.mc-side { display: grid; gap: 18px; position: sticky; top: 20px; animation: mc-rise .7s .1s ease both; }
 
-/* ───────── Profiles ───────── */
-.mc-profile {
-  border: 1px solid rgba(220,234,247,.95);
-  border-radius: 22px;
-  background: rgba(255,255,255,.94);
-  box-shadow: 0 18px 55px rgba(22,65,108,.10), 0 3px 10px rgba(22,65,108,.04);
-  backdrop-filter: blur(12px);
-  padding: 22px;
-}
-.mc-profile-tag {
-  color: #8ea3b6;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-  margin-bottom: 8px;
-}
-
+/* Profiles */
+.mc-profile { border: 1px solid rgba(220,234,247,.95); border-radius: 22px; background: rgba(255,255,255,.94); box-shadow: 0 18px 55px rgba(22,65,108,.10), 0 3px 10px rgba(22,65,108,.04); backdrop-filter: blur(12px); padding: 22px; }
+.mc-profile-tag { color: #8ea3b6; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; margin-bottom: 8px; }
 .mc-doctor-card { text-align: center; position: relative; overflow: hidden; }
-.mc-doctor-card::before {
-  content: "";
-  position: absolute; inset: 0 0 auto 0; height: 92px;
-  background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%);
-}
-.mc-doctor-photo {
-  position: relative;
-  width: 108px; height: 108px;
-  margin: 8px auto 12px;
-}
-.mc-doctor-svg {
-  position: relative; z-index: 1;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  border: 4px solid #fff;
-  box-shadow: 0 10px 26px rgba(22,65,108,.22);
-  display: block;
-}
-.mc-doctor-ring {
-  position: absolute; inset: -4px; border-radius: 50%;
-  border: 2px solid rgba(88,224,166,.8);
-  animation: mc-avatar-ring 2.6s ease-out infinite;
-}
-.mc-online-dot {
-  position: absolute; z-index: 2;
-  right: 6px; bottom: 6px;
-  width: 15px; height: 15px; border-radius: 50%;
-  background: #58e0a6; border: 3px solid #fff;
-  box-shadow: 0 0 10px rgba(88,224,166,.7);
-}
+.mc-doctor-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 92px; background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%); }
+.mc-doctor-photo { position: relative; width: 108px; height: 108px; margin: 8px auto 12px; }
+.mc-doctor-svg { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 10px 26px rgba(22,65,108,.22); display: block; }
+.mc-doctor-ring { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(88,224,166,.8); animation: mc-avatar-ring 2.6s ease-out infinite; }
+.mc-online-dot { position: absolute; z-index: 2; right: 6px; bottom: 6px; width: 15px; height: 15px; border-radius: 50%; background: #58e0a6; border: 3px solid #fff; box-shadow: 0 0 10px rgba(88,224,166,.7); }
 .mc-doctor-info { position: relative; }
 .mc-doctor-info h2 { margin: 0 0 4px; color: #12345a; font-size: 20px; font-weight: 800; letter-spacing: -.3px; }
 .mc-doctor-title { margin: 0 0 12px; color: #5f7790; font-size: 14px; }
-.mc-ai-badge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  color: #17668a;
-  background: #e2f8f8;
-  font-size: 11.5px;
-  font-weight: 700;
-}
-.mc-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 18px 0 4px;
-  padding: 14px 4px;
-  border-block: 1px solid #eaf0f6;
-}
+.mc-ai-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; color: #17668a; background: #e2f8f8; font-size: 11.5px; font-weight: 700; }
+.mc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0 4px; padding: 14px 4px; border-block: 1px solid #eaf0f6; }
 .mc-stats strong { display: block; color: #2478e5; font-size: 17px; font-weight: 800; }
 .mc-stats span { color: #8093a5; font-size: 11.5px; font-weight: 600; }
 .mc-doctor-about { text-align: left; margin-top: 14px; }
 .mc-doctor-about ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
-.mc-doctor-about li {
-  padding: 6px 11px;
-  border: 1px solid #dfeaf5; border-radius: 20px;
-  color: #477397; background: #f6faff;
-  font-size: 12px; font-weight: 600;
-}
+.mc-doctor-about li { padding: 6px 11px; border: 1px solid #dfeaf5; border-radius: 20px; color: #477397; background: #f6faff; font-size: 12px; font-weight: 600; }
 
 .mc-patient-card { display: flex; gap: 14px; align-items: flex-start; }
-.mc-patient-avatar {
-  display: grid; place-items: center;
-  flex: 0 0 56px;
-  width: 56px; height: 56px;
-  border-radius: 16px;
-  color: #148b9a;
-  background: #e2f8f8;
-  font-size: 18px; font-weight: 800;
-}
-.mc-patient-avatar { overflow: hidden; }
+.mc-patient-avatar { display: grid; place-items: center; flex: 0 0 56px; width: 56px; height: 56px; border-radius: 16px; color: #148b9a; background: #e2f8f8; font-size: 18px; font-weight: 800; overflow: hidden; }
 .mc-patient-avatar svg { width: 60%; height: 60%; }
 .mc-patient-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .mc-doctor-svg, .mc-header-svg, .mc-mini-svg { object-fit: cover; }
@@ -290,39 +94,14 @@ button, textarea, input, select { font: inherit; }
 .mc-patient-fields { flex: 1; min-width: 0; }
 .mc-field { display: block; margin-bottom: 10px; }
 .mc-field span { display: block; margin: 0 0 5px 2px; color: #6c8196; font-size: 12px; font-weight: 700; }
-.mc-field input, .mc-field select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #dce8f4; border-radius: 11px;
-  background: #f9fcff; color: #183653;
-  font-size: 14px;
-  outline: none;
-  transition: .2s ease;
-}
+.mc-field input, .mc-field select { width: 100%; padding: 10px 12px; border: 1px solid #dce8f4; border-radius: 11px; background: #f9fcff; color: #183653; font-size: 14px; outline: none; transition: .2s ease; }
 .mc-field input:focus, .mc-field select:focus { border-color: #6ca8e4; background: #fff; box-shadow: 0 0 0 4px rgba(36,120,229,.08); }
 .mc-visit { color: #8093a5; font-size: 12.5px; }
 .mc-visit strong { color: #2478e5; }
 
-/* ───────── Chat card ───────── */
-.mc-card {
-  overflow: hidden;
-  border: 1px solid rgba(220,234,247,.95);
-  border-radius: 23px;
-  background: rgba(255,255,255,.94);
-  box-shadow: 0 26px 80px rgba(22,65,108,.13), 0 3px 12px rgba(22,65,108,.04);
-  backdrop-filter: blur(12px);
-  animation: mc-rise .7s .2s ease both;
-}
-.mc-header {
-  min-height: 84px;
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  color: white;
-  background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%);
-}
+/* Chat card */
+.mc-card { overflow: hidden; border: 1px solid rgba(220,234,247,.95); border-radius: 23px; background: rgba(255,255,255,.94); box-shadow: 0 26px 80px rgba(22,65,108,.13), 0 3px 12px rgba(22,65,108,.04); backdrop-filter: blur(12px); animation: mc-rise .7s .2s ease both; }
+.mc-header { min-height: 84px; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 15px; color: white; background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%); }
 .mc-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .mc-header-avatar { position: relative; flex: 0 0 52px; width: 52px; height: 52px; }
 .mc-header-svg { width: 100%; height: 100%; border-radius: 16px; border: 2px solid rgba(255,255,255,.4); display: block; }
@@ -330,110 +109,33 @@ button, textarea, input, select { font: inherit; }
 .mc-brand h2 { margin: 0 0 5px; font-size: 17px; font-weight: 700; letter-spacing: .1px; }
 .mc-status { display: flex; align-items: center; gap: 8px; color: #d5eafa; font-size: 12.5px; }
 .mc-status span { flex: 0 0 8px; width: 8px; height: 8px; background: #58e0a6; border-radius: 50%; box-shadow: 0 0 10px rgba(88,224,166,.65); animation: mc-dot-pulse 2s ease-in-out infinite; }
-.mc-reset {
-  flex: 0 0 auto;
-  border: 1px solid rgba(255,255,255,.25);
-  color: #fff;
-  background: rgba(255,255,255,.09);
-  border-radius: 11px;
-  padding: 11px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .22s ease;
-}
+.mc-reset { flex: 0 0 auto; border: 1px solid rgba(255,255,255,.25); color: #fff; background: rgba(255,255,255,.09); border-radius: 11px; padding: 11px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: .22s ease; }
 .mc-reset span { font-size: 16px; margin-right: 4px; vertical-align: -1px; display: inline-block; }
 .mc-reset:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
 .mc-reset:hover span { transform: rotate(180deg); transition: transform .4s ease; }
 
-.mc-conversation {
-  height: clamp(400px, 60vh, 620px);
-  overflow-y: auto;
-  padding: 24px 26px 14px;
-  background:
-    radial-gradient(circle at 92% 6%, rgba(53,198,212,.06), transparent 27%),
-    #fbfdff;
-  scrollbar-width: thin;
-  scrollbar-color: #cbdceb transparent;
-  overscroll-behavior: contain;
-}
+.mc-conversation { height: clamp(400px, 60vh, 620px); overflow-y: auto; padding: 24px 26px 14px; background: radial-gradient(circle at 92% 6%, rgba(53,198,212,.06), transparent 27%), #fbfdff; scrollbar-width: thin; scrollbar-color: #cbdceb transparent; overscroll-behavior: contain; }
 .mc-conversation::-webkit-scrollbar { width: 6px; }
 .mc-conversation::-webkit-scrollbar-thumb { background: #cbdceb; border-radius: 8px; }
-.mc-date-divider {
-  display: flex; align-items: center; gap: 13px;
-  margin: 0 0 24px;
-  color: #8ea1b3;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-}
+.mc-date-divider { display: flex; align-items: center; gap: 13px; margin: 0 0 24px; color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; }
 .mc-date-divider::before, .mc-date-divider::after { content: ""; height: 1px; flex: 1; background: #eaf0f6; }
 
-.mc-message {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 22px;
-  animation: mc-rise .32s ease both;
-}
+.mc-message { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 22px; animation: mc-rise .32s ease both; }
 .mc-user { flex-direction: row-reverse; }
-.mc-message-avatar {
-  display: grid; place-items: center;
-  flex: 0 0 38px;
-  width: 38px; height: 38px;
-  border-radius: 12px;
-  overflow: hidden;
-  font-size: 12px;
-  font-weight: 800;
-}
+.mc-message-avatar { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border-radius: 12px; overflow: hidden; font-size: 12px; font-weight: 800; }
 .mc-doctor-mini { background: #eaf3ff; }
 .mc-mini-svg { width: 100%; height: 100%; display: block; }
 .mc-user-avatar { color: #148b9a; background: #e2f8f8; }
 .mc-message-content { max-width: min(78%, 660px); min-width: 0; }
 .mc-user .mc-message-content { text-align: right; }
-.mc-sender {
-  display: flex; align-items: center; gap: 8px;
-  margin: 1px 0 7px;
-  color: #8ea1b3;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+.mc-sender { display: flex; align-items: center; gap: 8px; margin: 1px 0 7px; color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
 .mc-user .mc-sender { justify-content: flex-end; }
 .mc-sender time { font-weight: 600; letter-spacing: .3px; color: #a9b8c6; }
-.mc-bubble {
-  display: inline-block;
-  padding: 14px 18px;
-  border: 1px solid #e5edf5;
-  border-radius: 4px 16px 16px 16px;
-  background: #fff;
-  color: #2f4a65;
-  box-shadow: 0 4px 15px rgba(24,65,105,.04);
-  text-align: left;
-  font-size: 15px;
-  line-height: 1.7;
-  overflow-wrap: anywhere;
-}
-.mc-user .mc-bubble {
-  color: #fff;
-  border: 0;
-  border-radius: 16px 4px 16px 16px;
-  background: linear-gradient(135deg, #2478e5, #329ce4);
-  box-shadow: 0 7px 17px rgba(36,120,229,.18);
-}
-.mc-bubble.mc-emergency {
-  color: #8f2828;
-  background: #fff4f2;
-  border: 1px solid #ffd1ca;
-  animation: mc-alert 2.4s ease-in-out infinite;
-}
+.mc-bubble { display: inline-block; padding: 14px 18px; border: 1px solid #e5edf5; border-radius: 4px 16px 16px 16px; background: #fff; color: #2f4a65; box-shadow: 0 4px 15px rgba(24,65,105,.04); text-align: left; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.mc-user .mc-bubble { color: #fff; border: 0; border-radius: 16px 4px 16px 16px; background: linear-gradient(135deg, #2478e5, #329ce4); box-shadow: 0 7px 17px rgba(36,120,229,.18); }
+.mc-bubble.mc-emergency { color: #8f2828; background: #fff4f2; border: 1px solid #ffd1ca; animation: mc-alert 2.4s ease-in-out infinite; }
 .mc-alert-title { display: block; margin-bottom: 4px; color: #b42318; font-size: 14px; }
-.mc-typing {
-  display: flex; align-items: center; gap: 5px;
-  width: 64px; padding: 16px 17px;
-  border: 1px solid #e5edf5; border-radius: 4px 16px 16px 16px;
-  background: #fff;
-}
+.mc-typing { display: flex; align-items: center; gap: 5px; width: 64px; padding: 16px 17px; border: 1px solid #e5edf5; border-radius: 4px 16px 16px 16px; background: #fff; }
 .mc-typing i { width: 7px; height: 7px; border-radius: 50%; background: #7ea6cb; animation: mc-bounce .65s infinite alternate; }
 .mc-typing i:nth-child(2) { animation-delay: .14s; }
 .mc-typing i:nth-child(3) { animation-delay: .28s; }
@@ -441,25 +143,11 @@ button, textarea, input, select { font: inherit; }
 .mc-suggestions { padding: 4px 26px 20px; background: #fbfdff; }
 .mc-suggestion-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
 .mc-suggestion-heading { color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1.3px; }
-.mc-shuffle {
-  border: 0; background: transparent; cursor: pointer;
-  color: #2878b8; font-size: 12.5px; font-weight: 700;
-  padding: 4px 6px; border-radius: 8px;
-}
+.mc-shuffle { border: 0; background: transparent; cursor: pointer; color: #2878b8; font-size: 12.5px; font-weight: 700; padding: 4px 6px; border-radius: 8px; }
 .mc-shuffle:hover:not(:disabled) { background: #eaf3ff; }
 .mc-shuffle:disabled { opacity: .5; cursor: not-allowed; }
 .mc-suggestion-list { display: flex; flex-wrap: wrap; gap: 9px; }
-.mc-suggestion-list button {
-  display: inline-flex; align-items: center; gap: 10px;
-  max-width: 100%;
-  border: 1px solid #dfeaf5; border-radius: 30px;
-  padding: 9px 14px;
-  color: #3e6a8f; background: #fff;
-  font-size: 13px; font-weight: 600; line-height: 1.35;
-  text-align: left;
-  cursor: pointer; transition: .2s ease;
-  animation: mc-rise .4s ease both;
-}
+.mc-suggestion-list button { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; border: 1px solid #dfeaf5; border-radius: 30px; padding: 9px 14px; color: #3e6a8f; background: #fff; font-size: 13px; font-weight: 600; line-height: 1.35; text-align: left; cursor: pointer; transition: .2s ease; animation: mc-rise .4s ease both; }
 .mc-suggestion-list button:nth-child(2) { animation-delay: .05s; }
 .mc-suggestion-list button:nth-child(3) { animation-delay: .1s; }
 .mc-suggestion-list button:nth-child(4) { animation-delay: .15s; }
@@ -469,53 +157,26 @@ button, textarea, input, select { font: inherit; }
 .mc-suggestion-list button:hover:not(:disabled) { border-color: #80b7e8; color: #176db7; background: #f2f8ff; transform: translateY(-2px); }
 .mc-suggestion-list button:disabled { opacity: .5; cursor: not-allowed; }
 
-.mc-composer { padding: 18px 26px 18px; border-top: 1px solid #eaf0f6; background: #fff; }
+.mc-composer { padding: 18px 26px; border-top: 1px solid #eaf0f6; background: #fff; }
 .mc-input-label { display: block; margin: 0 0 8px 2px; color: #7f95a9; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; }
-.mc-input-row {
-  display: flex; align-items: flex-end; gap: 10px;
-  padding: 8px 9px 8px 16px;
-  border: 1px solid #dce8f4; border-radius: 15px;
-  background: #f9fcff; transition: .2s ease;
-}
+.mc-input-row { display: flex; align-items: flex-end; gap: 10px; padding: 8px 9px 8px 16px; border: 1px solid #dce8f4; border-radius: 15px; background: #f9fcff; transition: .2s ease; }
 .mc-input-row:focus-within { border-color: #6ca8e4; background: #fff; box-shadow: 0 0 0 4px rgba(36,120,229,.08); }
-.mc-input-row textarea {
-  flex: 1; min-width: 0; max-height: 120px; min-height: 42px;
-  padding: 10px 0; resize: none; outline: none; border: 0;
-  background: transparent; color: #183653;
-  font-size: 15px; line-height: 1.55;
-}
+.mc-input-row textarea { flex: 1; min-width: 0; max-height: 120px; min-height: 42px; padding: 10px 0; resize: none; outline: none; border: 0; background: transparent; color: #183653; font-size: 15px; line-height: 1.55; }
 .mc-input-row textarea::placeholder { color: #94a5b5; }
-.mc-send {
-  display: grid; place-items: center;
-  width: 44px; height: 44px; flex: 0 0 44px;
-  border: 0; border-radius: 12px;
-  color: white; background: linear-gradient(135deg, #2478e5, #36a9df);
-  cursor: pointer; transition: .2s ease;
-}
+.mc-send { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 0; border-radius: 12px; color: white; background: linear-gradient(135deg, #2478e5, #36a9df); cursor: pointer; transition: .2s ease; }
 .mc-send svg { width: 19px; height: 19px; }
 .mc-send:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 15px rgba(36,120,229,.25); }
 .mc-send:disabled { opacity: .42; cursor: not-allowed; }
 .mc-input-foot { display: flex; justify-content: space-between; gap: 10px; margin: 8px 2px 0; color: #8fa1b2; font-size: 12px; }
 
-.mc-disclaimer {
-  display: flex; align-items: flex-start; gap: 12px;
-  margin-top: 20px; padding: 16px 18px;
-  border: 1px solid #dfebf5; border-radius: 14px;
-  background: rgba(255,255,255,.8);
-  animation: mc-rise .7s .3s ease both;
-}
-.mc-info-icon {
-  display: grid; place-items: center; flex: 0 0 20px;
-  width: 20px; height: 20px; margin-top: 1px;
-  border-radius: 50%; color: #fff; background: #79a8ce;
-  font-family: Georgia, serif; font-size: 13px; font-weight: 700;
-}
+.mc-disclaimer { display: flex; align-items: flex-start; gap: 12px; margin-top: 20px; padding: 16px 18px; border: 1px solid #dfebf5; border-radius: 14px; background: rgba(255,255,255,.8); animation: mc-rise .7s .3s ease both; }
+.mc-info-icon { display: grid; place-items: center; flex: 0 0 20px; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; color: #fff; background: #79a8ce; font-family: Georgia, serif; font-size: 13px; font-weight: 700; }
 .mc-disclaimer p { margin: 0; color: #6c8196; font-size: 12.5px; line-height: 1.7; }
 .mc-disclaimer strong { color: #456986; }
 .mc-footer { margin-top: 24px; text-align: center; color: #8fa1b2; font-size: 11px; font-weight: 800; letter-spacing: 2px; }
 .mc-footer span { padding: 0 7px; color: #35b9c9; }
 
-/* ───────── Animations ───────── */
+/* Animations */
 @keyframes mc-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes mc-bounce { from { transform: translateY(0); opacity: .55; } to { transform: translateY(-5px); opacity: 1; } }
 @keyframes mc-bg-shift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
@@ -523,17 +184,12 @@ button, textarea, input, select { font: inherit; }
 @keyframes mc-pulse-ring { 0% { transform: scale(.4); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
 @keyframes mc-ecg-scroll { from { background-position-x: 0; } to { background-position-x: -1040px; } }
 @keyframes mc-ecg-scroll-sm { from { background-position-x: 0; } to { background-position-x: -780px; } }
-@keyframes mc-float-up {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10% { opacity: .75; }
-  90% { opacity: .75; }
-  100% { transform: translateY(-115vh) rotate(200deg); opacity: 0; }
-}
+@keyframes mc-float-up { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: .75; } 90% { opacity: .75; } 100% { transform: translateY(-115vh) rotate(200deg); opacity: 0; } }
 @keyframes mc-dot-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: .65; } }
 @keyframes mc-avatar-ring { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.35); opacity: 0; } }
 @keyframes mc-alert { 0%, 100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); } 50% { box-shadow: 0 0 0 6px rgba(231,76,60,.10); } }
 
-/* ───────── Responsive ───────── */
+/* Responsive */
 @media (max-width: 980px) {
   .mc-layout { grid-template-columns: 1fr; }
   .mc-side { position: static; grid-template-columns: 1fr 1fr; }
@@ -543,7 +199,6 @@ button, textarea, input, select { font: inherit; }
   .mc-doctor-info h2 { font-size: 18px; }
   .mc-stats, .mc-doctor-about { display: none; }
 }
-
 @media (max-width: 700px) {
   .mc-page { padding: 40px 12px 28px; }
   .mc-intro { margin-bottom: 22px; }
@@ -566,34 +221,29 @@ button, textarea, input, select { font: inherit; }
   .mc-suggestions { padding: 2px 13px 16px; }
   .mc-suggestion-list button { font-size: 12.5px; padding: 8px 12px; }
   .mc-composer { padding: 14px 13px; }
-  .mc-input-row textarea { font-size: 16px; } /* avoids iOS zoom on focus */
+  .mc-input-row textarea { font-size: 16px; }
   .mc-input-foot span:first-child { display: none; }
   .mc-input-foot { justify-content: flex-end; }
   .mc-disclaimer { padding: 13px 14px; }
   .mc-ecg { height: 90px; background-size: 195px 90px; animation-name: mc-ecg-scroll-sm; }
 }
-
 @media (max-width: 420px) {
   .mc-reset { font-size: 0; padding: 11px 13px; }
   .mc-reset span { font-size: 17px; margin: 0; }
   .mc-status { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .mc-brand > div:last-child { min-width: 0; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-  }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
   .mc-float, .mc-ring { display: none; }
 }
+</style>
+</head>
+<body>
+<div id="root"></div>
 
-</style></head><body><div id="root"></div>
 <script>
-/* CDN loader: fetch + eval the libraries, then compile & run the text/babel script.
-   (A plain <script src> can silently fail to execute in some file:// contexts.) */
+/* Loader: fetch + eval the libraries, then compile & run the text/babel script. */
 (async function loadLibsAndRun() {
   const urls = [
     "https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js",
@@ -612,509 +262,30 @@ button, textarea, input, select { font: inherit; }
   } catch (err) {
     console.error("Failed to load medical chat:", err);
     document.getElementById("root").innerHTML =
-      '<div style="padding:40px;text-align:center;font-family:sans-serif;color:#183653">' +
-      'Could not load the chat. Check your internet connection and refresh the page.</div>';
+      '<div style="padding:40px;text-align:center;font-family:sans-serif;color:#183653">Could not load the chat. Check your internet connection and refresh the page.</div>';
   }
 })();
 </script>
+
 <script type="text/babel" data-presets="react">
 const { useEffect, useRef, useState } = React;
-const KB_symptoms = [
-["What causes a headache?","headache,head hurts,head pain","Most headaches are tension-type, triggered by stress, poor sleep, dehydration, eye strain, skipped meals or too much caffeine. Rest, water and a quiet room often help. See a doctor if headaches are new, frequent or getting worse."],
-["How can I get rid of a headache fast?","headache fast,headache relief,headache remedy,cure headache","Drink water, rest in a dim quiet room, place a cool cloth on your forehead and stretch your neck gently. An over-the-counter pain reliever may help if it is safe for you; follow the label and avoid using it every day."],
-["When is a headache serious?","serious headache,worst headache,headache warning","Get urgent care for a sudden severe headache, or one with fever and stiff neck, confusion, weakness, vision changes, fainting, or after a head injury. See a doctor for headaches that keep getting worse."],
-["What is a migraine?","migraine,aura","A migraine is a recurring, often one-sided throbbing headache, sometimes with nausea, light and sound sensitivity or visual aura. Early treatment, rest in the dark and avoiding triggers help. A doctor can suggest prevention if attacks are frequent."],
-["What causes dizziness?","dizzy,dizziness,lightheaded,light headed","Common causes are dehydration, standing up fast, low blood sugar, inner-ear problems, anxiety, anemia or medicines. Sit or lie down and drink water. Seek urgent care if it comes with chest pain, fainting, weakness or slurred speech."],
-["What should I do for a fever?","fever,high temperature,feverish","Rest, drink plenty of fluids and dress lightly. A fever reducer can ease discomfort if suitable for you. Seek care if fever is above 39.5°C (103°F), lasts over 3 days, or comes with rash, stiff neck, confusion or trouble breathing."],
-["When is a fever dangerous?","dangerous fever,fever baby,fever emergency,fever infant","Any fever in a baby under 3 months needs urgent medical review. In others, worry about very high fever, fever with stiff neck, rash, confusion, seizures or breathing trouble, or fever lasting more than 3 days."],
-["How do I treat a common cold?","treat cold,common cold,cold remedy,cold symptoms","Rest, fluids, warm drinks, saline nasal rinses and humid air help. Antibiotics do not work on colds. See a doctor if symptoms last over 10 days, or you have high fever or trouble breathing."],
-["What is the difference between a cold and the flu?","cold vs flu,flu or cold,influenza,flu symptoms","Flu comes on suddenly with fever, body aches and strong fatigue; a cold is usually milder with sneezing and a runny nose. People at higher risk should see a doctor early when flu is suspected."],
-["How long does a cold last?","how long cold,cold duration,cold last","Most colds last 7 to 10 days, and a cough can linger for up to 3 weeks. Symptoms that get worse after a week, or come with high fever, may mean a secondary infection."],
-["What helps a sore throat?","sore throat,throat pain,painful swallowing","Warm fluids, honey in tea (not for babies under 1), salt-water gargles, lozenges and rest help. See a doctor if it lasts over a week, makes swallowing or breathing hard, or comes with high fever."],
-["Could my sore throat be strep throat?","strep,strep throat,throat white spots","Strep usually brings a sudden painful throat, fever, swollen glands and often no cough. It needs a quick swab test, and antibiotics if positive. See a doctor rather than guessing."],
-["Why do I have a cough?","cough,coughing,why cough","Coughs are commonly caused by viral infections, allergies, asthma, acid reflux, smoking or irritants. Most viral coughs fade in a few weeks. See a doctor if it is severe, lasts over 3 weeks, or comes with blood or breathlessness."],
-["How can I stop a dry cough?","dry cough,tickly cough,cough remedy","Sip warm drinks, try honey (not for under 1 year), use a humidifier, avoid smoke and dust, and stay hydrated. If it lasts more than 3 weeks or you have wheeze or breathlessness, see a doctor."],
-["What does a cough with phlegm mean?","phlegm,mucus cough,productive cough,chesty cough","A cough with mucus often follows a chest or airway infection such as a cold or bronchitis. Fluids and rest help. See a doctor if mucus is bloody, you have fever, chest pain, or it lasts over 3 weeks."],
-["When should I worry about a cough that will not go away?","cough will not go away,chronic cough,persistent cough,cough weeks","A cough lasting over 3 weeks deserves a medical check. Causes include asthma, reflux, post-nasal drip, medication effects, and less commonly infections like TB or lung disease. Coughing blood needs urgent care."],
-["How do I relieve a blocked or runny nose?","runny nose,blocked nose,stuffy nose,congestion,sneezing","Saline spray or rinse, steam, fluids and rest help. Avoid decongestant sprays for more than 3 days as they can cause rebound congestion. See a doctor if symptoms last more than 10 days or involve facial pain and fever."],
-["What are the symptoms of a sinus infection?","sinus,sinusitis,facial pressure","Sinusitis often brings facial pain or pressure, a blocked nose, thick discharge and reduced smell. Most cases are viral and clear in about 10 days. See a doctor if severe, lasting longer, or worsening after improving."],
-["What are common allergy symptoms?","allergy symptoms,allergic,allergies","Allergies can cause sneezing, itchy eyes, runny nose, rash, hives or itchy skin. Avoiding triggers and antihistamines can help. Swelling of lips or throat, or trouble breathing, is an emergency."],
-["How can I manage hay fever?","hay fever,pollen,seasonal allergy","Check pollen forecasts, keep windows closed on high days, shower after being outside, wash bedding often and use antihistamine or nasal sprays as advised by a pharmacist or doctor."],
-["Why am I always tired?","always tired,fatigue,exhausted,no energy,tiredness","Fatigue can come from poor sleep, stress, low iron, thyroid problems, depression, infections or medicines. Review sleep, diet and activity. See a doctor if it lasts weeks or comes with weight change, fever or low mood."],
-["What can cause chest pain?","chest pain,chest tightness,chest pressure","Chest pain can come from muscles, reflux, anxiety or lung problems, but can also signal a heart attack. Pressure, spreading pain, sweating or breathlessness needs emergency help right away. When unsure, get checked."],
-["Why am I short of breath?","short of breath,shortness of breath,breathless,breathing difficulty","Breathlessness can result from asthma, infections, anemia, anxiety, heart or lung disease. Sudden or severe breathlessness, blue lips or chest pain is an emergency. Ongoing breathlessness needs a medical evaluation."],
-["What causes heart palpitations?","palpitations,heart racing,fast heartbeat,pounding heart","Palpitations are often triggered by stress, caffeine, lack of sleep, alcohol, fever or exercise. See a doctor if frequent, or with fainting, chest pain or breathlessness, since some rhythm problems need treatment."],
-["What helps with nausea?","nausea,feel sick,queasy","Sip clear fluids slowly, eat small bland snacks like crackers, try ginger, get fresh air and avoid strong smells. See a doctor if nausea lasts more than a couple of days or comes with severe pain."],
-["What should I do if I am vomiting?","vomiting,throwing up,being sick","Rest the stomach for an hour, then sip small amounts of water or oral rehydration solution. Reintroduce bland food slowly. Seek care for blood in vomit, severe pain, signs of dehydration or vomiting beyond 24 hours."],
-["What are the signs of dehydration?","dehydration,dehydrated,dry mouth thirsty","Signs include thirst, dark urine, dry mouth, headache, dizziness and fatigue. Drink fluids steadily. Severe signs like confusion, fainting, very little urine or a rapid heartbeat need urgent care."],
-["How do I treat diarrhea?","diarrhea,diarrhoea,loose stool,watery stool","Replace fluids with water and oral rehydration solution, eat bland foods and rest. See a doctor if it lasts over 2 days, or with blood, high fever, severe pain or signs of dehydration."],
-["How can I relieve constipation?","constipation,hard stool,cannot poop,difficulty passing stool","Eat more fiber, drink water, move daily and do not ignore the urge to go. Short-term laxatives can help if advised. See a doctor for blood in stool, severe pain or a lasting change in bowel habits."],
-["What causes stomach pain?","stomach pain,stomachache,stomach ache,abdominal pain,belly pain","Stomach pain can be from gas, indigestion, constipation, infections or food reactions. Sudden severe pain, fever, repeated vomiting, a rigid belly or blood in stool needs urgent assessment."],
-["What is heartburn and how do I treat it?","heartburn,burning chest after eating","Heartburn is a burning feeling behind the breastbone from stomach acid. Smaller meals, avoiding late eating, trigger foods and alcohol help, and antacids give short relief. See a doctor if frequent or with trouble swallowing."],
-["Why do I feel bloated?","bloating,bloated,swollen belly","Bloating often comes from gas, eating fast, carbonated drinks, constipation, or food intolerances. Slow eating, walking and noting trigger foods help. Persistent bloating with weight loss or pain should be checked."],
-["What causes lower back pain?","back pain,lower back,backache","Most back pain comes from muscle strain or posture and improves within weeks. Stay gently active, avoid long bed rest and use heat. Seek urgent care for numbness in the groin, leg weakness or loss of bladder control."],
-["How can I relieve neck pain?","neck pain,stiff neck,neck ache","Gentle stretching, heat, good posture, a supportive pillow and breaks from screens help. See a doctor if pain follows an injury, spreads with numbness or weakness, or comes with fever and severe headache."],
-["What causes joint pain?","joint pain,achy joints,joints hurt","Joint pain can come from overuse, injury, osteoarthritis, inflammatory arthritis, gout or infection. Rest, ice or heat help short term. See a doctor if a joint is hot, swollen, or pain lasts more than a few weeks."],
-["What causes muscle cramps?","muscle cramps,cramp,muscle spasm","Cramps often follow exercise, dehydration, low electrolytes or muscle fatigue. Stretch gently, massage and drink fluids. Frequent cramps or cramps with weakness should be reviewed by a doctor."],
-["Why are my ankles swollen?","swollen ankles,swollen feet,ankle swelling,edema,oedema","Swelling can come from standing long, heat, pregnancy, injury or medicines, but also from heart, kidney, liver or vein problems. Raise your legs. See a doctor if it is sudden, one-sided, painful or with breathlessness."],
-["What causes numbness and tingling?","numbness,tingling,pins and needles","Tingling often comes from pressure on a nerve, such as sitting awkwardly. Persistent numbness can relate to diabetes, vitamin B12 deficiency or nerve compression. Sudden numbness with weakness or speech trouble is an emergency."],
-["Why did I faint?","faint,fainting,passed out,blackout","Fainting often follows dehydration, standing up fast, heat, pain or emotional stress. Lie down with legs raised. Any fainting needs medical review if it is with chest pain, palpitations, injury or happens without warning."],
-["What causes night sweats?","night sweats,sweating at night,wake up sweating","Causes include a hot room, menopause, infections, anxiety and some medicines. Persistent drenching sweats with fever or weight loss should be checked by a doctor."],
-["Why am I losing weight without trying?","unexplained weight loss,losing weight without trying,weight loss unintentional","Unintended weight loss can be linked to thyroid problems, diabetes, digestive conditions, depression, infections or cancer. Losing 5% of body weight over 6 to 12 months deserves a doctor visit."],
-["Why have I lost my appetite?","loss of appetite,no appetite,not hungry,not eating","A short loss of appetite is common with infections, stress or medicines. Eat small, nutritious snacks and drink fluids. See a doctor if it lasts more than 2 weeks or comes with weight loss."],
-["Why do I urinate so often?","frequent urination,urinating often,pee a lot,peeing a lot","Frequent urination can come from drinking more, caffeine, urinary infections, diabetes, pregnancy or prostate problems. See a doctor if it is new, with thirst, pain, burning or blood."],
-["What are signs of a urinary tract infection?","uti,urinary tract infection,burning urination,painful urination,burning when i pee","UTIs cause burning when urinating, urgency, frequent small amounts, cloudy or smelly urine and lower belly discomfort. A doctor can test and treat. Fever, back pain or vomiting need prompt care."],
-["What does blood in urine mean?","blood in urine,bloody urine,red urine,pink urine","Blood in urine can be from infection, kidney stones, medicines or more serious conditions. It should always be checked by a doctor, even if it only happens once."],
-["Why are my lymph nodes swollen?","swollen lymph nodes,swollen glands,lump in neck","Lymph nodes usually swell during infections like colds or sore throats and settle in 2 to 3 weeks. See a doctor for hard, fixed or growing nodes, or ones lasting over 3 weeks, especially with fever or weight loss."],
-["Why do I have chills?","chills,shivering,shaking cold","Chills often come with fever or infection as the body tries to warm up. Rest, fluids and a light blanket help. Shaking chills with high fever, confusion or fast breathing need urgent evaluation."],
-["How do I stop hiccups?","hiccups,hiccup","Try holding your breath briefly, sipping cold water slowly or swallowing a teaspoon of sugar. Hiccups usually stop on their own. See a doctor if they last more than 48 hours."],
-["What causes leg pain or calf swelling?","calf pain,leg pain,calf swelling,leg swelling","Leg pain may come from muscle strain, cramps or nerve problems. A swollen, warm, painful calf, especially on one side, may be a blood clot and needs urgent medical evaluation."],
-["Why do I get nosebleeds?","nosebleed,nose bleed,bleeding nose","Dry air, nose picking, colds and allergies commonly cause nosebleeds. Sit up, lean forward and pinch the soft part of the nose for 10 to 15 minutes. Seek care if it will not stop or happens often."],
-["Why is my vision blurry?","blurry vision,blurred vision,cannot see clearly","Blurry vision can be from tired eyes, needing glasses, dry eyes or migraines, but also diabetes or eye disease. Sudden vision loss or blurred vision with weakness or headache is an emergency."],
-["Why do I feel weak all over?","weakness,feel weak,body weakness","General weakness may come from illness, poor sleep, anemia, dehydration, low blood sugar or medicines. Sudden weakness on one side or face drooping is a stroke warning and needs emergency help."],
-["Why do I feel cold all the time?","feel cold all the time,always cold,cold hands feet","Feeling cold can relate to low iron, thyroid problems, poor circulation, low body weight or not enough sleep. See a doctor if it is persistent or comes with fatigue and other symptoms."],
-["Why do I have a sore or swollen tongue?","sore tongue,swollen tongue,tongue pain","Tongue soreness can come from burns, ulcers, infection like thrush or vitamin deficiencies. See a doctor if it lasts over 2 weeks, and urgently if swelling affects breathing."],
-["How can I tell if I have a viral or bacterial infection?","viral or bacterial,bacterial infection,viral infection,antibiotics needed","Viral infections like colds are common and do not respond to antibiotics. Bacterial infections often last longer, worsen after improving or cause localised pain and pus. A doctor can examine or test to decide."],
-["What should I do if I feel unwell and do not know why?","feel unwell,feel sick,not feeling well,something wrong","Note your symptoms, when they began and anything that makes them better or worse. Rest, hydrate and check your temperature. If symptoms are severe, getting worse or you are worried, contact a doctor."]
-];
 
-const KB_body = [
-["What is acid reflux?","acid reflux,gerd,reflux","Acid reflux happens when stomach acid flows back into the esophagus, causing heartburn or a sour taste. Smaller meals, avoiding late meals, weight management and limiting trigger foods help. Frequent reflux needs medical review."],
-["How do I treat indigestion?","indigestion,dyspepsia,upset stomach","Eat slowly, avoid heavy, fatty or spicy meals, limit alcohol and caffeine, and do not lie down right after eating. Antacids may help. See a doctor if it is frequent, or with weight loss or vomiting."],
-["Why do I have so much gas?","gas,flatulence,gassy,excessive gas","Gas builds up from swallowed air, fizzy drinks and foods like beans, onions and cabbage. Eat slowly and track trigger foods. See a doctor if it comes with severe pain, weight loss or blood in stool."],
-["What are signs of a stomach ulcer?","ulcer,stomach ulcer,peptic ulcer","Ulcers cause burning upper stomach pain, often related to meals, plus nausea or bloating. Common causes are H. pylori infection and anti-inflammatory painkillers. Black stools or vomiting blood needs urgent care."],
-["What is irritable bowel syndrome?","ibs,irritable bowel","IBS is a common gut disorder causing cramps, bloating, diarrhea or constipation without visible damage. Stress management, food diary, regular meals and sometimes dietary changes help. A doctor can rule out other conditions."],
-["What should I do for food poisoning?","food poisoning,bad food,contaminated food","Rest and sip fluids or oral rehydration solution often. Most cases settle in 1 to 3 days. Seek care for blood in stool, high fever, severe dehydration, or if you are pregnant, elderly or very young."],
-["What is stomach flu?","stomach flu,gastroenteritis,stomach bug","Stomach flu is usually a viral gut infection causing vomiting and diarrhea. Rest, fluids and handwashing are key. Dehydration is the main risk, so seek help if you cannot keep fluids down."],
-["What is lactose intolerance?","lactose intolerance,lactose,milk intolerance","Lactose intolerance means the gut cannot fully digest milk sugar, causing gas, bloating and diarrhea after dairy. Lactose-free products or lactase tablets may help. It is different from a milk allergy."],
-["What is celiac disease?","celiac,coeliac,gluten intolerance","Celiac disease is an immune reaction to gluten that damages the gut. Symptoms include diarrhea, bloating, fatigue and anemia. Get tested before starting a gluten-free diet, since testing needs gluten in your diet."],
-["What are the symptoms of gallstones?","gallstones,gallbladder,gall bladder","Gallstones may cause sudden pain in the upper right belly after fatty meals, with nausea. Fever, yellow skin or persistent severe pain needs urgent evaluation."],
-["What are the symptoms of appendicitis?","appendicitis,appendix","Appendicitis often starts with pain near the navel that moves to the lower right abdomen, with nausea, fever and loss of appetite. It is an emergency and needs prompt medical care."],
-["How do I treat hemorrhoids?","hemorrhoids,haemorrhoids,piles","Eat more fiber, drink water, avoid straining, and try warm baths and over-the-counter creams. See a doctor if bleeding is frequent, pain is severe, or symptoms do not improve in a week."],
-["What does blood in stool mean?","blood in stool,bloody stool,rectal bleeding","Bright red blood is often from hemorrhoids or small tears, but it should be checked by a doctor, especially if it recurs, with pain or changes in bowel habits."],
-["What does black stool mean?","black stool,black poop,tarry stool","Black, sticky stool can signal bleeding in the upper digestive tract, though iron tablets or some foods can darken stool. If unexplained, see a doctor urgently."],
-["What is a hernia?","hernia,bulge groin","A hernia is when tissue pushes through a weak spot in muscle, often in the groin or belly wall, causing a bulge. Many need surgery eventually. Sudden pain, vomiting or a hard tender bulge is an emergency."],
-["What is fatty liver disease?","fatty liver,liver fat,nafld","Fatty liver means extra fat in the liver, often linked to excess weight, diabetes and diet. Weight loss, exercise, less sugar and alcohol can improve it. A doctor can check liver tests and scarring risk."],
-["What is hepatitis?","hepatitis,hepatitis a,hepatitis b,hepatitis c,liver inflammation","Hepatitis is liver inflammation, most often from viruses (A, B, C), alcohol or medicines. Symptoms can include yellow skin, dark urine and fatigue. Vaccines exist for A and B; see a doctor for testing."],
-["What are the symptoms of kidney stones?","kidney stones,kidney stone,renal colic","Kidney stones typically cause severe pain in the side or back that comes in waves, sometimes with nausea and blood in urine. Fever, vomiting or inability to pass urine needs urgent care. Drinking water helps prevention."],
-["What are signs of kidney problems?","kidney disease,kidney problems,kidney failure,kidney function","Early kidney disease may have no symptoms. Later signs include swelling, tiredness, foamy urine and changes in urination. Blood and urine tests detect it; diabetes and high blood pressure raise risk."],
-["How can I prevent urinary tract infections?","prevent uti,prevent urinary infection,recurrent uti","Drink enough water, urinate when needed, wipe front to back, urinate after sex and avoid irritating products. If infections keep returning, see a doctor for further assessment."],
-["What is an enlarged prostate?","enlarged prostate,bph,prostate","Benign prostate enlargement is common with age and causes weak stream, frequent urination and nighttime trips. It is not cancer, but a doctor should assess symptoms and check the prostate."],
-["What is sciatica?","sciatica,sciatic nerve,leg shooting pain","Sciatica is pain running from the lower back down a leg due to a pinched nerve. Gentle movement, heat and stretching help. Leg weakness or bladder or bowel changes need urgent care."],
-["What is a slipped disc?","slipped disc,herniated disc,disc prolapse","A slipped disc occurs when disc material presses on nearby nerves, causing back or leg pain, numbness or weakness. Most improve with time, movement and physio. Severe weakness or bladder trouble needs urgent care."],
-["What are the types of arthritis?","arthritis,types of arthritis,arthritic","Arthritis means joint inflammation. Common types include osteoarthritis from wear and tear, rheumatoid arthritis from the immune system, and gout from uric acid. Diagnosis guides the right treatment."],
-["What is osteoarthritis?","osteoarthritis,wear and tear arthritis","Osteoarthritis is gradual joint cartilage wear causing pain and stiffness, usually in knees, hips and hands. Staying active, weight control, strengthening exercises and pain relief help."],
-["What is rheumatoid arthritis?","rheumatoid,ra arthritis,morning stiffness","Rheumatoid arthritis is an autoimmune disease causing swollen, stiff, painful joints, often worst in the morning and on both sides of the body. Early treatment prevents damage, so see a doctor."],
-["What is gout?","gout,uric acid,big toe pain","Gout is a painful arthritis caused by uric acid crystals, often starting in the big toe with redness and swelling. Fluids, limiting alcohol and certain meats help. A doctor can prescribe treatment."],
-["What is osteoporosis?","osteoporosis,brittle bones,bone density,weak bones","Osteoporosis weakens bones and raises fracture risk. Calcium, vitamin D, weight-bearing exercise, not smoking and limiting alcohol protect bones. A bone density scan can assess risk."],
-["What is the difference between a sprain and a strain?","sprain,strain,sprained ankle,pulled muscle","A sprain is an injured ligament (joint) and a strain is an injured muscle or tendon. Rest, ice, compression and elevation help early. See a doctor if you cannot bear weight or the joint looks deformed."],
-["What is tendonitis?","tendonitis,tendinitis,tendon pain","Tendonitis is irritation of a tendon from overuse, causing pain with movement. Rest, ice, gradual strengthening and technique changes help. Persistent pain needs a doctor or physiotherapist."],
-["What is carpal tunnel syndrome?","carpal tunnel,wrist numbness,hand tingling","Carpal tunnel compresses a nerve in the wrist, causing tingling or numbness in the thumb and fingers, often at night. Wrist splints, breaks and ergonomics help. Persistent cases need medical review."],
-["What is frozen shoulder?","frozen shoulder,shoulder stiffness,shoulder pain","Frozen shoulder causes pain and stiffness that limit movement, often lasting months. Gentle stretching and physiotherapy help. See a doctor for ongoing shoulder pain."],
-["What causes knee pain?","knee pain,knees hurt,sore knee","Knee pain can come from overuse, arthritis, ligament or meniscus injury. Rest, ice, supportive footwear and strengthening may help. Swelling, locking or inability to bear weight needs evaluation."],
-["What is plantar fasciitis?","plantar fasciitis,heel pain,foot arch pain","Plantar fasciitis causes heel pain, worst with first steps in the morning. Stretching, supportive shoes, rest and calf strengthening help. See a doctor if pain lasts more than a few weeks."],
-["What are shin splints?","shin splints,shin pain,front leg pain running","Shin splints cause pain along the front of the lower leg from running or sudden activity increases. Rest, ice, proper shoes and gradual training help. Pain at rest may suggest a stress fracture."],
-["What is fibromyalgia?","fibromyalgia,widespread pain","Fibromyalgia causes widespread muscle pain, fatigue and sleep problems. Gentle regular exercise, sleep care and stress management help, and a doctor can guide treatment."],
-["What is restless legs syndrome?","restless legs,legs cannot stay still,leg urge to move","Restless legs cause an urge to move the legs, especially in the evening. Iron deficiency, pregnancy and some medicines can contribute. Exercise, routine and caffeine reduction help; see a doctor if it disturbs sleep."],
-["What are varicose veins?","varicose veins,spider veins,enlarged veins","Varicose veins are swollen, twisted veins, usually in the legs. Movement, leg elevation and compression stockings help. See a doctor for pain, skin changes, bleeding or sores."],
-["What are the signs of a blood clot in the leg?","blood clot,dvt,deep vein thrombosis","A leg clot can cause swelling, warmth, redness and pain, usually in one leg. If you also have chest pain or breathlessness, a clot may have reached the lungs, which is an emergency."],
-["What is anemia?","anemia,anaemia,low hemoglobin,low haemoglobin","Anemia means too few healthy red blood cells, causing tiredness, paleness and breathlessness. Causes include low iron, B12 or folate, or blood loss. A blood test finds the cause and guides treatment."],
-["What are signs of iron deficiency?","iron deficiency,low iron,low ferritin","Signs include fatigue, pale skin, brittle nails, hair loss, restless legs and breathlessness. A blood test confirms it. Iron-rich foods help, and a doctor can advise on supplements."],
-["What are signs of vitamin B12 deficiency?","b12 deficiency,vitamin b12,low b12","Low B12 can cause tiredness, tingling, memory problems, a sore tongue and anemia. It is more common in vegans and older adults. A blood test confirms it and treatment is available."],
-["What are signs of vitamin D deficiency?","vitamin d deficiency,low vitamin d,vitamin d","Low vitamin D may cause bone pain, muscle weakness and tiredness, though often there are no symptoms. Safe sun exposure and foods help; a blood test and a doctor can advise on supplements."],
-["Why do I feel dizzy when I stand up?","dizzy when standing,orthostatic,standing up dizzy,low blood pressure","Standing quickly can cause a brief blood pressure drop. Stand up slowly, drink fluids and avoid long standing in heat. Frequent episodes or fainting should be checked by a doctor."],
-["What causes vertigo?","vertigo,spinning,room spinning","Vertigo is a spinning feeling, often from inner-ear issues such as BPPV. Move slowly, avoid sudden head movements and sit during an episode. Seek urgent care if it comes with weakness, speech or vision changes."],
-["Why do I bruise easily?","bruise easily,easy bruising,bruises","Easy bruising can come from age, sun-damaged skin, medicines like blood thinners or low platelets. See a doctor if bruises are large, unexplained or you bleed easily."],
-["Why are my hands and feet always cold?","cold hands,cold feet,poor circulation","Cold extremities may come from poor circulation, low iron, thyroid issues or Raynaud's. Keep warm, avoid smoking and see a doctor if fingers turn white or blue, or you have sores."],
-["Why are my muscles sore after exercise?","muscle soreness,doms,sore after workout","Delayed muscle soreness peaks 1 to 2 days after unfamiliar exercise. Gentle movement, hydration, sleep and protein help recovery. See a doctor for severe pain, dark urine or marked swelling."],
-["Why do I get leg cramps at night?","night cramps,leg cramps at night,calf cramps night","Night cramps are common and can relate to muscle fatigue, dehydration, certain medicines or aging. Stretch the calf, stay hydrated and move regularly. Frequent cramps need a doctor's review."],
-["What is the difference between a stress fracture and a sprain?","stress fracture,bone pain running","Stress fractures are small bone cracks from repetitive load and usually cause focal bone pain that worsens with activity. A sprain affects ligaments. Persistent focal pain needs imaging by a doctor."],
-["What is a pinched nerve?","pinched nerve,trapped nerve","A pinched nerve causes pain, tingling or weakness where a nerve is compressed. Rest, posture changes and gentle stretching help. See a doctor if symptoms are persistent or worsening."],
-["What causes foot pain?","foot pain,sore feet,feet hurt","Foot pain commonly comes from ill-fitting shoes, plantar fasciitis, arthritis or overuse. Supportive footwear, rest and stretching help. Persistent or swollen, red feet need a doctor's check."],
-["What are the signs of a hip problem?","hip pain,hip hurts,groin pain","Hip or groin pain may come from arthritis, muscle strain or bursitis. Pain with walking, stiffness or limping should be assessed, especially after a fall."],
-["What is a muscle knot and how do I treat it?","muscle knot,trigger point,tight muscle","Muscle knots are tight, tender spots from stress or overuse. Heat, gentle stretching, massage and movement breaks help. See a doctor if the pain persists or spreads."],
-["What causes swelling in the face or lips?","face swelling,lip swelling,swollen face","Face or lip swelling can come from allergy, infection or dental problems. Swelling with trouble breathing, a tight throat or hives needs emergency help right away."]
-];
+/* ===== Knowledge base =====
+   <<< اینجا ۹ آرایه‌ی KB_symptoms, KB_body, KB_chronic, KB_nutrition,
+   KB_lifestyle, KB_womenkids, KB_skinsenses, KB_firstaid, KB_prevention
+   را از فایل اصلی خودتان عیناً کپی کنید >>>
+*/
 
-const KB_chronic = [
-["What is diabetes?","diabetes,type 1 diabetes,type 2 diabetes","Diabetes means blood sugar stays too high because the body lacks insulin (type 1) or cannot use it well (type 2). Healthy eating, activity, weight control and medicines when needed manage it. Regular check-ups prevent complications."],
-["What are the symptoms of diabetes?","diabetes symptoms,signs of diabetes,excessive thirst","Common signs are increased thirst, frequent urination, tiredness, blurred vision, slow-healing wounds and weight loss. A simple blood test can check for it, so see a doctor if you notice these."],
-["What is prediabetes?","prediabetes,pre diabetes,borderline diabetes","Prediabetes means blood sugar is higher than normal but not yet diabetes. Weight loss, regular exercise and a healthier diet can often prevent or delay type 2 diabetes. Ask your doctor about testing."],
-["What is a normal blood sugar level?","normal blood sugar,blood sugar level,normal glucose","Fasting blood sugar is usually about 70 to 99 mg/dL (3.9 to 5.5 mmol/L). 100 to 125 suggests prediabetes and 126 or more on repeated tests suggests diabetes. A doctor should interpret your results."],
-["What should I do for low blood sugar?","low blood sugar,hypoglycemia,hypoglycaemia,sugar low","If you can swallow safely, take about 15 g of fast sugar such as juice or glucose tablets, recheck in 15 minutes, then eat a snack. If the person is confused or unconscious, call emergency services."],
-["How can I lower my blood sugar naturally?","lower blood sugar,reduce blood sugar,control blood sugar","Eat more fiber and whole foods, cut sugary drinks, stay active after meals, sleep well and manage weight. If you take diabetes medicine, ask your doctor before changing anything."],
-["What is high blood pressure?","high blood pressure,hypertension,high bp","High blood pressure often has no symptoms but raises the risk of heart attack and stroke. Less salt, weight control, activity, limited alcohol and medicines when advised control it. Get it measured regularly."],
-["What is a normal blood pressure?","normal blood pressure,blood pressure range,bp reading,normal bp","About 120/80 mmHg is considered normal. Readings of 130/80 or higher are elevated by US guidelines, and 140/90 or higher is high by many European ones. A doctor should confirm with repeated measurements."],
-["How can I lower my blood pressure naturally?","lower blood pressure,reduce blood pressure,lower bp","Cut salt, eat more fruit, vegetables and whole grains, exercise regularly, keep a healthy weight, limit alcohol, stop smoking and manage stress. Do not stop prescribed medicines without medical advice."],
-["What is high cholesterol?","high cholesterol,cholesterol,ldl","High LDL cholesterol builds up in arteries and raises heart disease risk, usually without symptoms. A blood test checks it. Diet, exercise and sometimes medicines help."],
-["How can I lower my cholesterol?","lower cholesterol,reduce cholesterol,cholesterol diet","Eat more fiber, vegetables, nuts, fish and olive oil; limit saturated and trans fats; stay active and maintain a healthy weight. A doctor may add medicines if your risk is high."],
-["What are the signs of a heart attack?","heart attack,heart attack signs,myocardial infarction","Warning signs include chest pressure or pain, spreading to the arm, jaw or back, sweating, nausea and breathlessness. Women may have milder or atypical signs. Call emergency services immediately."],
-["What are the signs of a stroke?","stroke signs,signs of stroke,fast stroke,stroke symptoms","Think FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services. Other signs are sudden vision loss, severe headache or loss of balance. Every minute matters."],
-["What is heart failure?","heart failure,weak heart,congestive heart","Heart failure means the heart does not pump as well as it should, causing breathlessness, swelling and fatigue. It is managed with medicines, lifestyle changes and regular follow-up with a doctor."],
-["What is atrial fibrillation?","atrial fibrillation,afib,irregular heartbeat,irregular pulse","Atrial fibrillation is an irregular, often fast heart rhythm that raises stroke risk. Symptoms include palpitations and tiredness. A doctor can diagnose it with an ECG and recommend treatment."],
-["What is coronary artery disease?","coronary artery disease,heart disease,clogged arteries,angina","Coronary artery disease occurs when heart arteries narrow from plaque, causing chest pain with effort or heart attacks. Prevention includes not smoking, healthy diet, activity and controlling blood pressure and cholesterol."],
-["What is asthma?","asthma,wheezing,wheeze","Asthma is a long-term airway condition causing wheeze, cough, chest tightness and breathlessness. Reliever and preventer inhalers, trigger avoidance and an action plan from your doctor control it."],
-["What should I do during an asthma attack?","asthma attack,asthma emergency,inhaler not working","Sit upright, stay calm and use your reliever inhaler as prescribed. If it does not help quickly, breathing is very hard or lips look blue, call emergency services."],
-["What is COPD?","copd,emphysema,chronic bronchitis","COPD is a long-term lung disease, usually from smoking, causing breathlessness and chronic cough. Stopping smoking, inhalers, vaccines and pulmonary rehab slow its impact. See a doctor for persistent breathlessness."],
-["What is the difference between pneumonia and bronchitis?","pneumonia,bronchitis,chest infection","Bronchitis inflames the airways, usually from a virus, and often settles by itself. Pneumonia infects the lung tissue and brings fever, chest pain and breathlessness. A doctor can tell them apart."],
-["What is sleep apnea?","sleep apnea,sleep apnoea,stop breathing sleep","Sleep apnea means breathing repeatedly pauses during sleep, causing loud snoring, gasping and daytime sleepiness. It raises heart disease risk, so see a doctor for a sleep study."],
-["What is hypothyroidism?","hypothyroidism,underactive thyroid,low thyroid","An underactive thyroid causes tiredness, weight gain, feeling cold, dry skin and low mood. A blood test diagnoses it and daily thyroid hormone tablets treat it effectively."],
-["What is hyperthyroidism?","hyperthyroidism,overactive thyroid,thyroid","An overactive thyroid can cause weight loss, rapid heartbeat, anxiety, sweating and tremor. Blood tests confirm it and treatment is available, so see a doctor."],
-["What is PCOS?","pcos,polycystic ovary,polycystic ovaries","PCOS is a hormonal condition causing irregular periods, excess hair growth, acne and sometimes fertility problems. Healthy weight, activity and medicines can help. See a doctor for diagnosis."],
-["How can I prevent migraines?","prevent migraine,migraine triggers,migraine prevention","Keep regular sleep and meals, stay hydrated, manage stress and track triggers such as certain foods or alcohol. If you have frequent attacks, a doctor can discuss preventive treatment."],
-["What is Parkinson's disease?","parkinson,parkinsons,tremor","Parkinson's affects movement, causing tremor, stiffness and slowness. It develops gradually and treatments can ease symptoms. See a doctor if you notice tremor or movement changes."],
-["What is Alzheimer's disease?","alzheimer,alzheimers,alzheimer's","Alzheimer's is the most common cause of dementia, causing progressive memory loss and confusion. Early assessment helps with planning and support. Healthy habits may lower risk."],
-["What is the difference between dementia and normal forgetting?","dementia,forgetfulness,memory loss,forgetting","Occasional forgetfulness is normal with age. Dementia affects daily life, such as getting lost in familiar places or repeating questions. A doctor can assess memory problems."],
-["What is multiple sclerosis?","multiple sclerosis,ms disease","Multiple sclerosis is an immune condition affecting the nerves, causing numbness, vision problems, weakness and fatigue. Treatments can reduce relapses. Diagnosis needs a neurologist."],
-["What is lupus?","lupus,sle","Lupus is an autoimmune disease causing joint pain, fatigue, rashes and sometimes organ inflammation. Treatment is individual and needs specialist follow-up."],
-["What are the warning signs of cancer?","cancer signs,cancer symptoms,warning signs cancer","Possible warning signs include an unexplained lump, persistent cough, blood in urine or stool, unexplained weight loss, a changing mole or sores that do not heal. These have many causes, so get them checked."],
-["How can I reduce my risk of cancer?","reduce cancer risk,prevent cancer,cancer prevention","Avoid smoking, limit alcohol, eat plenty of plants, stay active, protect skin from the sun, keep a healthy weight, get vaccines like HPV and hepatitis B, and attend recommended screenings."],
-["What is tuberculosis?","tuberculosis,tb","TB is a bacterial infection mainly of the lungs, causing a long cough, fever, night sweats and weight loss. It is curable with a full course of antibiotics. See a doctor if symptoms persist."],
-["What is HIV?","hiv,aids","HIV is a virus that weakens the immune system. It is spread through blood, sex and from mother to baby. Testing is simple, and modern treatment lets people live long, healthy lives and prevents transmission."],
-["What are the symptoms of COVID-19?","covid,covid-19,coronavirus,covid symptoms","COVID-19 can cause fever, cough, sore throat, tiredness, aches and loss of taste or smell, or can be mild. Rest and test if suspected. Seek care for breathing difficulty or if you are high risk."],
-["What is long COVID?","long covid,post covid,covid fatigue","Long COVID means symptoms such as fatigue, breathlessness or brain fog lasting weeks to months after infection. Pacing activity and speaking to a doctor can help."],
-["What is chronic kidney disease?","chronic kidney disease,ckd","CKD is gradual loss of kidney function, often from diabetes or high blood pressure. Blood and urine tests detect it. Controlling blood pressure and sugar slows progression."],
-["What health risks come with obesity?","obesity,overweight risks,obese","Obesity raises the risk of type 2 diabetes, high blood pressure, heart disease, sleep apnea, joint problems and some cancers. Even a 5 to 10% weight loss brings benefits."],
-["What is metabolic syndrome?","metabolic syndrome,insulin resistance","Metabolic syndrome is a cluster of belly fat, high blood pressure, high blood sugar and abnormal cholesterol that raises heart and diabetes risk. Lifestyle changes help reverse it."],
-["What is cirrhosis?","cirrhosis,liver scarring,liver disease","Cirrhosis is advanced liver scarring from causes like alcohol, hepatitis or fatty liver. Early signs may be subtle. Avoiding alcohol and treating the cause slows damage."],
-["What is Crohn's disease?","crohn,crohns,crohn's,inflammatory bowel","Crohn's is a chronic inflammatory bowel disease causing abdominal pain, diarrhea, weight loss and fatigue. It needs specialist care and treatment to control inflammation."],
-["What is ulcerative colitis?","ulcerative colitis,colitis","Ulcerative colitis is long-term inflammation of the colon causing bloody diarrhea, urgency and cramps. A doctor can diagnose it with tests and offer treatments."],
-["How do I manage chronic pain?","chronic pain,long term pain,persistent pain","Chronic pain is often best managed with a mix of gentle activity, sleep, stress management, physiotherapy and medicines as advised. Talk to your doctor about a plan."],
-["What are high triglycerides?","triglycerides,high triglycerides","High triglycerides are blood fats that rise with sugar, alcohol, excess weight and diabetes. Cutting sugar and alcohol, exercising and losing weight help; a doctor may add medicines."],
-["What is a heart murmur?","heart murmur,murmur","A heart murmur is an extra sound heard during the heartbeat. Many are harmless, especially in children, but some signal valve problems. A doctor may order an echocardiogram."],
-["What is HbA1c?","hba1c,a1c,glycated hemoglobin","HbA1c is a blood test showing average blood sugar over about 3 months. Below 5.7% is normal, 5.7 to 6.4% suggests prediabetes and 6.5% or higher suggests diabetes. Your doctor sets personal targets."],
-["What is a hypertensive crisis?","hypertensive crisis,very high blood pressure,blood pressure 180","A reading of 180/120 or higher is a hypertensive crisis. If you have chest pain, breathlessness, severe headache, weakness or vision changes, call emergency services. Otherwise rest and retest."],
-["What is epilepsy?","epilepsy,seizures,seizure disorder","Epilepsy is a condition with recurring seizures caused by abnormal brain activity. Medicines control seizures in most people. During a seizure, protect the person from injury and call emergency help if it lasts over 5 minutes."],
-["What is a stroke and how can I prevent it?","prevent stroke,stroke risk,stroke prevention","Stroke happens when blood flow to the brain is blocked or a vessel bursts. Controlling blood pressure, not smoking, healthy diet, exercise and treating irregular heart rhythm reduce risk."],
-["What is a blood clot?","what is blood clot,clotting,thrombosis","A blood clot is a clump of blood that can block circulation. Risk rises with immobility, surgery, long travel, smoking and some medicines. Sudden swelling, chest pain or breathlessness needs urgent care."],
-["What is inflammation?","inflammation,inflamed,inflammatory","Inflammation is the body's response to injury or infection, causing redness, heat, swelling and pain. Short-term inflammation is helpful; chronic inflammation is linked with many diseases and should be evaluated."],
-["What is an autoimmune disease?","autoimmune,immune system attacks","Autoimmune diseases occur when the immune system attacks healthy tissue. Examples include type 1 diabetes, lupus and rheumatoid arthritis. Diagnosis involves blood tests and specialist care."],
-["How is high blood pressure diagnosed?","diagnose hypertension,measure blood pressure,blood pressure test","Diagnosis uses repeated readings, ideally at home or with 24-hour monitoring. Sit quietly for 5 minutes, back supported and arm at heart level. A doctor interprets the results."],
-["What is an ECG?","ecg,ekg,electrocardiogram","An ECG is a quick painless test recording the heart's electrical activity. It helps detect rhythm problems, heart strain or past heart attacks."]
-];
+const knowledge = [KB_symptoms, KB_body, KB_chronic, KB_nutrition, KB_lifestyle, KB_womenkids, KB_skinsenses, KB_firstaid, KB_prevention]
+  .flat()
+  .map(([question, keywords, answer], index) => ({
+    id: index,
+    question,
+    keywords: keywords.split(",").map((k) => k.trim()).filter(Boolean),
+    answer
+  }));
 
-const KB_nutrition = [
-["What is a healthy diet?","healthy diet,healthy eating,eat healthy,balanced diet","A healthy diet focuses on vegetables, fruit, whole grains, legumes, nuts, fish or lean protein and healthy oils, while limiting sugary drinks, processed meats and ultra-processed foods."],
-["How much water should I drink a day?","how much water,water intake,drink water,hydration","Needs vary, but around 1.5 to 2 liters from fluids is common. Pale yellow urine is a good sign. You may need more in heat, illness or exercise."],
-["How much protein do I need?","protein intake,how much protein,protein needs","Most adults need about 0.8 g of protein per kg of body weight daily; active people and older adults may need more. Include beans, eggs, dairy, fish, poultry, tofu or nuts."],
-["What is a healthy breakfast?","healthy breakfast,breakfast ideas,breakfast","Good options include oats with fruit, eggs with whole-grain toast, yogurt with nuts or a vegetable omelet. Aim for protein, fiber and limited added sugar."],
-["Is skipping breakfast bad?","skip breakfast,is breakfast important,breakfast necessary","Breakfast is not essential for everyone. What matters is total diet quality and energy through the day. If skipping leads to overeating or low energy, eating earlier may suit you better."],
-["Is intermittent fasting healthy?","intermittent fasting,fasting,16:8","Intermittent fasting can help some people manage weight, but it is not better than other approaches for everyone. Avoid it in pregnancy, eating disorders or with diabetes medicine unless a doctor agrees."],
-["Is the keto diet safe?","keto,ketogenic,low carb diet","A keto diet is very low in carbs and may aid short-term weight loss but can cause side effects and nutrient gaps. Speak to a doctor first if you have diabetes, kidney or liver disease or are pregnant."],
-["What is the Mediterranean diet?","mediterranean diet,mediterranean","The Mediterranean diet centers on vegetables, fruit, whole grains, legumes, olive oil, nuts and fish with little red meat. It is linked to better heart health and longevity."],
-["Is a vegetarian diet healthy?","vegetarian,vegetarian diet,plant based","A well-planned vegetarian diet can be very healthy. Make sure you get enough protein, iron, calcium, zinc, iodine and vitamin B12 from foods or supplements."],
-["Do vegans need supplements?","vegan,vegan diet,vegan supplements","Vegans need a reliable vitamin B12 source, and often vitamin D, and should pay attention to iron, calcium, iodine and omega-3. A dietitian can help plan."],
-["Are carbohydrates bad for me?","carbs,carbohydrates,are carbs bad","Carbs are not bad. Whole grains, fruit, beans and vegetables are healthy sources, while sugary drinks and refined snacks should be limited."],
-["How much sugar is too much?","sugar intake,too much sugar,added sugar,sugar","The WHO suggests keeping added sugars below 10% of daily calories, ideally under 5%. Sugary drinks and sweets are the biggest sources."],
-["Are artificial sweeteners safe?","artificial sweeteners,sweetener,diet soda,aspartame","Approved sweeteners are considered safe in normal amounts. They can help cut sugar, but water, tea or coffee without sugar is a better habit overall."],
-["How much salt is healthy?","salt intake,too much salt,sodium,salt","The WHO recommends less than 5 g of salt (about a teaspoon) per day. Most salt comes from processed foods, bread and sauces, so check labels."],
-["Which fats are healthy?","healthy fats,good fats,unsaturated fat,saturated fat","Unsaturated fats from olive oil, nuts, seeds, avocado and fish are healthier choices. Limit saturated fats from fatty meats and butter, and avoid trans fats."],
-["What are omega-3 fatty acids?","omega 3,omega-3,fish oil","Omega-3s are healthy fats found in oily fish, flaxseed, chia and walnuts. They support heart and brain health. Aim for oily fish about twice a week."],
-["Why is fiber important?","fiber,fibre,dietary fiber","Fiber supports digestion, helps control cholesterol and blood sugar and keeps you full. Good sources are whole grains, legumes, vegetables, fruit, nuts and seeds. Increase it gradually with water."],
-["Are probiotics useful?","probiotics,probiotic,gut bacteria,gut health","Probiotics may help in some situations such as after antibiotics, but benefits vary by strain. Fermented foods and a high-fiber diet also support gut health."],
-["Do I need a multivitamin?","multivitamin,do i need vitamins,vitamin pills","Most people eating a varied diet do not need a multivitamin. Some groups benefit from specific supplements, such as folic acid in pregnancy or B12 for vegans. Ask a doctor or pharmacist."],
-["Are supplements safe?","supplements safe,dietary supplements,herbal supplements","Supplements are not risk-free. They can interact with medicines and some are poorly regulated. Choose reputable brands, avoid high doses and tell your doctor what you take."],
-["Is caffeine bad for me?","caffeine,too much caffeine,caffeine intake","For most adults, up to about 400 mg of caffeine a day (around 4 cups of coffee) is considered safe. Too much can cause jitters, poor sleep and palpitations. Pregnant women should limit to about 200 mg."],
-["Is coffee good or bad for health?","coffee,coffee health,drinking coffee","Moderate coffee is generally safe and may have some health benefits. Limit sugar and cream, and cut back if it affects sleep, anxiety or reflux."],
-["Is tea healthy?","tea,green tea,herbal tea","Tea, especially green and black, contains antioxidants and counts toward hydration. Herbal teas are generally fine, but check with a doctor if pregnant or on medicines."],
-["Are energy drinks bad for me?","energy drinks,energy drink","Energy drinks have high caffeine and sugar and can raise heart rate and blood pressure. They are not recommended for children, teens or pregnant women."],
-["How does alcohol affect my health?","alcohol,drinking alcohol,alcohol health,how much alcohol","No level of alcohol is completely risk-free. It raises the risk of liver disease, cancer, high blood pressure and accidents. Many guidelines advise limits and alcohol-free days; less is better."],
-["How can I lose weight safely?","lose weight,weight loss,how to lose weight,slim down","Aim for gradual loss of about 0.5 to 1 kg per week with balanced meals, smaller portions, fewer sugary and ultra-processed foods, regular activity and good sleep. Avoid crash diets."],
-["How many calories do I need a day?","calories,how many calories,calorie needs","Typical needs are about 1,600 to 2,400 for women and 2,000 to 3,000 for men, depending on age, size and activity. A dietitian can calculate your personal target."],
-["What is BMI?","bmi,body mass index,healthy weight","BMI compares weight to height. 18.5 to 24.9 is considered healthy for most adults. It does not show body fat distribution, so waist size and overall health matter too."],
-["How do I lose belly fat?","belly fat,lose belly fat,stomach fat,abdominal fat","You cannot target fat from one area. A calorie deficit, protein, fiber, less sugar and alcohol, strength and cardio exercise, and good sleep reduce overall and belly fat."],
-["How can I speed up my metabolism?","metabolism,slow metabolism,boost metabolism","Metabolism is mostly set by body size, muscle and age. Building muscle, eating enough protein, staying active and sleeping well help. Be cautious of products promising quick boosts."],
-["How can I gain weight healthily?","gain weight,weight gain,underweight,build weight","Eat regular, energy-dense meals and snacks such as nuts, dairy, whole grains and healthy oils, add strength training and consider a doctor review if you are unintentionally underweight."],
-["What are healthy snacks?","healthy snacks,snack ideas,snacking","Good snacks include fruit, nuts, yogurt, hummus with vegetables, boiled eggs or whole-grain crackers. Aim for protein and fiber to stay full."],
-["Is eating late at night bad?","eating at night,late night eating,midnight snack","Late heavy meals can worsen reflux and sleep. Total daily intake and food quality matter more. Try finishing dinner 2 to 3 hours before bed."],
-["Is fast food bad for health?","fast food,junk food,takeaway","Frequent fast food is high in salt, saturated fat, sugar and calories. Occasionally is fine. Choose grilled options, smaller portions and water instead of sugary drinks."],
-["What are ultra-processed foods?","processed food,ultra processed,ultra-processed","Ultra-processed foods are industrial products with additives, such as sugary cereals, chips and instant meals. Regularly eating a lot of them is linked to weight gain and chronic disease."],
-["Is organic food healthier?","organic food,organic,is organic better","Organic food may have fewer pesticide residues, but evidence for major nutrition differences is limited. Eating plenty of fruit and vegetables matters more than whether they are organic."],
-["Should I go gluten-free?","gluten free,gluten-free,gluten","Unless you have celiac disease or gluten sensitivity, there is no proven need to avoid gluten. Whole grains are healthy for most people. Test for celiac before cutting gluten."],
-["How do I know if I have a food allergy?","food allergy,allergic to food,food allergies","Food allergies cause symptoms like hives, swelling, vomiting or breathing trouble soon after eating. A doctor or allergist can test. Severe reactions need emergency treatment."],
-["Do detox diets work?","detox,detox diet,cleanse","Your liver and kidneys already detoxify the body. Detox diets and cleanses have no proven benefit and can be harmful. Healthy eating and hydration are safer."],
-["Does vitamin C prevent colds?","vitamin c,vitamin c cold","Vitamin C does not prevent colds for most people and may only slightly shorten them. A varied diet with fruit and vegetables provides enough for most."],
-["What foods are high in iron?","iron rich foods,foods with iron,high iron foods","Iron-rich foods include red meat, poultry, fish, lentils, beans, tofu, spinach and fortified cereals. Vitamin C-rich foods help you absorb plant-based iron."],
-["What foods are high in calcium?","calcium foods,calcium rich,high calcium foods","Calcium sources include dairy, fortified plant milks, tofu with calcium, sardines with bones, kale and almonds. Vitamin D helps absorption."],
-["What foods are high in potassium?","potassium foods,potassium rich,high potassium","Bananas, potatoes, beans, spinach, avocado and oranges are good sources. People with kidney disease or on certain medicines should check with their doctor first."],
-["Do I need magnesium?","magnesium,magnesium supplement","Magnesium is found in nuts, seeds, whole grains and leafy greens. Most people get enough from food. Check with your doctor before taking supplements, especially with kidney disease."],
-["What does zinc do?","zinc,zinc supplement","Zinc supports immunity and wound healing. It is found in meat, shellfish, legumes and seeds. High-dose supplements can cause nausea and copper deficiency."],
-["Which foods are good for the heart?","foods for heart,heart healthy foods,heart healthy diet","Vegetables, fruit, whole grains, legumes, nuts, oily fish and olive oil support heart health. Limit salt, processed meat and sugary drinks."],
-["Which foods are good for the brain?","foods for brain,brain foods,brain health food","Oily fish, berries, leafy greens, nuts, whole grains and olive oil support brain health, along with regular exercise, sleep and social activity."],
-["How can I boost my immune system?","boost immunity,immune system,strengthen immune system","Sleep well, eat a varied diet, exercise regularly, manage stress, avoid smoking, limit alcohol and stay up to date with vaccines. No single food or supplement can guarantee immunity."],
-["What should I drink to rehydrate?","rehydrate,electrolytes,oral rehydration,sports drink","Water is usually enough. During vomiting, diarrhea or heavy sweating, oral rehydration solutions replace salts and fluids better than plain water or sugary drinks."],
-["Is sugar addictive?","sugar addiction,sugar cravings,craving sweets","Sugar can drive cravings by stimulating reward pathways. Regular meals with protein and fiber, enough sleep and gradually cutting sugary drinks help reduce cravings."],
-["Why am I always hungry?","always hungry,constant hunger,increased appetite","Constant hunger can be due to too little protein or fiber, poor sleep, stress, dehydration, or conditions like diabetes or thyroid problems. See a doctor if it is new or with weight change."]
-];
-
-const KB_lifestyle = [
-["How much exercise do I need?","how much exercise,exercise per week,physical activity,exercise recommendations","Adults should aim for at least 150 minutes of moderate activity or 75 minutes of vigorous activity a week, plus muscle-strengthening on 2 or more days. Any movement is better than none."],
-["What is the best exercise for weight loss?","exercise weight loss,best exercise lose weight,burn fat","A mix of cardio such as walking, cycling or swimming and strength training works best, together with a healthy diet. Choose activities you enjoy so you can keep going."],
-["Is walking 10,000 steps a day necessary?","10000 steps,steps a day,how many steps","10,000 is a handy target, but benefits start much earlier. Many studies show gains at 6,000 to 8,000 steps. Increase gradually and keep it regular."],
-["Why is strength training important?","strength training,weight training,resistance training,lifting weights","Strength training builds muscle and bone, supports metabolism, balance and joint health, and lowers risk of falls and chronic disease. Two sessions a week bring real benefits."],
-["Is cardio or weight training better?","cardio vs weights,cardio or strength,which exercise better","Both matter. Cardio improves heart and lung health, and strength training builds muscle and bone. A combination is ideal."],
-["Should I stretch before or after exercise?","stretching,stretch before exercise,flexibility","Do light movement or dynamic warm-ups before exercise and static stretching afterward or on rest days. Stretching improves flexibility but is not a guaranteed injury preventer."],
-["Why is warming up important?","warm up,warming up,cool down","A warm-up raises heart rate and loosens muscles, making exercise feel better and reducing injury risk. Spend 5 to 10 minutes on gentle movement first."],
-["How do I start exercising as a beginner?","beginner exercise,start exercising,begin workout,get fit","Start with 10 to 20 minutes of brisk walking most days, add light strength exercises and increase gradually. See a doctor first if you have heart disease, chest pain, or other health conditions."],
-["Is exercise safe with heart disease?","exercise heart disease,exercise with heart condition","Regular activity is usually beneficial for heart conditions, but the type and intensity should be guided by your doctor or a cardiac rehab team. Stop and seek help for chest pain or severe breathlessness."],
-["How do I build muscle?","build muscle,muscle growth,gain muscle,get stronger","Lift progressively heavier weights 2 to 4 times per week, eat enough protein and calories, sleep 7 to 9 hours and be consistent. Results take weeks to months."],
-["Do I need protein shakes?","protein shakes,protein powder,whey","Most people can meet protein needs from food. Shakes are a convenient option for some athletes, but they are not essential. Check labels for added sugar."],
-["How many rest days do I need?","rest days,recovery,overtraining","Most people benefit from 1 to 2 rest days a week. Persistent fatigue, poor sleep, declining performance or recurrent injuries may signal overtraining."],
-["How can I prevent running injuries?","running injuries,prevent running injury,runner knee","Increase mileage gradually, wear supportive shoes, include strength work and rest days, and warm up. Persistent pain should be assessed by a physiotherapist or doctor."],
-["What are the benefits of yoga?","yoga,yoga benefits,pilates","Yoga can improve flexibility, balance, strength, stress and sleep. Choose a style suited to your fitness level and tell the instructor about injuries."],
-["How can I improve my posture?","posture,bad posture,slouching,sit straight","Keep your screen at eye level, feet flat, back supported and take movement breaks every 30 to 60 minutes. Strengthening the core and upper back helps."],
-["Is sitting all day bad for health?","sitting too much,sedentary,sitting all day,desk job","Long sitting raises risks for heart disease and diabetes. Stand and move for a few minutes every hour and aim for regular exercise during the week."],
-["How much sleep do I need?","how much sleep,hours of sleep,sleep needs","Most adults need 7 to 9 hours per night, teenagers 8 to 10 and school-age children 9 to 12. Quality and regular timing matter as much as quantity."],
-["How can I treat insomnia?","insomnia,cannot sleep,can't sleep,trouble sleeping,sleep problem","Keep fixed sleep and wake times, avoid caffeine late, limit screens before bed, keep the room dark and cool, and relax before sleep. Persistent insomnia benefits from CBT-I; see a doctor."],
-["What are tips for better sleep?","better sleep,improve sleep,sleep tips,sleep hygiene","Follow a regular schedule, get daylight in the morning, exercise, avoid heavy meals and alcohol at night, and keep your bedroom quiet, dark and cool."],
-["Are naps good for you?","napping,naps,nap during day","Short naps of 10 to 20 minutes can boost alertness. Long or late naps may disturb night sleep. Constant daytime sleepiness needs a doctor's review."],
-["What is sleepwalking?","sleepwalking,sleep walking,walking in sleep","Sleepwalking is common in children and often outgrown. Keep the home safe, stick to regular sleep and avoid sleep deprivation. See a doctor if it is frequent or dangerous."],
-["Why do I snore?","snoring,snore,loud snoring","Snoring happens when airways narrow during sleep. Weight, alcohol, sleeping on the back and nasal blockage contribute. Loud snoring with gasping or daytime tiredness may be sleep apnea."],
-["How can I stop nightmares?","nightmares,bad dreams,night terrors","Regular sleep, stress reduction and avoiding alcohol and late heavy meals may help. Frequent nightmares or those linked to trauma should be discussed with a doctor or therapist."],
-["Is melatonin safe?","melatonin,sleep supplement","Melatonin can help with jet lag or shift work for short-term use, but dose and quality vary. Ask a doctor or pharmacist, especially for children, pregnancy or if you take other medicines."],
-["Why do I wake up at 3 a.m.?","wake up 3am,waking at night,wake up early,middle of night","Night waking can come from stress, alcohol, caffeine, a hot room, or mood issues. Keep a calm routine, avoid screens, and speak to a doctor if it persists."],
-["How can I manage stress?","stress,manage stress,stressed,reduce stress","Try regular exercise, enough sleep, breathing exercises, time outdoors, talking to someone you trust and breaking tasks into steps. If stress affects daily life, consider professional support."],
-["What is anxiety?","anxiety,anxious,worry,always worried","Anxiety is persistent worry or fear that can cause a racing heart, restlessness and trouble sleeping. Therapy, lifestyle changes and sometimes medicine help. Speak to a doctor if it interferes with life."],
-["What should I do during a panic attack?","panic attack,panic,panicking","Remind yourself it will pass, breathe slowly in through the nose and out through the mouth, ground yourself by naming things you see, and stay where you feel safe. Frequent attacks deserve professional help."],
-["What are signs of depression?","depression,depressed,signs of depression,feeling low","Signs include persistent low mood, loss of interest, tiredness, sleep or appetite changes, hopelessness and trouble concentrating. Depression is treatable; please talk to a doctor or counselor."],
-["What is burnout?","burnout,burn out,work exhaustion","Burnout is exhaustion from prolonged work stress, with cynicism and reduced performance. Rest, boundaries, support and sometimes professional help are important."],
-["How can I calm down quickly?","calm down,relax,anger,overwhelmed","Slow breathing, a short walk, a cold drink of water, stretching or naming what you feel can help you settle. If you often feel overwhelmed, a counselor can help."],
-["Does meditation work?","meditation,mindfulness,breathing exercises","Meditation and mindfulness can reduce stress and improve focus and sleep for many people. Even 5 to 10 minutes a day helps. It works best alongside other healthy habits."],
-["What can I do about loneliness?","loneliness,lonely,feeling alone,isolated","Small steps help: contact a friend, join a group or class, volunteer, spend time outdoors and consider talking to a counselor. Loneliness is common and can affect health, so reaching out matters."],
-["What is ADHD?","adhd,attention deficit,hyperactivity,cannot focus","ADHD involves ongoing inattention, impulsivity or hyperactivity that affects daily life. It can continue into adulthood. A qualified clinician can assess and recommend support or treatment."],
-["How can I improve my concentration?","concentration,focus better,improve focus,cannot concentrate","Sleep well, exercise, eat regularly, reduce multitasking and notifications, and use short focused work blocks with breaks. Persistent trouble concentrating deserves medical review."],
-["How can I improve my memory?","improve memory,memory tips,better memory","Sleep, exercise, a healthy diet, learning new things, staying social and managing stress support memory. Sudden or worsening memory loss should be reviewed by a doctor."],
-["How can I stay motivated?","motivation,unmotivated,lack of motivation","Set small, clear goals, track progress, build routines, reward yourself and find a friend for support. Persistent loss of motivation with low mood may signal depression."],
-["How do I cope with grief?","grief,grieving,loss of loved one,bereavement","Grief is a natural response to loss and has no timetable. Talk about your feelings, keep routines, rest and lean on support. If grief feels overwhelming or lasts and disrupts life, seek counseling."],
-["How can I build self-esteem?","self esteem,self-esteem,confidence,feel worthless","Notice and challenge harsh self-talk, set achievable goals, celebrate progress, spend time with supportive people and take care of your body. Therapy can help if low self-worth persists."],
-["What is social anxiety?","social anxiety,shy,fear of people","Social anxiety is an intense fear of being judged in social situations. It can be treated with therapy such as CBT and sometimes medicine. See a doctor if it limits your life."],
-["What is OCD?","ocd,obsessive compulsive,compulsions","OCD involves unwanted repeated thoughts and compulsive behaviors that take up time and cause distress. Effective treatments include therapy and medicines. See a doctor for assessment."],
-["How are phobias treated?","phobia,phobias,fear of","Phobias respond well to gradual exposure therapy and CBT. A doctor or therapist can help you plan treatment."],
-["What are signs of an eating disorder?","eating disorder,anorexia,bulimia,binge eating","Warning signs include preoccupation with weight or food, extreme restriction, bingeing or purging, intense fear of weight gain and withdrawing from meals. Eating disorders are treatable; please talk to a doctor soon."],
-["When should I see a therapist?","see a therapist,therapy,counseling,counselling,psychologist","Consider therapy if worry, sadness, anger or stress last for weeks, affect work, relationships or sleep, or you feel stuck. You do not need a crisis to seek support."],
-["Is too much screen time bad for health?","screen time,too much screen,phone addiction,social media","Heavy screen time can disturb sleep, strain eyes, reduce activity and affect mood. Take breaks, avoid screens 1 hour before bed and keep a balance with offline activity."],
-["How can I reduce eye strain from screens?","screen eye strain,digital eye strain,computer eyes","Use the 20-20-20 rule: every 20 minutes look at something 20 feet (6 m) away for 20 seconds. Adjust brightness, blink often and position the screen slightly below eye level."],
-["How can I stay healthy while working at a desk?","desk health,office health,ergonomics,work from home","Set up your chair, screen and keyboard ergonomically, take movement breaks hourly, drink water, stretch and make time for exercise before or after work."],
-["What are the benefits of walking?","benefits of walking,walking daily,walk every day","Walking lifts mood, supports heart health, helps weight control, strengthens bones and improves sleep. A brisk 30-minute walk most days is a great start."],
-["Does exercise help with depression and anxiety?","exercise mental health,exercise for anxiety,exercise depression","Regular physical activity can reduce symptoms of depression and anxiety and improve sleep and self-esteem. It works best alongside other support when needed."],
-["What is a good way to stay healthy as I get older?","healthy aging,staying healthy older,healthy ageing,elderly health","Stay active, eat well, keep social connections, attend check-ups, take medicines as prescribed, protect hearing and vision, prevent falls and keep your mind active."],
-["How can I prevent falls in older adults?","prevent falls,fall prevention,falls elderly","Keep walkways clear, use good lighting, wear sturdy shoes, do balance and strength exercises, review medicines with a doctor and get vision checked."]
-];
-
-const KB_womenkids = [
-["Why are my periods irregular?","irregular periods,irregular period,period late,cycle irregular","Cycles vary, but irregularity can come from stress, weight change, PCOS, thyroid problems or perimenopause. See a doctor if periods are very irregular, absent for 3 months or you could be pregnant."],
-["How can I ease period pain?","period pain,menstrual cramps,period cramps,dysmenorrhea","Heat, gentle exercise and over-the-counter pain relief can help. See a doctor if pain is severe, getting worse or disrupts daily life, as conditions like endometriosis may be involved."],
-["What counts as a heavy period?","heavy period,heavy periods,heavy bleeding,menorrhagia","Soaking a pad or tampon every hour, passing large clots or periods lasting over 7 days are signs of heavy bleeding. Heavy periods can cause anemia, so see a doctor."],
-["What is PMS?","pms,premenstrual,mood swings period","PMS includes mood changes, bloating, tender breasts and tiredness in the days before a period. Exercise, sleep, balanced meals and less caffeine and alcohol help. See a doctor if severe."],
-["Why have I missed my period?","missed period,period late,no period,amenorrhea","Pregnancy is the first thing to check. Stress, weight change, intense exercise, PCOS, thyroid issues and breastfeeding can also delay periods. See a doctor if it persists for 3 months."],
-["What are early signs of pregnancy?","pregnancy signs,early pregnancy,am i pregnant,pregnancy symptoms","Common early signs are a missed period, nausea, tender breasts, tiredness and frequent urination. A home pregnancy test from the first day of a missed period is reliable."],
-["How can I cope with morning sickness?","morning sickness,pregnancy nausea,nausea pregnant","Eat small, frequent meals, keep crackers by the bed, try ginger, and sip fluids. See a doctor if you cannot keep food or fluids down."],
-["What foods should I avoid during pregnancy?","foods avoid pregnancy,pregnancy diet,pregnant avoid","Avoid alcohol, raw or undercooked meat, fish and eggs, unpasteurized dairy, high-mercury fish and excess caffeine. Wash produce and follow your midwife's advice."],
-["Is exercise safe during pregnancy?","exercise pregnancy,pregnant exercise,pregnancy workout","Moderate exercise such as walking, swimming and prenatal yoga is generally safe and beneficial. Avoid contact sports and risky activities, and ask your doctor or midwife."],
-["Should I take prenatal vitamins?","prenatal vitamins,folic acid,folate pregnancy","Folic acid is recommended before conception and in early pregnancy to reduce neural tube defects. Your doctor may advise vitamin D or other supplements."],
-["When should I call a doctor during pregnancy?","pregnancy warning signs,pregnancy bleeding,pregnancy emergency,reduced baby movement","Call promptly for vaginal bleeding, severe abdominal pain, fluid leaking, severe headache or vision changes, swelling of face and hands, fever, or reduced baby movements."],
-["What are the basics of breastfeeding?","breastfeeding,breast feeding,nursing baby,latch","Breastfeed on demand, check a deep latch and watch for wet nappies and weight gain. Pain, cracked nipples or low supply deserve help from a midwife or lactation consultant."],
-["What are common menopause symptoms?","menopause,perimenopause,menopausal","Hot flashes, night sweats, mood changes, sleep trouble, vaginal dryness and irregular periods are common. Menopause usually occurs around age 51. Treatments are available, so talk to a doctor."],
-["How can I manage hot flashes?","hot flashes,hot flushes,hot flash","Dress in layers, keep rooms cool, avoid triggers such as alcohol, spicy food and caffeine, and try slow breathing. A doctor can discuss other options."],
-["What contraception options are available?","contraception,birth control,contraceptive,pill iud","Options include condoms, the pill, patch, ring, implant, injection, IUD and sterilization. Condoms also protect against STIs. A doctor or clinic can help choose what suits you."],
-["What is emergency contraception?","emergency contraception,morning after pill,plan b","Emergency contraception reduces pregnancy risk after unprotected sex. The sooner it is used the better, and some options work up to 5 days. A pharmacist or clinic can advise."],
-["What are signs of a yeast infection?","yeast infection,thrush,vaginal itching","Yeast infections cause itching, soreness and thick white discharge. Pharmacy antifungal treatments help. See a doctor if it is the first time, recurrent or you are pregnant."],
-["What is bacterial vaginosis?","bacterial vaginosis,bv,fishy discharge","BV causes thin grey discharge with a fishy smell. It needs treatment with prescribed antibiotics, so see a doctor or clinic."],
-["How often should I get tested for STIs?","sti test,std test,sexually transmitted,sexual health check","Get tested when you have a new partner, symptoms, or unprotected sex, and at least yearly if at risk. Many STIs have no symptoms. Condoms and vaccines (HPV, hepatitis B) help prevent them."],
-["What is HPV?","hpv,human papillomavirus","HPV is a very common virus spread through sexual contact. Some types cause warts and others can cause cervical and other cancers. Vaccination and cervical screening are effective protections."],
-["What is endometriosis?","endometriosis","Endometriosis occurs when tissue similar to the womb lining grows elsewhere, causing painful periods, pelvic pain and sometimes fertility problems. See a doctor if you suspect it."],
-["What are fibroids?","fibroids,uterine fibroids","Fibroids are non-cancerous growths in the womb that can cause heavy periods and pelvic pressure. Many need no treatment. A doctor can advise with an ultrasound."],
-["What should I do if I find a breast lump?","breast lump,lump in breast,breast pain","Most breast lumps are not cancer, but any new lump, dimpling, nipple discharge or skin change should be checked promptly by a doctor."],
-["How often should I have a Pap smear?","pap smear,cervical screening,smear test","Cervical screening is usually every 3 to 5 years depending on age, country and test type. Follow your national program and ask your doctor."],
-["When should I start mammograms?","mammogram,breast screening","Programs differ, but routine screening often begins between ages 40 and 50 and continues every 1 to 2 years. Speak with your doctor if you have a family history."],
-["What can cause infertility?","infertility,cant get pregnant,trying to conceive,fertility","Causes include ovulation problems, blocked tubes, low sperm count, age and lifestyle factors. See a doctor after 12 months of trying, or 6 months if over 35."],
-["What should I do when my baby has a fever?","baby fever,infant fever,child fever,toddler fever","For babies under 3 months, any fever needs urgent medical care. For older children, give fluids, dress lightly and seek help if the child is very drowsy, has a rash, breathing trouble or fever beyond 3 days."],
-["How can I soothe a teething baby?","teething,teething baby,baby teeth","Offer a clean cold teething ring, gently rub the gums and use extra cuddles. Teething rarely causes high fever, so see a doctor for fever or illness."],
-["What is colic?","colic,baby crying,crying baby","Colic means prolonged crying in a healthy baby, often in the first months. Hold, rock and use white noise. See a doctor if there is fever, vomiting or poor feeding."],
-["How much sleep does a baby need?","baby sleep,infant sleep,newborn sleep","Newborns sleep around 14 to 17 hours a day in short stretches. Always put babies on their back to sleep on a firm flat surface with nothing loose in the cot."],
-["When should I start solid foods for my baby?","solid foods baby,weaning,baby food,start solids","Most babies are ready at around 6 months, when they can sit with support and show interest in food. Continue milk feeds and introduce foods gradually."],
-["Which vaccines do children need?","childhood vaccines,child vaccination,baby vaccines,immunisation schedule","Childhood schedules protect against diseases like measles, polio, whooping cough and meningitis. Schedules vary by country, so follow your national program and ask your pediatrician."],
-["How can I tell if my child has an ear infection?","ear infection child,child ear pain,toddler pulling ear","Signs include ear pain, fever, irritability, trouble sleeping and tugging at the ear. Many settle without antibiotics, but see a doctor for severe symptoms or discharge."],
-["What is croup?","croup,barking cough","Croup is a viral infection causing a barking cough and noisy breathing in young children, worse at night. Stay calm, keep the child upright and seek urgent help if breathing is difficult."],
-["What is chickenpox?","chickenpox,chicken pox,varicella","Chickenpox causes an itchy blistering rash with fever. It is usually mild in children but can be serious in adults or pregnant women. Keep nails short, avoid scratching and stay home until scabs form."],
-["What is hand, foot and mouth disease?","hand foot mouth,hfmd","Hand, foot and mouth disease is a viral illness causing mouth sores and a rash on hands and feet. It usually clears in 7 to 10 days. Keep the child hydrated and see a doctor if drinking poorly."],
-["Why does my child wet the bed?","bedwetting,bed wetting,enuresis","Bedwetting is common in children and often resolves with time. Avoid punishment, limit drinks before bed and encourage toilet use. See a doctor if it starts suddenly or persists after age 7."],
-["How do I know if my child is growing well?","child growth,child development,growth chart,child height weight","Pediatricians track growth on charts and review milestones. Differences are normal, so look at the overall trend. Talk to a doctor if your child falls behind, loses skills or you are worried."],
-["How do I handle toddler tantrums?","tantrums,toddler tantrum,child meltdown","Stay calm, keep the child safe, avoid giving in to demands and talk about feelings afterward. Consistent routines, naps and snacks prevent many tantrums."],
-["How much screen time is okay for children?","screen time children,kids screen time,children tablet","Experts advise little or no screen time under 2, and limited, high-quality content for older children. Keep screens out of bedrooms and avoid them before bed."],
-["How do I treat head lice?","head lice,lice,nits","Use a treatment recommended by a pharmacist and comb with a fine-toothed comb on damp hair, repeating after a week. Check household members and avoid sharing combs and hats."],
-["What is diaper rash and how do I treat it?","diaper rash,nappy rash","Change diapers often, clean gently, let skin air dry and use a barrier cream. See a doctor if the rash is severe, blistered or does not clear."],
-["Why does my child have a cough?","child cough,kid cough,toddler cough","Most childhood coughs are caused by viral infections and settle within 2 to 3 weeks. Seek care for fast or difficult breathing, a high fever, blue lips or wheeze."],
-["What is a febrile seizure?","febrile seizure,fever seizure,fever convulsion","A febrile seizure is a convulsion triggered by fever in young children. Place the child on their side, do not put anything in the mouth and call emergency services if it lasts over 5 minutes."],
-["What causes erectile dysfunction?","erectile dysfunction,ed,impotence","ED can stem from circulation problems, diabetes, medicines, stress, smoking or low testosterone. It can be an early sign of heart disease, so see a doctor; effective treatments exist."],
-["What are signs of low testosterone?","low testosterone,low t,testosterone","Signs include low sex drive, fatigue, mood changes, reduced muscle and erectile problems, but these have many causes. A blood test and a doctor assessment are needed."],
-["How do I check for testicular cancer?","testicular cancer,testicular exam,testicle lump","Check monthly after a warm shower, rolling each testicle gently. See a doctor for any lump, swelling, heaviness or persistent ache. It is highly treatable when found early."],
-["Why am I losing my hair?","hair loss,losing hair,balding,thinning hair","Hair loss can come from genetics, stress, illness, thyroid problems, iron deficiency or hormones. See a doctor if sudden, patchy or with other symptoms."],
-["Should men get prostate checks?","prostate check,psa test,prostate cancer screening","Prostate cancer screening, such as a PSA test, involves benefits and risks, so discuss with your doctor, particularly from age 50 or earlier with a family history."],
-["How can I improve male fertility?","male fertility,sperm count,low sperm","Avoid smoking, heavy alcohol and heat exposure, keep a healthy weight, exercise and eat a balanced diet. A semen analysis can assess fertility if conceiving takes longer than expected."]
-];
-
-const KB_skinsenses = [
-["How can I treat acne?","acne,pimples,pimple,breakouts,zits","Wash gently twice a day, avoid squeezing spots, use non-comedogenic products and try over-the-counter benzoyl peroxide or salicylic acid. See a doctor for severe, painful or scarring acne."],
-["What is eczema?","eczema,atopic dermatitis,dry itchy skin","Eczema causes dry, itchy, inflamed skin. Moisturize often, avoid triggers and harsh soaps, and use treatments as prescribed. See a doctor if it is widespread or infected."],
-["What is psoriasis?","psoriasis,scaly patches","Psoriasis causes thick, red, scaly patches due to an overactive immune system. Moisturizers and prescribed treatments help. See a doctor for diagnosis and options."],
-["How can I help dry skin?","dry skin,flaky skin,skin dryness","Use lukewarm water, mild cleansers and moisturize within minutes of bathing. Drink water and use a humidifier in dry weather. See a doctor if it is itchy or cracked."],
-["How do I treat sunburn?","sunburn,sun burn,burnt by sun","Cool the skin with cool water or compresses, apply aloe or moisturizer, drink water and avoid more sun. Blistering over large areas, fever or confusion needs medical help."],
-["How should I use sunscreen?","sunscreen,spf,sun protection,suncream","Use broad-spectrum SPF 30 or higher, apply generously 15 minutes before going out and reapply every 2 hours or after swimming. Add shade, hats and clothing."],
-["How can I tell if a mole is dangerous?","mole,moles,skin cancer,melanoma,changing mole","Use ABCDE: Asymmetry, irregular Border, uneven Color, Diameter over 6 mm and Evolving over time. Any changing, bleeding or new unusual mole should be checked by a doctor."],
-["What causes skin rashes?","rash,skin rash,red rash,rashes","Rashes can result from allergies, eczema, infections, heat or medicines. Avoid scratching and irritants. See a doctor for rash with fever, rapid spreading, blistering or breathing problems."],
-["What causes hives?","hives,urticaria,welts","Hives are itchy raised welts often triggered by allergies, infections or medicines. Antihistamines help. Hives with swelling of the lips, throat or breathing trouble is an emergency."],
-["Why am I itchy all over?","itchy skin,itching,pruritus,itchy all over","Itching can come from dry skin, allergies, eczema, scabies or sometimes liver, kidney or thyroid problems. Moisturize and avoid irritants. See a doctor if it lasts more than 2 weeks."],
-["What is ringworm?","ringworm,tinea,fungal rash","Ringworm is a fungal skin infection causing a red, ring-shaped itchy rash, unrelated to worms. Over-the-counter antifungal creams usually work. See a doctor if it persists."],
-["How can I treat athlete's foot?","athlete's foot,athletes foot,foot fungus","Keep feet clean and dry, change socks often and use antifungal cream or powder. See a doctor if it does not improve, or if you have diabetes."],
-["What are warts?","warts,verruca,plantar wart","Warts are harmless skin growths caused by HPV and often disappear on their own. Over-the-counter treatments can help. See a doctor if they are painful, spreading or on the face."],
-["What are cold sores?","cold sores,herpes lip,fever blister","Cold sores are caused by the herpes simplex virus and appear as blisters on the lips. Antiviral creams may help early. They are contagious, so avoid kissing and sharing items."],
-["What is shingles?","shingles,herpes zoster","Shingles causes a painful blistering rash on one side of the body, caused by the chickenpox virus reactivating. See a doctor quickly, as antivirals work best early. A vaccine is available."],
-["How can I treat dandruff?","dandruff,flaky scalp,itchy scalp","Use anti-dandruff shampoos with ingredients like zinc pyrithione, ketoconazole or selenium sulfide. See a doctor if the scalp is very red, sore or not improving."],
-["What causes nail fungus?","nail fungus,toenail fungus,thick yellow nail","Nail fungus makes nails thick, yellow and brittle. It is slow to treat, so see a doctor or pharmacist for antifungal options."],
-["How do I treat an ingrown toenail?","ingrown toenail,ingrown nail","Soak the foot in warm water, keep it clean, wear roomy shoes and cut nails straight across. See a doctor for pus, spreading redness or if you have diabetes."],
-["How should I treat insect bites?","insect bites,bug bites,mosquito bite,bee sting","Wash with soap and water, apply a cold compress and an anti-itch cream. Seek urgent help if there is face or throat swelling, trouble breathing or spreading infection."],
-["What should I do about a tick bite?","tick bite,tick,lyme disease","Remove the tick with fine tweezers close to the skin, pulling straight up, then clean the area. See a doctor if a rash spreads, you get fever or flu-like symptoms."],
-["What is scabies?","scabies,mites,itchy at night","Scabies is a contagious skin infestation causing intense itching, especially at night. It needs prescribed treatment, and close contacts and bedding should be treated too."],
-["How can I reduce scars?","scars,scar treatment,scarring,stretch marks","Keep wounds clean and moist, protect from sun and avoid picking scabs. Silicone gels may help. Stretch marks fade over time. See a dermatologist for raised or painful scars."],
-["What causes excessive sweating?","excessive sweating,hyperhidrosis,sweaty hands","Hyperhidrosis can be primary or linked to thyroid problems, infections, anxiety or medicines. Antiperspirants, clinical-strength products and medical treatments exist. See a doctor if sudden or with other symptoms."],
-["What causes red eyes?","red eye,red eyes,bloodshot eyes","Red eyes can come from allergies, dryness, irritation or infection. Do not wear contacts, wash hands and use lubricating drops. See a doctor if pain, vision change, light sensitivity or discharge."],
-["What is pink eye?","pink eye,conjunctivitis,eye discharge","Pink eye is inflammation of the eye's lining with redness, watering and sometimes sticky discharge. It is often viral and very contagious. Wash hands, avoid sharing towels and see a doctor if severe."],
-["How can I treat dry eyes?","dry eyes,dry eye,gritty eyes","Use lubricating eye drops, blink often, take screen breaks and avoid smoke and dry air. See an eye doctor if symptoms persist."],
-["What is a stye?","stye,sty,eyelid bump","A stye is a painful red lump on the eyelid. Warm compresses several times a day help it drain. See a doctor if it persists or vision is affected."],
-["What are eye floaters?","floaters,eye floaters,spots in vision,flashes of light","Floaters are small specks drifting in vision and are usually harmless. A sudden shower of floaters, flashes of light or a dark curtain needs urgent eye assessment."],
-["How often should I get my eyes checked?","eye exam,eye test,optician,eye check","Adults should have an eye exam about every 2 years, or yearly if you have diabetes, a family history of eye disease or wear glasses. Children also need checks."],
-["What is glaucoma?","glaucoma,eye pressure","Glaucoma damages the optic nerve, often from high eye pressure, and may have no early symptoms. Regular eye exams detect it, and treatment prevents vision loss."],
-["What causes ear pain?","ear pain,earache,ear ache,ear infection","Ear pain may result from infection, wax, jaw problems or a sore throat. Pain relief and a warm cloth can ease symptoms. See a doctor for severe pain, discharge, fever or hearing loss."],
-["How do I safely remove ear wax?","ear wax,earwax,blocked ear","Do not use cotton buds. Use ear drops or olive oil to soften wax, and see a doctor or pharmacist if blocked or if you have ear problems."],
-["What causes hearing loss?","hearing loss,cannot hear,hard of hearing,deaf","Hearing loss can result from wax, infection, loud noise, aging or other conditions. Sudden hearing loss is an emergency. See a doctor or audiologist for a hearing test."],
-["What causes ringing in the ears?","tinnitus,ringing ears,ear ringing","Tinnitus is hearing ringing or buzzing without an outside sound. It can result from loud noise, wax, medicines or hearing loss. See a doctor if it is persistent, one-sided or sudden."],
-["What is swimmer's ear?","swimmer's ear,swimmers ear,ear water","Swimmer's ear is an outer ear canal infection causing pain and itching after water exposure. Keep ears dry and see a doctor for ear drops."],
-["What can I do about a toothache?","toothache,tooth pain,dental pain,tooth hurts","Rinse with warm salt water, use over-the-counter pain relief and avoid very hot or cold food. See a dentist soon, urgently if there is swelling, fever or trouble swallowing."],
-["How do I prevent cavities?","cavities,tooth decay,dental caries","Brush twice daily with fluoride toothpaste, clean between teeth, limit sugary snacks and drinks and see a dentist regularly."],
-["Why do my gums bleed?","bleeding gums,gum bleeding,gums bleed,gingivitis","Bleeding gums are often a sign of gum inflammation from plaque. Brush gently, floss daily and see a dentist. Persistent bleeding may point to other problems."],
-["How can I get rid of bad breath?","bad breath,halitosis,smelly breath","Brush teeth and tongue, floss, drink water, avoid tobacco and have regular dental cleanings. Persistent bad breath may relate to gum disease, tonsil stones or reflux."],
-["Do I need my wisdom teeth removed?","wisdom teeth,wisdom tooth","Wisdom teeth only need removal if they cause pain, infection, decay or crowding. A dentist can examine and take X-rays."],
-["How often should I brush my teeth?","brush teeth,brushing teeth,how often brush,flossing","Brush for 2 minutes twice a day with fluoride toothpaste, clean between teeth daily and replace your toothbrush every 3 months."],
-["What causes mouth ulcers?","mouth ulcer,mouth ulcers,canker sore","Mouth ulcers are common and heal within 1 to 2 weeks. Triggers include injury, stress and some deficiencies. See a doctor or dentist if an ulcer lasts more than 3 weeks."],
-["What causes dry mouth?","dry mouth,xerostomia,saliva","Dry mouth can come from dehydration, medicines, mouth breathing or conditions like diabetes. Sip water, chew sugar-free gum and see a dentist or doctor if persistent."],
-["Why do I grind my teeth?","teeth grinding,bruxism,clenching jaw","Grinding is often related to stress and sleep. It can wear teeth and cause jaw pain. A dentist can provide a night guard, and stress reduction can help."],
-["Why are my teeth sensitive?","sensitive teeth,tooth sensitivity","Sensitivity can come from worn enamel, gum recession or cavities. Use desensitizing toothpaste, brush gently and see a dentist."],
-["What is a dental abscess?","dental abscess,tooth abscess,gum swelling,tooth infection","A dental abscess is a pocket of pus from infection, causing throbbing pain, swelling and fever. It needs prompt dental treatment. Facial swelling with trouble breathing or swallowing is an emergency."],
-["How can I stop snoring or mouth breathing?","mouth breathing,breathe through mouth","Treat nasal blockage, keep a healthy weight and try sleeping on your side. Persistent mouth breathing can be due to allergies or enlarged tonsils; see a doctor."],
-["What helps with motion sickness?","motion sickness,car sick,sea sick,travel sickness","Sit facing forward, look at the horizon, get fresh air, avoid heavy meals and consider medicine recommended by a pharmacist. Ginger may also help."]
-];
-
-const KB_firstaid = [
-["Can I take paracetamol and ibuprofen together?","paracetamol and ibuprofen,tylenol and advil,acetaminophen and ibuprofen","In many adults they can be used together or alternated, but each has maximum daily doses. Follow the label and ask a pharmacist if you have stomach, kidney, liver or heart conditions, or are pregnant."],
-["What is the difference between paracetamol and ibuprofen?","paracetamol vs ibuprofen,acetaminophen vs ibuprofen,tylenol vs advil","Paracetamol (acetaminophen) reduces pain and fever, while ibuprofen also reduces inflammation but can irritate the stomach and kidneys. Always follow label directions and ask a pharmacist."],
-["Do antibiotics work for colds?","antibiotics for cold,antibiotics for flu,antibiotics virus","No. Antibiotics only work on bacteria, not viruses like colds and flu. Unnecessary use contributes to antibiotic resistance."],
-["What is antibiotic resistance?","antibiotic resistance,superbugs,resistant bacteria","Antibiotic resistance occurs when bacteria change so antibiotics no longer work. Use antibiotics only when prescribed, take them as directed and never share them."],
-["Should I finish my antibiotic course?","finish antibiotics,antibiotic course,stop antibiotics early","Take antibiotics exactly as prescribed. Your doctor will tell you if a shorter course is enough; do not stop early without advice, and never save leftovers."],
-["What should I do if I miss a dose of medicine?","missed dose,forgot medicine,forgot to take pill","Check the leaflet or ask a pharmacist, since advice depends on the medicine. In general, take it when you remember unless it is nearly time for the next dose. Never double up unless told to."],
-["Can I drink alcohol while taking medicine?","alcohol and medication,alcohol with antibiotics,drink on medication","Alcohol can interact with many medicines, including painkillers, sedatives and some antibiotics. Check the leaflet or ask your pharmacist."],
-["Can I use expired medicine?","expired medicine,expiry date,out of date medicine","It is best not to use expired medicines, as they may be less effective or unsafe. Return old medicines to a pharmacy for safe disposal."],
-["How should I store medicines?","store medicine,medicine storage,keep medicines","Keep medicines in their original packaging, in a cool, dry place away from sunlight and out of the reach of children. Some need refrigeration; check the label."],
-["Are generic medicines as good as brand names?","generic medicine,generic drugs,brand name","Generic medicines contain the same active ingredient and are held to the same quality standards as brand names. They are usually cheaper."],
-["Should I take aspirin every day?","daily aspirin,aspirin heart,low dose aspirin","Do not start daily aspirin on your own, as it can cause serious bleeding. It may be recommended by a doctor for people with certain heart conditions."],
-["Can painkillers harm my stomach?","painkillers stomach,nsaids stomach,ibuprofen stomach","Anti-inflammatory painkillers like ibuprofen and aspirin can irritate the stomach lining. Take them with food, use the lowest dose for the shortest time and ask your doctor if you have ulcers."],
-["Do antihistamines make you drowsy?","antihistamine,antihistamines,drowsy allergy medicine","Some older antihistamines cause drowsiness, while newer ones are usually less sedating. Avoid driving if you feel sleepy and check with a pharmacist."],
-["Is cough syrup effective?","cough syrup,cough medicine,cough suppressant","Evidence for many cough syrups is limited. Honey, fluids and rest work for many. Cough medicines are not recommended for young children."],
-["Can I use nasal decongestant spray long term?","nasal spray,decongestant spray,rebound congestion","Do not use decongestant sprays for more than 3 days, as they can cause rebound congestion. Saline sprays are safe for longer use."],
-["Can herbal remedies interact with medicines?","herbal remedies,herbal medicine,st john's wort","Yes. Some herbs, such as St John's wort, can interfere with prescribed medicines. Tell your doctor and pharmacist about everything you take."],
-["Which medicines are safe in pregnancy?","medicine pregnancy,safe medication pregnant,pregnancy drugs","Always check with your doctor, midwife or pharmacist before taking any medicine or supplement in pregnancy, as safety varies."],
-["How do I give medicine to a child safely?","children's medicine,child medicine dose,kids paracetamol dose","Child doses depend on weight and the exact product, so follow the product label or your doctor's or pharmacist's advice, and use the measuring device provided. Never guess a dose."],
-["How should I treat a minor cut?","cut,minor cut,small wound,scrape","Wash hands, clean the wound with running water, apply gentle pressure to stop bleeding, then cover with a clean dressing. Seek care for deep wounds, wounds that gape, or signs of infection."],
-["How do I treat a burn?","burn,burns,scald,burnt skin","Cool the burn under cool running water for about 20 minutes, remove jewelry, and cover loosely with cling film or a clean non-fluffy cloth. Do not use ice or butter. Seek care for large, deep or facial burns."],
-["How do I stop a nosebleed?","stop nosebleed,how to stop nose bleeding","Sit up, lean forward and pinch the soft part of the nose for 10 to 15 minutes. Seek care if it lasts longer, follows a head injury or happens frequently."],
-["What should I do if an adult is choking?","choking,choking adult,something stuck throat","If they cannot cough, speak or breathe, call emergency services, give 5 back blows between the shoulder blades, then 5 abdominal thrusts, and repeat until help arrives."],
-["What should I do if a baby is choking?","baby choking,infant choking","Call emergency services. Support the baby face down along your forearm and give up to 5 back blows, then turn them over and give up to 5 chest thrusts using two fingers. Never do abdominal thrusts on a baby."],
-["How do I perform CPR?","cpr,cardiopulmonary resuscitation,not breathing,cardiac arrest","Call emergency services, then push hard and fast in the center of the chest at about 100 to 120 compressions a minute, 5 to 6 cm deep. Use an AED if available. A first aid course gives hands-on training."],
-["What should I do if someone faints?","someone fainted,person fainted,first aid fainting","Lay them on their back and raise their legs, loosen tight clothing and ensure fresh air. They should recover in a minute or two. Call emergency services if they do not wake quickly or are injured."],
-["How can I help someone having a seizure?","seizure first aid,help seizure,someone having seizure","Stay calm and note the time. Cushion the head, remove hazards, never restrain them or put anything in the mouth, and turn them onto their side afterward. Call emergency services if it lasts over 5 minutes."],
-["How should I treat a sprain?","sprain treatment,sprained ankle treatment,rice","Rest, apply ice for 15 to 20 minutes, use a compression bandage and raise the limb. See a doctor if you cannot put weight on it, or it looks deformed."],
-["How do I know if a bone is broken?","broken bone,fracture,suspected fracture","Signs include severe pain, swelling, bruising, deformity and inability to use the limb. Immobilize it, avoid moving it and seek urgent care."],
-["What should I do for a bee sting?","bee sting,wasp sting,insect sting","Remove the stinger by scraping, wash the area and apply a cold pack. Seek emergency help for swelling of the face or throat, trouble breathing or dizziness."],
-["What should I do after a snake bite?","snake bite,snakebite","Keep the person calm and still, remove tight items, keep the bite below the heart and call emergency services. Do not cut, suck the wound or apply a tourniquet."],
-["What are the signs of heat stroke?","heat stroke,heatstroke,heat exhaustion,overheating","Signs are very high temperature, confusion, hot dry or sweaty skin, rapid pulse and collapse. Call emergency services, move the person to shade and cool them with water."],
-["What should I do for hypothermia?","hypothermia,very cold,exposure cold","Move the person indoors, remove wet clothes, wrap in blankets and give warm sweet drinks if awake. Call emergency services if shivering stops or they are drowsy or confused."],
-["How do I treat frostbite?","frostbite,frostnip","Move to a warm place, immerse in warm (not hot) water and avoid rubbing. Do not use direct heat. Seek medical care."],
-["What should I do if I get chemical in my eye?","chemical in eye,eye splash,eye injury","Rinse the eye with clean running water for at least 15 to 20 minutes and seek urgent medical help."],
-["How do I remove something from my eye?","something in eye,foreign body eye,dust in eye","Do not rub. Wash your hands, blink or rinse with clean water. If it does not come out, or the eye is painful or injured, see a doctor."],
-["What should I do after a head injury?","head injury,hit head,concussion","Rest and watch for vomiting, severe headache, confusion, drowsiness, weakness or seizures. Seek urgent care if any of these appear, or if there was loss of consciousness."],
-["What are the signs of a concussion?","concussion signs,concussion symptoms","Symptoms include headache, dizziness, confusion, nausea, memory problems and sensitivity to light. Rest, avoid sport and see a doctor, and seek emergency care if symptoms worsen."],
-["What should I do after an animal bite?","animal bite,dog bite,cat bite","Wash with soap and running water for several minutes and cover. See a doctor promptly, as tetanus, antibiotics or rabies treatment may be needed."],
-["What should I do if someone swallowed something poisonous?","poisoning,swallowed poison,poison","Call your local poison center or emergency number immediately. Do not make the person vomit unless told to, and keep the container to show responders."],
-["What are the signs of a severe allergic reaction?","anaphylaxis,severe allergic reaction,allergic shock","Signs include swelling of the face or throat, wheeze, trouble breathing, hives, dizziness or collapse. Use an epinephrine auto-injector if prescribed and call emergency services immediately."],
-["How do I stop heavy bleeding?","heavy bleeding,bleeding wound,stop bleeding","Press firmly on the wound with a clean cloth, raise the injured area if possible and call emergency services. Add more cloth rather than removing soaked pads."],
-["What should I do for an electric shock?","electric shock,electrocution","Do not touch the person until the power is switched off. Call emergency services, and check breathing. Even minor shocks should be assessed, as heart rhythm can be affected."],
-["How do I remove a splinter?","splinter,remove splinter","Wash the area, use clean tweezers to pull the splinter out at the angle it went in, then clean again. See a doctor for deep splinters or signs of infection."],
-["How should I treat a blister?","blister,blisters,friction blister","Keep it clean and covered and avoid popping it. If it bursts, wash and cover. See a doctor if it is infected or very large."],
-["What should be in a first aid kit?","first aid kit,first aid supplies","Include plasters, sterile dressings, gauze, bandages, antiseptic wipes, tweezers, scissors, gloves, a thermometer, pain relief, burn dressings and an emergency contact list."],
-["When should I call an ambulance?","call ambulance,when to call 911,call emergency,emergency number","Call emergency services for chest pain, severe breathing trouble, stroke signs, heavy bleeding, unconsciousness, serious injury, seizures that do not stop or any life-threatening situation."],
-["What should I do for hypoglycemia in a person with diabetes?","diabetic low blood sugar,diabetic emergency","If awake and able to swallow, give fast sugar such as juice or glucose, then a snack. If unconscious or confused, call emergency services and do not give food or drink."],
-["How do I treat a minor eye injury?","black eye,eye bruise,eye hit","Apply a cold compress gently without pressing on the eye. Seek urgent care for vision changes, severe pain, blood in the eye or double vision."],
-["What should I do for a swallowed object by a child?","child swallowed object,swallowed coin,swallowed battery","Call emergency services or poison control immediately, especially for batteries or magnets, which can be dangerous. Do not induce vomiting."]
-];
-
-const KB_prevention = [
-["Hello","hello,hi,hey,good morning,good evening,good afternoon","Hello, and welcome. I am Dr. Amelia Hart, a virtual doctor. Tell me what is on your mind, such as a symptom, a health worry or a lifestyle question, and I will do my best to help."],
-["Thank you","thank you,thanks,thank u,appreciate","You are very welcome. Please take care, and do not hesitate to ask if anything else worries you."],
-["Goodbye","goodbye,bye,see you,take care","Take care of yourself, and come back any time you have a health question. Wishing you good health."],
-["How are you?","how are you,how do you do,how is it going","I am doing well, thank you for asking. More importantly, how are you feeling today?"],
-["Are you a real doctor?","real doctor,are you human,are you a doctor,are you ai,who are you","I am a virtual doctor assistant, a computer program that shares general health information. I am not a human doctor, cannot examine you and do not replace professional medical care."],
-["Can you diagnose me?","diagnose me,diagnosis,what do i have,do i have","I cannot diagnose conditions. I can explain what common symptoms may mean and when to seek care. For a diagnosis, please see a doctor who can examine you and run tests."],
-["Is this chat private?","private chat,privacy,is my data safe,confidential","This demo runs in your browser and does not send your messages to a server. Still, avoid sharing sensitive personal details in any online tool."],
-["What can I ask you?","what can i ask,what can you do,help,topics","You can ask about common symptoms, illnesses, medicines, nutrition, exercise, sleep, mental well-being, women's, men's and children's health, first aid and prevention."],
-["Which vaccines should adults have?","adult vaccines,vaccines adults,recommended vaccines,vaccination","Recommended adult vaccines usually include tetanus boosters, yearly flu, COVID-19, and others such as pneumococcal, shingles, hepatitis B and HPV depending on age and risk. Ask your doctor for your schedule."],
-["Should I get a flu shot?","flu shot,flu vaccine,influenza vaccine,flu jab","Yearly flu vaccination is recommended for older adults, pregnant women, people with chronic conditions and healthcare workers, and is a good idea for most others. Ask your doctor or pharmacist."],
-["Are vaccines safe?","vaccine safe,vaccines safe,vaccine side effects,vaccine myths","Vaccines are rigorously tested and monitored. Mild effects like a sore arm or low fever are common, and serious reactions are rare. Vaccines prevent many serious diseases."],
-["Do I need a tetanus shot?","tetanus,tetanus shot,lockjaw","Adults usually need a tetanus booster every 10 years, or sooner after a dirty or deep wound if the last dose was over 5 years ago. Check with your doctor."],
-["What should I do before traveling abroad?","travel health,travel vaccines,traveling abroad,travel advice","See a doctor or travel clinic 6 to 8 weeks before travel for vaccines and malaria advice, pack medicines and a first aid kit, buy insurance and follow food and water safety."],
-["How can I beat jet lag?","jet lag,jetlag,time zone","Shift your sleep schedule gradually before travel, get daylight at your destination, stay hydrated, avoid heavy alcohol and caffeine, and take a short nap if needed."],
-["What is altitude sickness?","altitude sickness,mountain sickness,high altitude","Altitude sickness causes headache, nausea and tiredness at high elevations. Ascend gradually, rest and hydrate. Descend and seek help if you develop severe breathlessness, confusion or lack of coordination."],
-["How should I wash my hands properly?","wash hands,handwashing,hand hygiene,hand sanitizer","Wet hands, use soap, rub for at least 20 seconds including between fingers and under nails, then rinse and dry. Use alcohol-based sanitizer with at least 60% alcohol when soap is unavailable."],
-["How often should I have a health check-up?","health check,check up,checkup,annual physical","Many adults benefit from a check-up every 1 to 3 years, more often with chronic conditions. Check blood pressure, weight, cholesterol and blood sugar, and review vaccines and screenings."],
-["What blood tests are commonly done?","blood test,blood tests,cbc,full blood count,blood work","Common tests include a full blood count, blood sugar, cholesterol, kidney, liver and thyroid tests, and vitamin levels. Your doctor chooses tests based on your symptoms and risks."],
-["When should I get my cholesterol checked?","cholesterol check,cholesterol test,lipid test","Many adults should have cholesterol checked from around age 40, or earlier with risk factors such as family history, diabetes or high blood pressure. Your doctor sets the schedule."],
-["Which cancer screenings do I need?","cancer screening,screening tests,screening","Common screenings include cervical, breast, colorectal and sometimes lung and prostate screening, depending on age, sex and risk factors. Ask your doctor which apply to you."],
-["When should I have a colonoscopy?","colonoscopy,colon cancer screening,bowel screening","Colorectal screening usually starts around 45 to 50 and sooner with family history or symptoms. Options include stool tests and colonoscopy; ask your doctor."],
-["How often should I check my skin?","skin check,skin self exam,check moles","Check your skin monthly for new or changing moles and spots, and see a doctor for anything unusual. People at high risk may need regular dermatology checks."],
-["How can I quit smoking?","quit smoking,stop smoking,smoking cessation,give up cigarettes","Set a quit date, tell friends and family, consider nicotine replacement or prescription medicines, avoid triggers and get support from a doctor or quitline. Most people need several attempts."],
-["Is vaping safe?","vaping,vape,e-cigarette,e cigarette","Vaping is less harmful than smoking for adult smokers who switch fully, but it is not risk-free and contains nicotine. It is not recommended for non-smokers, teens or pregnant women."],
-["Is secondhand smoke harmful?","secondhand smoke,passive smoking","Yes. Secondhand smoke raises the risk of heart disease, lung cancer and asthma, and is especially harmful to children and pregnant women. Keep homes and cars smoke-free."],
-["What are the risks of recreational drugs?","recreational drugs,drug use,cannabis,marijuana,cocaine","Recreational drugs can harm the brain, heart and mental health, and mixing substances is especially risky. If you or someone else is in trouble, seek medical help; support services are available."],
-["How can I practice safe sex?","safe sex,condoms,protection sex","Use condoms consistently, get regular STI testing, consider HPV and hepatitis B vaccines, talk with partners and ask about PrEP if you are at higher risk of HIV."],
-["How can I protect myself from the sun?","sun safety,sun protection tips,avoid sunburn","Seek shade between 11 am and 3 pm, wear a hat, sunglasses and covering clothes and use SPF 30 or higher sunscreen. Avoid tanning beds."],
-["How do I stay safe in hot weather?","hot weather,heatwave,heat safety","Drink water often, avoid strenuous activity in the heat, wear light clothing, stay in shade or cool places and check on older or vulnerable neighbors."],
-["How do I stay healthy in cold weather?","cold weather,winter health,cold safety","Dress in layers, keep your home warm, eat regular hot meals, stay active, wash hands to avoid winter infections and get recommended vaccines."],
-["How does air pollution affect health?","air pollution,pollution,smog","Air pollution can worsen asthma, heart and lung disease. On high-pollution days, limit outdoor exercise, keep windows closed and consider a mask or indoor air filter."],
-["Is mold in the house dangerous?","mold,mould,damp house","Mold can trigger allergies, asthma and breathing problems. Fix leaks, ventilate, clean small areas with detergent and seek professional help for large areas."],
-["Is loud noise bad for hearing?","loud noise,noise hearing,earphones volume","Yes. Prolonged noise above 85 dB can damage hearing. Keep headphone volume below 60% and use hearing protection at concerts and with machinery."],
-["How do I find a good doctor?","find a doctor,choose doctor,find a gp,primary care","Ask for referrals, check qualifications and reviews, consider location and language, and look for a doctor who listens and explains clearly."],
-["What questions should I ask my doctor?","questions for doctor,ask my doctor,doctor questions","Ask what is wrong, what tests or treatments are needed, benefits and risks, what to expect, when to follow up and what warning signs to watch for."],
-["How can I prepare for a doctor's appointment?","prepare doctor appointment,doctor visit,before appointment","Write down symptoms, timing and questions, bring a list of medicines and past records, and take a friend if helpful. Be honest and specific."],
-["Should I get a second opinion?","second opinion","A second opinion is reasonable for major diagnoses or treatments, or if you are unsure. Good doctors support it."],
-["What is telemedicine?","telemedicine,telehealth,online doctor,video consultation","Telemedicine means seeing a clinician by phone or video. It is useful for follow-ups, minor illnesses and advice, but some problems need an in-person exam."],
-["How do I read my lab results?","lab results,read test results,blood results,reference range","Lab reports show your value next to a reference range, but results must be interpreted with your symptoms and history. Ask your doctor to explain anything marked abnormal."],
-["What is a normal heart rate?","normal heart rate,resting heart rate,pulse rate,heart rate","A normal resting heart rate for adults is about 60 to 100 beats per minute. Fit people may be lower. See a doctor if it is consistently very fast or slow or with symptoms."],
-["What is a normal body temperature?","normal body temperature,normal temperature,body temperature","Normal is usually around 36.1 to 37.2°C (97 to 99°F). A fever is generally 38°C (100.4°F) or higher."],
-["What is a normal oxygen level?","oxygen level,oxygen saturation,spo2,pulse oximeter","A normal blood oxygen saturation is about 95 to 100%. Readings under 92 to 94 with symptoms need medical advice, and severe breathlessness is an emergency."],
-["How do I take my temperature?","take temperature,thermometer,measure temperature","Use a digital thermometer under the tongue, in the ear, on the forehead or under the arm per the instructions, and wait a few minutes after eating, drinking or exercise. For babies, ask a health professional."],
-["How do I check my pulse?","check pulse,take pulse,measure pulse","Place two fingers on the inside of your wrist below the thumb, count beats for 30 seconds and multiply by 2. Note the rhythm as well as the rate."],
-["How can I live longer?","live longer,longevity,live healthy long,healthy lifestyle","Eat plenty of plants, stay active, sleep well, avoid smoking, limit alcohol, keep a healthy weight, manage stress, stay socially connected and keep up with check-ups."],
-["What are the habits of a healthy lifestyle?","healthy lifestyle,healthy habits,stay healthy","The basics are balanced meals, regular activity, 7 to 9 hours of sleep, not smoking, limited alcohol, stress management, social contact and regular preventive care."],
-["How can I improve my overall health?","improve health,get healthier,better health","Start small: walk daily, add vegetables, drink water, sleep on a schedule and see your doctor for check-ups. Gradual, consistent changes work best."],
-["What should I do if I feel anxious about my health?","health anxiety,hypochondria,worried about health","Health worries are common. Limit symptom searching, focus on facts from reliable sources and talk with a doctor. If worry takes over your life, therapy can help."],
-["How reliable is health information online?","online health information,google symptoms,dr google","Online information can be helpful but also misleading. Prefer official health organizations and hospitals, check dates, and discuss concerns with a health professional."],
-["What is a pulse oximeter?","pulse oximeter device,finger oximeter","A pulse oximeter clips on a finger to estimate oxygen levels. It can be helpful but is not perfect, so interpret readings with symptoms and medical advice."],
-["What is preventive care?","preventive care,prevention,preventive medicine","Preventive care means vaccines, screenings, healthy habits and regular check-ups that find or prevent problems early, which is often easier and cheaper to treat."],
-["What should I do if I have a medical emergency?","medical emergency,emergency help,i need urgent help","Call your local emergency number immediately (112 in the EU, 911 in the US). Stay with the person, follow the dispatcher's instructions and do not wait for an online response."]
-];
-
-const knowledge = [KB_symptoms, KB_body, KB_chronic, KB_nutrition, KB_lifestyle, KB_womenkids, KB_skinsenses, KB_firstaid, KB_prevention].flat().map(([question, keywords, answer], index) => ({ id: index, question, keywords: keywords.split(',').map((k) => k.trim()).filter(Boolean), answer }));
-
-
+/* ===== Search engine ===== */
 const STOP = new Set(("a an the and or of to in on at for with is are was were be been am i me my you your it its this that these those do does did can could should would will what how why when where which who whom about from as by if so than then there their they them we our us have has had not no any some more most very just also into over under up down out off too get got").split(" "));
 
 function normalize(value) {
@@ -1173,6 +344,7 @@ function findAnswer(question) {
   return bestScore >= 6 ? best : null;
 }
 
+/* ===== Safety rules ===== */
 const SUICIDE = /(suicid|kill myself|end my life|want to die|take my own life|hurt myself|self harm|self-harm|don'?t want to live)/;
 const EMERGENCY = [
   /chest (pain|pressure|tightness).*(arm|jaw|sweat|breath)/,
@@ -1237,7 +409,7 @@ function randomQuestions(count, excludeIds = []) {
 
 const totalQuestions = knowledge.length;
 
-
+/* ===== Config ===== */
 const DOCTOR = {
   name: "Dr. Amelia Hart",
   short: "DR. HART",
@@ -1247,6 +419,16 @@ const DOCTOR = {
 
 const AGE_GROUPS = ["Under 18", "18–39", "40–64", "65+"];
 const STORAGE_KEY = "ask-a-doctor-patient";
+
+/* مسیرها: این صفحه و Emergency.html هر دو داخل پوشه pages هستند، index.html یک پوشه بالاتر است */
+const LINKS = {
+  home: "../index.html",
+  emergency: "Emergency.html"
+};
+
+/* <<< اینجا رشته‌ی base64 عکس دکتر را از فایل اصلی بگذارید.
+   اگر نمی‌خواهید، آن را خالی بگذارید تا تصویر SVG پیش‌فرض نمایش داده شود >>> */
+const DOCTOR_PHOTO = "";
 
 const FLOATERS = [
   { type: "cross", left: 6, size: 22, delay: 0, duration: 26 },
@@ -1261,6 +443,7 @@ const FLOATERS = [
   { type: "cross", left: 94, size: 18, delay: 11, duration: 29 }
 ];
 
+/* ===== Helpers ===== */
 function loadPatient() {
   try {
     const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "null");
@@ -1294,11 +477,11 @@ function initials(name) {
   return (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
 }
 
+/* ===== Components ===== */
 function DoctorAvatar({ uid, className = "" }) {
   const [failed, setFailed] = useState(false);
-  if (!failed) {
-    // Put your photo next to the app as "doctor.jpg" (in /public for Vite). Falls back to the illustration.
-    return <img className={className} src="data:image/jpeg;base64,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" alt={DOCTOR.name} onError={() => setFailed(true)} />;
+  if (DOCTOR_PHOTO && !failed) {
+    return <img className={className} src={DOCTOR_PHOTO} alt={DOCTOR.name} onError={() => setFailed(true)} />;
   }
   return (
     <svg className={className} viewBox="0 0 120 120" role="img" aria-label={DOCTOR.name}>
@@ -1447,9 +630,16 @@ function MedicalChat() {
       <Background />
 
       <section className="mc-shell">
-        <link href="./index.html"><button>Home</button></link>
+        <nav className="mc-nav" aria-label="Site navigation">
+          <a href={LINKS.home}>← Home</a>
+          <a href={LINKS.emergency} className="mc-nav-alert">Emergency</a>
+        </nav>
+
         <header className="mc-intro">
-          <div className="mc-eyebrow"> <a href="Emergency.html"><span className="mc-eyebrow-dot" /></a> YOUR HEALTH, MADE CLEARER</div>
+          <div className="mc-eyebrow">
+            <a href={LINKS.emergency} aria-label="Emergency page"><span className="mc-eyebrow-dot" /></a>
+            YOUR HEALTH, MADE CLEARER
+          </div>
           <h1>Ask. Understand. <span>Feel Better.</span></h1>
           <p>Talk with {DOCTOR.name}, your virtual doctor, and get a clearer starting point for your health questions.</p>
         </header>
@@ -1488,7 +678,9 @@ function MedicalChat() {
                   {patient.photo ? "Change" : "Add photo"}
                   <input type="file" accept="image/*" hidden onChange={handlePhoto} />
                 </label>
-                {patient.photo && <button type="button" className="mc-photo-remove" onClick={() => updatePatient({ photo: "" })}>Remove</button>}
+                {patient.photo && (
+                  <button type="button" className="mc-photo-remove" onClick={() => updatePatient({ photo: "" })}>Remove</button>
+                )}
               </div>
               <div className="mc-patient-fields">
                 <div className="mc-profile-tag">PATIENT PROFILE</div>
@@ -1614,4 +806,6 @@ function MedicalChat() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<MedicalChat />);
-</script></body></html>
+</script>
+</body>
+</html>
