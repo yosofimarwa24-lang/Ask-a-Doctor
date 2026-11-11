@@ -1571,45 +1571,65 @@ header.navbar .nav-icons a:hover {
 </head>
 
 <body>
-<header class="navbar">
-    <a class="navbar-brand" href="#home">
-        <span class="logo-icon">
-            <i class="fa-solid fa-heart-pulse"></i>
-        </span>
 
-        <span class="brand-text">
-            Ask a Doctor
-            <small>Your Health, Our Priority.</small>
-        </span>
-    </a>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid nav-container">
 
-    <button class="navbar-toggler" type="button"
-            data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
-    <nav class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav">
-            <li><a class="nav-link active" href="../index.html">Home</a></li>
-            <li><a class="nav-link" href="#specialties">Specialties</a></li>
-            <li><a class="nav-link" href="#doctors">Doctors</a></li>
-            <li><a class="nav-link" href="AskADoctor.html">AskADoctor</a></li>
-            <li><a class="nav-link" href="#about">About</a></li>
-            <li><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-
-        <div class="nav-icons">
-            <a href="#search" aria-label="Search">
-                <i class="fa-solid fa-magnifying-glass"></i>
+            <a class="navbar-brand" href="#home">
+                <div class="logo-icon">
+                    <i class="bi bi-heart-pulse"></i>
+                </div>
+                <div class="brand-text">
+                    Ask a Doctor
+                    <small>Your Health, Our Priority.</small>
+                </div>
             </a>
-            <a href="#profile" aria-label="Profile">
-                <i class="fa-regular fa-user"></i>
-            </a>
+
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <i class="bi bi-list fs-2"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#specialties">Specialties</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#doctors">Doctors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#consultation">Consultation</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./pages/Emergency.html">Emergency</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./pages/AskADoctor.html">AskADoctor</a>
+                    </li>
+                </ul>
+
+                <div class="nav-icons">
+                    <a href="#search" aria-label="Search" class="text-decoration-none text-reset">
+                        <i class="bi bi-search"></i>
+                    </a>
+                    <a href="#profile" aria-label="Profile" class="text-decoration-none text-reset">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                </div>
+
+            </div>
         </div>
     </nav>
-</header>
 <section class="hero">
     <div class="ambient"></div>
 
