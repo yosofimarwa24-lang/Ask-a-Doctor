@@ -6648,3 +6648,83 @@ body {
   }
 }
 
+/* ---- methods cards (matches new script.js markup) ---- */
+.method-card .method-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--c-border);
+    color: var(--c-blue);
+    font-size: 13px;
+    font-weight: 700;
+}
+.method-card .method-arrow {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--c-light);
+    transition: .35s;
+}
+.method-card .method-arrow i {
+    all: unset;
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 12px;
+}
+.method-card:hover .method-arrow,
+.method-card.active .method-arrow {
+    background: var(--c-blue);
+    color: #fff;
+    transform: translateX(5px);
+}
+.method-card:focus-visible {
+    outline: 3px solid rgba(40, 120, 212, .4);
+    outline-offset: 3px;
+}
+/* the big icon rule must not hit the small arrow */
+.method-card > i { margin-bottom: 23px; }
+.method-card .method-meta i { width: auto; height: auto; margin: 0; background: none; box-shadow: none; transform: none; }
+
+/* ---- scroll progress, particles, ripple (created by script.js) ---- */
+.scroll-progress {
+    position: fixed;
+    z-index: 99998;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #28c6d0, #8cf0e9, #3986bb);
+    box-shadow: 0 0 15px rgba(39, 197, 207, .7);
+    pointer-events: none;
+}
+#ad-final .floating-particle {
+    position: absolute;
+    z-index: 1;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #42d2d7;
+    opacity: .5;
+    pointer-events: none;
+    animation: particleFloat 8s ease-in-out infinite;
+}
+@keyframes particleFloat {
+    0%, 100% { transform: translate3d(0, 0, 0); opacity: .2; }
+    50% { transform: translate3d(20px, -45px, 0); opacity: .8; }
+}
+.btn-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .4);
+    transform: scale(0);
+    animation: btnRipple .6s ease-out;
+    pointer-events: none;
+}
+@keyframes btnRipple { to { transform: scale(2.8); opacity: 0; } }
+
+/* reveal delay must not slow hover after the entrance */
+.reveal.visible, .reveal-left.visible, .reveal-right.visible { transition-delay: 0s; }
