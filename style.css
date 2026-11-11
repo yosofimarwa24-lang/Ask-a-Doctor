@@ -6728,3 +6728,38 @@ body {
 
 /* reveal delay must not slow hover after the entrance */
 .reveal.visible, .reveal-left.visible, .reveal-right.visible { transition-delay: 0s; }
+
+
+/* =========================================================
+   TARGETED HOVER FIXES
+   Added only for interactive controls missing their own hover.
+   Existing layout, colors and responsive rules remain unchanged.
+========================================================= */
+
+.navbar-toggler {
+    transition: color .3s ease, background-color .3s ease,
+                border-color .3s ease, box-shadow .3s ease;
+}
+
+.navbar-toggler:hover {
+    color: #0788ca;
+    background-color: rgba(7, 136, 202, .08);
+    border-color: rgba(7, 136, 202, .35);
+}
+
+.nav-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color .3s ease, transform .3s ease;
+}
+
+.nav-icons a:hover {
+    color: #0788ca !important;
+    transform: translateY(-2px);
+}
+
+.carousel-indicator:hover {
+    background: #168acb;
+    transform: scale(1.18);
+}
