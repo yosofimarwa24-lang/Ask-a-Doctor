@@ -591,9 +591,32 @@ button, textarea, input, select { font: inherit; }
 }
 
 </style></head><body><div id="root"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+<script>
+/* CDN loader: fetch + eval the libraries, then compile & run the text/babel script.
+   (A plain <script src> can silently fail to execute in some file:// contexts.) */
+(async function loadLibsAndRun() {
+  const urls = [
+    "https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js",
+    "https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js",
+    "https://cdn.jsdelivr.net/npm/@babel/standalone@7.24.7/babel.min.js"
+  ];
+  try {
+    for (const url of urls) {
+      const resp = await fetch(url);
+      const code = await resp.text();
+      (0, eval)(code);
+    }
+    const src = document.querySelector('script[type="text/babel"]').textContent;
+    const compiled = Babel.transform(src, { presets: ["react"] }).code;
+    (0, eval)(compiled);
+  } catch (err) {
+    console.error("Failed to load medical chat:", err);
+    document.getElementById("root").innerHTML =
+      '<div style="padding:40px;text-align:center;font-family:sans-serif;color:#183653">' +
+      'Could not load the chat. Check your internet connection and refresh the page.</div>';
+  }
+})();
+</script>
 <script type="text/babel" data-presets="react">
 const { useEffect, useRef, useState } = React;
 const KB_symptoms = [
