@@ -14,6 +14,7 @@ We are a dedicated team of **5 members** working together using Git and GitHub f
 ## 🛠️ Tech Stack & Tools
 *   **HTML5:** For structured and semantic web layout.
 *   **CSS3 & Bootstrap:** For modern styling, layout, grid systems, and responsiveness.
+
 *   **JavaScript (JS):** For dynamic elements, chat simulation, and interactive logic.
 *   **Design Tools:** Developed using custom animations and visual effects.
 

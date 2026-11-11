@@ -1,0 +1,1261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#12345a" />
+<title>Medical Assistant | Ask a Doctor</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { font-family: "DM Sans", Arial, sans-serif; color: #183653; background: #f3f8fd; font-synthesis: none; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; }
+button, textarea, input, select { font: inherit; }
+
+.mc-page { min-height: 100vh; min-height: 100dvh; position: relative; overflow: hidden; padding: 64px 22px 40px;
+  background: radial-gradient(ellipse at 8% 15%, rgba(53,198,212,.15), transparent 32%), radial-gradient(ellipse at 92% 75%, rgba(36,120,229,.11), transparent 34%), linear-gradient(135deg, #f5faff 0%, #ffffff 52%, #edf6ff 100%);
+  background-size: 140% 140%; animation: mc-bg-shift 26s ease-in-out infinite alternate; }
+.mc-shell { width: min(100%, 1120px); margin: 0 auto; position: relative; z-index: 1; }
+
+.mc-nav { display: flex; gap: 10px; margin-bottom: 18px; }
+.mc-nav a { text-decoration: none; padding: 9px 16px; border-radius: 30px; font-size: 13px; font-weight: 700; border: 1px solid #dceaf7; color: #2878b8; background: rgba(255,255,255,.9); transition: .2s ease; }
+.mc-nav a:hover { background: #eaf3ff; transform: translateY(-2px); }
+.mc-nav a.mc-nav-alert { color: #b42318; border-color: #ffd1ca; background: #fff4f2; }
+.mc-nav a.mc-nav-alert:hover { background: #ffe8e4; }
+
+.mc-bg { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.mc-orb { position: absolute; border-radius: 50%; filter: blur(1px); }
+.mc-orb-one { width: 280px; height: 280px; top: 170px; left: -150px; border: 1px solid rgba(36,120,229,.15); box-shadow: 0 0 0 28px rgba(36,120,229,.03), 0 0 0 58px rgba(36,120,229,.02); animation: mc-drift 18s ease-in-out infinite alternate; }
+.mc-orb-two { width: 210px; height: 210px; right: -105px; bottom: 120px; border: 1px solid rgba(53,198,212,.24); box-shadow: 0 0 0 25px rgba(53,198,212,.04), 0 0 0 50px rgba(53,198,212,.022); animation: mc-drift 22s ease-in-out infinite alternate-reverse; }
+.mc-ring { position: absolute; border-radius: 50%; border: 2px solid rgba(53,198,212,.35); opacity: 0; animation: mc-pulse-ring 7s ease-out infinite; }
+.mc-ring-a { width: 160px; height: 160px; top: 16%; right: 8%; }
+.mc-ring-b { width: 120px; height: 120px; bottom: 18%; left: 7%; animation-delay: -3.5s; border-color: rgba(36,120,229,.3); }
+.mc-ecg { position: absolute; left: 0; right: 0; height: 120px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='120' viewBox='0 0 260 120'%3E%3Cpath d='M0 60H70L82 60L92 55L100 60H118L126 71L136 12L148 106L158 60H182L194 49L206 60H260' fill='none' stroke='%2335c6d4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: repeat-x; background-size: 260px 120px; opacity: .24;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent); mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  animation: mc-ecg-scroll 13s linear infinite; }
+.mc-ecg-a { top: 20%; }
+.mc-ecg-b { bottom: 8%; opacity: .16; transform: scaleX(-1); animation-duration: 19s; }
+.mc-float { position: absolute; bottom: -70px; width: var(--s); height: var(--s); opacity: 0; animation: mc-float-up linear infinite; }
+.mc-float-cross::before, .mc-float-cross::after { content: ""; position: absolute; background: rgba(53,198,212,.45); border-radius: 3px; }
+.mc-float-cross::before { left: 36%; right: 36%; top: 0; bottom: 0; }
+.mc-float-cross::after { top: 36%; bottom: 36%; left: 0; right: 0; }
+.mc-float-pill { width: calc(var(--s) * 1.7); height: calc(var(--s) * .6); border-radius: 99px; background: linear-gradient(90deg, rgba(36,120,229,.38) 50%, rgba(255,255,255,.7) 50%); border: 1px solid rgba(36,120,229,.3); transform: rotate(35deg); }
+.mc-float-drop { border-radius: 50% 50% 50% 0; background: rgba(36,120,229,.3); rotate: -45deg; }
+.mc-float-dot { border-radius: 50%; background: rgba(53,198,212,.4); }
+
+.mc-intro { text-align: center; margin: 0 auto 30px; animation: mc-rise .7s ease both; }
+.mc-eyebrow { display: inline-flex; align-items: center; gap: 9px; color: #2878b8; background: rgba(255,255,255,.85); border: 1px solid #dceaf7; border-radius: 30px; padding: 9px 16px; font-size: 11px; font-weight: 800; letter-spacing: 1.6px; }
+.mc-eyebrow a { display: inline-flex; padding: 4px; margin: -4px; }
+.mc-eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: #35c6d4; box-shadow: 0 0 0 4px rgba(53,198,212,.15); animation: mc-dot-pulse 2s ease-in-out infinite; display: block; }
+.mc-intro h1 { margin: 18px 0 12px; color: #12345a; font-size: clamp(32px, 5.4vw, 52px); line-height: 1.12; letter-spacing: -1.8px; font-weight: 800; }
+.mc-intro h1 span { background: linear-gradient(100deg, #2478e5, #35b9c9); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.mc-intro p { max-width: 620px; margin: 0 auto; color: #5f7790; font-size: clamp(14px, 1.6vw, 16px); line-height: 1.75; }
+
+.mc-layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 22px; align-items: start; }
+.mc-side { display: grid; gap: 18px; position: sticky; top: 20px; animation: mc-rise .7s .1s ease both; }
+
+.mc-profile { border: 1px solid rgba(220,234,247,.95); border-radius: 22px; background: rgba(255,255,255,.94); box-shadow: 0 18px 55px rgba(22,65,108,.10), 0 3px 10px rgba(22,65,108,.04); backdrop-filter: blur(12px); padding: 22px; }
+.mc-profile-tag { color: #8ea3b6; font-size: 11px; font-weight: 800; letter-spacing: 1.4px; margin-bottom: 8px; }
+.mc-doctor-card { text-align: center; position: relative; overflow: hidden; }
+.mc-doctor-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 92px; background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%); }
+.mc-doctor-photo { position: relative; width: 108px; height: 108px; margin: 8px auto 12px; }
+.mc-doctor-svg { position: relative; z-index: 1; width: 100%; height: 100%; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 10px 26px rgba(22,65,108,.22); display: block; }
+.mc-doctor-ring { position: absolute; inset: -4px; border-radius: 50%; border: 2px solid rgba(88,224,166,.8); animation: mc-avatar-ring 2.6s ease-out infinite; }
+.mc-online-dot { position: absolute; z-index: 2; right: 6px; bottom: 6px; width: 15px; height: 15px; border-radius: 50%; background: #58e0a6; border: 3px solid #fff; box-shadow: 0 0 10px rgba(88,224,166,.7); }
+.mc-doctor-info { position: relative; }
+.mc-doctor-info h2 { margin: 0 0 4px; color: #12345a; font-size: 20px; font-weight: 800; letter-spacing: -.3px; }
+.mc-doctor-title { margin: 0 0 12px; color: #5f7790; font-size: 14px; }
+.mc-ai-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; color: #17668a; background: #e2f8f8; font-size: 11.5px; font-weight: 700; }
+.mc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0 4px; padding: 14px 4px; border-block: 1px solid #eaf0f6; }
+.mc-stats strong { display: block; color: #2478e5; font-size: 17px; font-weight: 800; }
+.mc-stats span { color: #8093a5; font-size: 11.5px; font-weight: 600; }
+.mc-doctor-about { text-align: left; margin-top: 14px; }
+.mc-doctor-about ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
+.mc-doctor-about li { padding: 6px 11px; border: 1px solid #dfeaf5; border-radius: 20px; color: #477397; background: #f6faff; font-size: 12px; font-weight: 600; }
+
+.mc-patient-card { display: flex; gap: 14px; align-items: flex-start; }
+.mc-patient-avatar { display: grid; place-items: center; flex: 0 0 56px; width: 56px; height: 56px; border-radius: 16px; color: #148b9a; background: #e2f8f8; font-size: 18px; font-weight: 800; overflow: hidden; }
+.mc-patient-avatar svg { width: 60%; height: 60%; }
+.mc-patient-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.mc-doctor-svg, .mc-header-svg, .mc-mini-svg { object-fit: cover; }
+.mc-photo-col { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 0 0 64px; }
+.mc-photo-btn { color: #2878b8; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
+.mc-photo-btn:hover { text-decoration: underline; }
+.mc-photo-remove { border: 0; background: none; color: #a05a5a; font-size: 11.5px; cursor: pointer; padding: 0; }
+.mc-patient-fields { flex: 1; min-width: 0; }
+.mc-field { display: block; margin-bottom: 10px; }
+.mc-field span { display: block; margin: 0 0 5px 2px; color: #6c8196; font-size: 12px; font-weight: 700; }
+.mc-field input, .mc-field select { width: 100%; padding: 10px 12px; border: 1px solid #dce8f4; border-radius: 11px; background: #f9fcff; color: #183653; font-size: 14px; outline: none; transition: .2s ease; }
+.mc-field input:focus, .mc-field select:focus { border-color: #6ca8e4; background: #fff; box-shadow: 0 0 0 4px rgba(36,120,229,.08); }
+.mc-visit { color: #8093a5; font-size: 12.5px; }
+.mc-visit strong { color: #2478e5; }
+
+.mc-card { overflow: hidden; border: 1px solid rgba(220,234,247,.95); border-radius: 23px; background: rgba(255,255,255,.94); box-shadow: 0 26px 80px rgba(22,65,108,.13), 0 3px 12px rgba(22,65,108,.04); backdrop-filter: blur(12px); animation: mc-rise .7s .2s ease both; }
+.mc-header { min-height: 84px; padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 15px; color: white; background: linear-gradient(112deg, #102f53 0%, #164b79 62%, #17668a 100%); }
+.mc-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.mc-header-avatar { position: relative; flex: 0 0 52px; width: 52px; height: 52px; }
+.mc-header-svg { width: 100%; height: 100%; border-radius: 16px; border: 2px solid rgba(255,255,255,.4); display: block; }
+.mc-header-avatar .mc-online-dot { right: -4px; bottom: -4px; width: 14px; height: 14px; }
+.mc-brand h2 { margin: 0 0 5px; font-size: 17px; font-weight: 700; letter-spacing: .1px; }
+.mc-status { display: flex; align-items: center; gap: 8px; color: #d5eafa; font-size: 12.5px; }
+.mc-status span { flex: 0 0 8px; width: 8px; height: 8px; background: #58e0a6; border-radius: 50%; box-shadow: 0 0 10px rgba(88,224,166,.65); animation: mc-dot-pulse 2s ease-in-out infinite; }
+.mc-reset { flex: 0 0 auto; border: 1px solid rgba(255,255,255,.25); color: #fff; background: rgba(255,255,255,.09); border-radius: 11px; padding: 11px 14px; font-size: 13px; font-weight: 700; cursor: pointer; transition: .22s ease; }
+.mc-reset span { font-size: 16px; margin-right: 4px; vertical-align: -1px; display: inline-block; }
+.mc-reset:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
+.mc-reset:hover span { transform: rotate(180deg); transition: transform .4s ease; }
+
+.mc-conversation { height: clamp(400px, 60vh, 620px); overflow-y: auto; padding: 24px 26px 14px; background: radial-gradient(circle at 92% 6%, rgba(53,198,212,.06), transparent 27%), #fbfdff; scrollbar-width: thin; scrollbar-color: #cbdceb transparent; overscroll-behavior: contain; }
+.mc-conversation::-webkit-scrollbar { width: 6px; }
+.mc-conversation::-webkit-scrollbar-thumb { background: #cbdceb; border-radius: 8px; }
+.mc-date-divider { display: flex; align-items: center; gap: 13px; margin: 0 0 24px; color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; }
+.mc-date-divider::before, .mc-date-divider::after { content: ""; height: 1px; flex: 1; background: #eaf0f6; }
+
+.mc-message { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 22px; animation: mc-rise .32s ease both; }
+.mc-user { flex-direction: row-reverse; }
+.mc-message-avatar { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border-radius: 12px; overflow: hidden; font-size: 12px; font-weight: 800; }
+.mc-doctor-mini { background: #eaf3ff; }
+.mc-mini-svg { width: 100%; height: 100%; display: block; }
+.mc-user-avatar { color: #148b9a; background: #e2f8f8; }
+.mc-message-content { max-width: min(78%, 660px); min-width: 0; }
+.mc-user .mc-message-content { text-align: right; }
+.mc-sender { display: flex; align-items: center; gap: 8px; margin: 1px 0 7px; color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+.mc-user .mc-sender { justify-content: flex-end; }
+.mc-sender time { font-weight: 600; letter-spacing: .3px; color: #a9b8c6; }
+.mc-bubble { display: inline-block; padding: 14px 18px; border: 1px solid #e5edf5; border-radius: 4px 16px 16px 16px; background: #fff; color: #2f4a65; box-shadow: 0 4px 15px rgba(24,65,105,.04); text-align: left; font-size: 15px; line-height: 1.7; overflow-wrap: anywhere; }
+.mc-user .mc-bubble { color: #fff; border: 0; border-radius: 16px 4px 16px 16px; background: linear-gradient(135deg, #2478e5, #329ce4); box-shadow: 0 7px 17px rgba(36,120,229,.18); }
+.mc-bubble.mc-emergency { color: #8f2828; background: #fff4f2; border: 1px solid #ffd1ca; animation: mc-alert 2.4s ease-in-out infinite; }
+.mc-alert-title { display: block; margin-bottom: 4px; color: #b42318; font-size: 14px; }
+.mc-typing { display: flex; align-items: center; gap: 5px; width: 64px; padding: 16px 17px; border: 1px solid #e5edf5; border-radius: 4px 16px 16px 16px; background: #fff; }
+.mc-typing i { width: 7px; height: 7px; border-radius: 50%; background: #7ea6cb; animation: mc-bounce .65s infinite alternate; }
+.mc-typing i:nth-child(2) { animation-delay: .14s; }
+.mc-typing i:nth-child(3) { animation-delay: .28s; }
+
+.mc-suggestions { padding: 4px 26px 20px; background: #fbfdff; }
+.mc-suggestion-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+.mc-suggestion-heading { color: #8ea1b3; font-size: 11px; font-weight: 800; letter-spacing: 1.3px; }
+.mc-shuffle { border: 0; background: transparent; cursor: pointer; color: #2878b8; font-size: 12.5px; font-weight: 700; padding: 4px 6px; border-radius: 8px; }
+.mc-shuffle:hover:not(:disabled) { background: #eaf3ff; }
+.mc-shuffle:disabled { opacity: .5; cursor: not-allowed; }
+.mc-suggestion-list { display: flex; flex-wrap: wrap; gap: 9px; }
+.mc-suggestion-list button { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; border: 1px solid #dfeaf5; border-radius: 30px; padding: 9px 14px; color: #3e6a8f; background: #fff; font-size: 13px; font-weight: 600; line-height: 1.35; text-align: left; cursor: pointer; transition: .2s ease; animation: mc-rise .4s ease both; }
+.mc-suggestion-list button:nth-child(2) { animation-delay: .05s; }
+.mc-suggestion-list button:nth-child(3) { animation-delay: .1s; }
+.mc-suggestion-list button:nth-child(4) { animation-delay: .15s; }
+.mc-suggestion-list button:nth-child(5) { animation-delay: .2s; }
+.mc-suggestion-list button:nth-child(6) { animation-delay: .25s; }
+.mc-suggestion-list button span { color: #35a9bd; font-size: 14px; flex: 0 0 auto; }
+.mc-suggestion-list button:hover:not(:disabled) { border-color: #80b7e8; color: #176db7; background: #f2f8ff; transform: translateY(-2px); }
+.mc-suggestion-list button:disabled { opacity: .5; cursor: not-allowed; }
+
+.mc-composer { padding: 18px 26px; border-top: 1px solid #eaf0f6; background: #fff; }
+.mc-input-label { display: block; margin: 0 0 8px 2px; color: #7f95a9; font-size: 11px; font-weight: 800; letter-spacing: 1.2px; }
+.mc-input-row { display: flex; align-items: flex-end; gap: 10px; padding: 8px 9px 8px 16px; border: 1px solid #dce8f4; border-radius: 15px; background: #f9fcff; transition: .2s ease; }
+.mc-input-row:focus-within { border-color: #6ca8e4; background: #fff; box-shadow: 0 0 0 4px rgba(36,120,229,.08); }
+.mc-input-row textarea { flex: 1; min-width: 0; max-height: 120px; min-height: 42px; padding: 10px 0; resize: none; outline: none; border: 0; background: transparent; color: #183653; font-size: 15px; line-height: 1.55; }
+.mc-input-row textarea::placeholder { color: #94a5b5; }
+.mc-send { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 0; border-radius: 12px; color: white; background: linear-gradient(135deg, #2478e5, #36a9df); cursor: pointer; transition: .2s ease; }
+.mc-send svg { width: 19px; height: 19px; }
+.mc-send:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 7px 15px rgba(36,120,229,.25); }
+.mc-send:disabled { opacity: .42; cursor: not-allowed; }
+.mc-input-foot { display: flex; justify-content: space-between; gap: 10px; margin: 8px 2px 0; color: #8fa1b2; font-size: 12px; }
+
+.mc-disclaimer { display: flex; align-items: flex-start; gap: 12px; margin-top: 20px; padding: 16px 18px; border: 1px solid #dfebf5; border-radius: 14px; background: rgba(255,255,255,.8); animation: mc-rise .7s .3s ease both; }
+.mc-info-icon { display: grid; place-items: center; flex: 0 0 20px; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; color: #fff; background: #79a8ce; font-family: Georgia, serif; font-size: 13px; font-weight: 700; }
+.mc-disclaimer p { margin: 0; color: #6c8196; font-size: 12.5px; line-height: 1.7; }
+.mc-disclaimer strong { color: #456986; }
+.mc-footer { margin-top: 24px; text-align: center; color: #8fa1b2; font-size: 11px; font-weight: 800; letter-spacing: 2px; }
+.mc-footer span { padding: 0 7px; color: #35b9c9; }
+
+@keyframes mc-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes mc-bounce { from { transform: translateY(0); opacity: .55; } to { transform: translateY(-5px); opacity: 1; } }
+@keyframes mc-bg-shift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+@keyframes mc-drift { from { transform: translate(0, 0); } to { transform: translate(40px, -30px); } }
+@keyframes mc-pulse-ring { 0% { transform: scale(.4); opacity: .7; } 100% { transform: scale(1.7); opacity: 0; } }
+@keyframes mc-ecg-scroll { from { background-position-x: 0; } to { background-position-x: -1040px; } }
+@keyframes mc-ecg-scroll-sm { from { background-position-x: 0; } to { background-position-x: -780px; } }
+@keyframes mc-float-up { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 10% { opacity: .75; } 90% { opacity: .75; } 100% { transform: translateY(-115vh) rotate(200deg); opacity: 0; } }
+@keyframes mc-dot-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: .65; } }
+@keyframes mc-avatar-ring { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.35); opacity: 0; } }
+@keyframes mc-alert { 0%, 100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); } 50% { box-shadow: 0 0 0 6px rgba(231,76,60,.10); } }
+
+@media (max-width: 980px) {
+  .mc-layout { grid-template-columns: 1fr; }
+  .mc-side { position: static; grid-template-columns: 1fr 1fr; }
+  .mc-doctor-card { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; align-items: center; text-align: left; padding: 18px; }
+  .mc-doctor-card::before { height: 100%; width: 132px; inset: 0 auto 0 0; }
+  .mc-doctor-photo { grid-row: 1; margin: 0; width: 96px; height: 96px; }
+  .mc-doctor-info h2 { font-size: 18px; }
+  .mc-stats, .mc-doctor-about { display: none; }
+}
+@media (max-width: 700px) {
+  .mc-page { padding: 40px 12px 28px; }
+  .mc-intro { margin-bottom: 22px; }
+  .mc-intro h1 { letter-spacing: -1.2px; }
+  .mc-side { grid-template-columns: 1fr; gap: 12px; }
+  .mc-profile { padding: 16px; border-radius: 18px; }
+  .mc-doctor-card::before { width: 118px; }
+  .mc-doctor-photo { width: 86px; height: 86px; }
+  .mc-header { min-height: 74px; padding: 13px 14px; }
+  .mc-header-avatar { flex-basis: 44px; width: 44px; height: 44px; }
+  .mc-brand { gap: 11px; }
+  .mc-brand h2 { font-size: 15px; }
+  .mc-status { font-size: 12px; }
+  .mc-reset { padding: 10px 11px; font-size: 12.5px; }
+  .mc-conversation { height: clamp(380px, 58vh, 520px); padding: 18px 13px 12px; }
+  .mc-message { gap: 9px; margin-bottom: 18px; }
+  .mc-message-avatar { flex-basis: 34px; width: 34px; height: 34px; }
+  .mc-message-content { max-width: 86%; }
+  .mc-bubble { padding: 12px 14px; font-size: 14.5px; }
+  .mc-suggestions { padding: 2px 13px 16px; }
+  .mc-suggestion-list button { font-size: 12.5px; padding: 8px 12px; }
+  .mc-composer { padding: 14px 13px; }
+  .mc-input-row textarea { font-size: 16px; }
+  .mc-input-foot span:first-child { display: none; }
+  .mc-input-foot { justify-content: flex-end; }
+  .mc-disclaimer { padding: 13px 14px; }
+  .mc-ecg { height: 90px; background-size: 195px 90px; animation-name: mc-ecg-scroll-sm; }
+}
+@media (max-width: 420px) {
+  .mc-reset { font-size: 0; padding: 11px 13px; }
+  .mc-reset span { font-size: 17px; margin: 0; }
+  .mc-status { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mc-brand > div:last-child { min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+  .mc-float, .mc-ring { display: none; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const { useEffect, useRef, useState } = React;
+
+const KB_symptoms = [
+["What causes a headache?","headache,head hurts,head pain","Most headaches are tension-type, triggered by stress, poor sleep, dehydration, eye strain, skipped meals or too much caffeine. Rest, water and a quiet room often help. See a doctor if headaches are new, frequent or getting worse."],
+["How can I get rid of a headache fast?","headache fast,headache relief,headache remedy,cure headache","Drink water, rest in a dim quiet room, place a cool cloth on your forehead and stretch your neck gently. An over-the-counter pain reliever may help if it is safe for you; follow the label and avoid using it every day."],
+["When is a headache serious?","serious headache,worst headache,headache warning","Get urgent care for a sudden severe headache, or one with fever and stiff neck, confusion, weakness, vision changes, fainting, or after a head injury. See a doctor for headaches that keep getting worse."],
+["What is a migraine?","migraine,aura","A migraine is a recurring, often one-sided throbbing headache, sometimes with nausea, light and sound sensitivity or visual aura. Early treatment, rest in the dark and avoiding triggers help. A doctor can suggest prevention if attacks are frequent."],
+["What causes dizziness?","dizzy,dizziness,lightheaded,light headed","Common causes are dehydration, standing up fast, low blood sugar, inner-ear problems, anxiety, anemia or medicines. Sit or lie down and drink water. Seek urgent care if it comes with chest pain, fainting, weakness or slurred speech."],
+["What should I do for a fever?","fever,high temperature,feverish","Rest, drink plenty of fluids and dress lightly. A fever reducer can ease discomfort if suitable for you. Seek care if fever is above 39.5°C (103°F), lasts over 3 days, or comes with rash, stiff neck, confusion or trouble breathing."],
+["When is a fever dangerous?","dangerous fever,fever baby,fever emergency,fever infant","Any fever in a baby under 3 months needs urgent medical review. In others, worry about very high fever, fever with stiff neck, rash, confusion, seizures or breathing trouble, or fever lasting more than 3 days."],
+["How do I treat a common cold?","treat cold,common cold,cold remedy,cold symptoms","Rest, fluids, warm drinks, saline nasal rinses and humid air help. Antibiotics do not work on colds. See a doctor if symptoms last over 10 days, or you have high fever or trouble breathing."],
+["What is the difference between a cold and the flu?","cold vs flu,flu or cold,influenza,flu symptoms","Flu comes on suddenly with fever, body aches and strong fatigue; a cold is usually milder with sneezing and a runny nose. People at higher risk should see a doctor early when flu is suspected."],
+["How long does a cold last?","how long cold,cold duration,cold last","Most colds last 7 to 10 days, and a cough can linger for up to 3 weeks. Symptoms that get worse after a week, or come with high fever, may mean a secondary infection."],
+["What helps a sore throat?","sore throat,throat pain,painful swallowing","Warm fluids, honey in tea (not for babies under 1), salt-water gargles, lozenges and rest help. See a doctor if it lasts over a week, makes swallowing or breathing hard, or comes with high fever."],
+["Could my sore throat be strep throat?","strep,strep throat,throat white spots","Strep usually brings a sudden painful throat, fever, swollen glands and often no cough. It needs a quick swab test, and antibiotics if positive. See a doctor rather than guessing."],
+["Why do I have a cough?","cough,coughing,why cough","Coughs are commonly caused by viral infections, allergies, asthma, acid reflux, smoking or irritants. Most viral coughs fade in a few weeks. See a doctor if it is severe, lasts over 3 weeks, or comes with blood or breathlessness."],
+["How can I stop a dry cough?","dry cough,tickly cough,cough remedy","Sip warm drinks, try honey (not for under 1 year), use a humidifier, avoid smoke and dust, and stay hydrated. If it lasts more than 3 weeks or you have wheeze or breathlessness, see a doctor."],
+["What does a cough with phlegm mean?","phlegm,mucus cough,productive cough,chesty cough","A cough with mucus often follows a chest or airway infection such as a cold or bronchitis. Fluids and rest help. See a doctor if mucus is bloody, you have fever, chest pain, or it lasts over 3 weeks."],
+["When should I worry about a cough that will not go away?","cough will not go away,chronic cough,persistent cough,cough weeks","A cough lasting over 3 weeks deserves a medical check. Causes include asthma, reflux, post-nasal drip, medication effects, and less commonly infections like TB or lung disease. Coughing blood needs urgent care."],
+["How do I relieve a blocked or runny nose?","runny nose,blocked nose,stuffy nose,congestion,sneezing","Saline spray or rinse, steam, fluids and rest help. Avoid decongestant sprays for more than 3 days as they can cause rebound congestion. See a doctor if symptoms last more than 10 days or involve facial pain and fever."],
+["What are the symptoms of a sinus infection?","sinus,sinusitis,facial pressure","Sinusitis often brings facial pain or pressure, a blocked nose, thick discharge and reduced smell. Most cases are viral and clear in about 10 days. See a doctor if severe, lasting longer, or worsening after improving."],
+["What are common allergy symptoms?","allergy symptoms,allergic,allergies","Allergies can cause sneezing, itchy eyes, runny nose, rash, hives or itchy skin. Avoiding triggers and antihistamines can help. Swelling of lips or throat, or trouble breathing, is an emergency."],
+["How can I manage hay fever?","hay fever,pollen,seasonal allergy","Check pollen forecasts, keep windows closed on high days, shower after being outside, wash bedding often and use antihistamine or nasal sprays as advised by a pharmacist or doctor."],
+["Why am I always tired?","always tired,fatigue,exhausted,no energy,tiredness","Fatigue can come from poor sleep, stress, low iron, thyroid problems, depression, infections or medicines. Review sleep, diet and activity. See a doctor if it lasts weeks or comes with weight change, fever or low mood."],
+["What can cause chest pain?","chest pain,chest tightness,chest pressure","Chest pain can come from muscles, reflux, anxiety or lung problems, but can also signal a heart attack. Pressure, spreading pain, sweating or breathlessness needs emergency help right away. When unsure, get checked."],
+["Why am I short of breath?","short of breath,shortness of breath,breathless,breathing difficulty","Breathlessness can result from asthma, infections, anemia, anxiety, heart or lung disease. Sudden or severe breathlessness, blue lips or chest pain is an emergency. Ongoing breathlessness needs a medical evaluation."],
+["What causes heart palpitations?","palpitations,heart racing,fast heartbeat,pounding heart","Palpitations are often triggered by stress, caffeine, lack of sleep, alcohol, fever or exercise. See a doctor if frequent, or with fainting, chest pain or breathlessness, since some rhythm problems need treatment."],
+["What helps with nausea?","nausea,feel sick,queasy","Sip clear fluids slowly, eat small bland snacks like crackers, try ginger, get fresh air and avoid strong smells. See a doctor if nausea lasts more than a couple of days or comes with severe pain."],
+["What should I do if I am vomiting?","vomiting,throwing up,being sick","Rest the stomach for an hour, then sip small amounts of water or oral rehydration solution. Reintroduce bland food slowly. Seek care for blood in vomit, severe pain, signs of dehydration or vomiting beyond 24 hours."],
+["What are the signs of dehydration?","dehydration,dehydrated,dry mouth thirsty","Signs include thirst, dark urine, dry mouth, headache, dizziness and fatigue. Drink fluids steadily. Severe signs like confusion, fainting, very little urine or a rapid heartbeat need urgent care."],
+["How do I treat diarrhea?","diarrhea,diarrhoea,loose stool,watery stool","Replace fluids with water and oral rehydration solution, eat bland foods and rest. See a doctor if it lasts over 2 days, or with blood, high fever, severe pain or signs of dehydration."],
+["How can I relieve constipation?","constipation,hard stool,cannot poop,difficulty passing stool","Eat more fiber, drink water, move daily and do not ignore the urge to go. Short-term laxatives can help if advised. See a doctor for blood in stool, severe pain or a lasting change in bowel habits."],
+["What causes stomach pain?","stomach pain,stomachache,stomach ache,abdominal pain,belly pain","Stomach pain can be from gas, indigestion, constipation, infections or food reactions. Sudden severe pain, fever, repeated vomiting, a rigid belly or blood in stool needs urgent assessment."],
+["What is heartburn and how do I treat it?","heartburn,burning chest after eating","Heartburn is a burning feeling behind the breastbone from stomach acid. Smaller meals, avoiding late eating, trigger foods and alcohol help, and antacids give short relief. See a doctor if frequent or with trouble swallowing."],
+["Why do I feel bloated?","bloating,bloated,swollen belly","Bloating often comes from gas, eating fast, carbonated drinks, constipation, or food intolerances. Slow eating, walking and noting trigger foods help. Persistent bloating with weight loss or pain should be checked."],
+["What causes lower back pain?","back pain,lower back,backache","Most back pain comes from muscle strain or posture and improves within weeks. Stay gently active, avoid long bed rest and use heat. Seek urgent care for numbness in the groin, leg weakness or loss of bladder control."],
+["How can I relieve neck pain?","neck pain,stiff neck,neck ache","Gentle stretching, heat, good posture, a supportive pillow and breaks from screens help. See a doctor if pain follows an injury, spreads with numbness or weakness, or comes with fever and severe headache."],
+["What causes joint pain?","joint pain,achy joints,joints hurt","Joint pain can come from overuse, injury, osteoarthritis, inflammatory arthritis, gout or infection. Rest, ice or heat help short term. See a doctor if a joint is hot, swollen, or pain lasts more than a few weeks."],
+["What causes muscle cramps?","muscle cramps,cramp,muscle spasm","Cramps often follow exercise, dehydration, low electrolytes or muscle fatigue. Stretch gently, massage and drink fluids. Frequent cramps or cramps with weakness should be reviewed by a doctor."],
+["Why are my ankles swollen?","swollen ankles,swollen feet,ankle swelling,edema,oedema","Swelling can come from standing long, heat, pregnancy, injury or medicines, but also from heart, kidney, liver or vein problems. Raise your legs. See a doctor if it is sudden, one-sided, painful or with breathlessness."],
+["What causes numbness and tingling?","numbness,tingling,pins and needles","Tingling often comes from pressure on a nerve, such as sitting awkwardly. Persistent numbness can relate to diabetes, vitamin B12 deficiency or nerve compression. Sudden numbness with weakness or speech trouble is an emergency."],
+["Why did I faint?","faint,fainting,passed out,blackout","Fainting often follows dehydration, standing up fast, heat, pain or emotional stress. Lie down with legs raised. Any fainting needs medical review if it is with chest pain, palpitations, injury or happens without warning."],
+["What causes night sweats?","night sweats,sweating at night,wake up sweating","Causes include a hot room, menopause, infections, anxiety and some medicines. Persistent drenching sweats with fever or weight loss should be checked by a doctor."],
+["Why am I losing weight without trying?","unexplained weight loss,losing weight without trying,weight loss unintentional","Unintended weight loss can be linked to thyroid problems, diabetes, digestive conditions, depression, infections or cancer. Losing 5% of body weight over 6 to 12 months deserves a doctor visit."],
+["Why have I lost my appetite?","loss of appetite,no appetite,not hungry,not eating","A short loss of appetite is common with infections, stress or medicines. Eat small, nutritious snacks and drink fluids. See a doctor if it lasts more than 2 weeks or comes with weight loss."],
+["Why do I urinate so often?","frequent urination,urinating often,pee a lot,peeing a lot","Frequent urination can come from drinking more, caffeine, urinary infections, diabetes, pregnancy or prostate problems. See a doctor if it is new, with thirst, pain, burning or blood."],
+["What are signs of a urinary tract infection?","uti,urinary tract infection,burning urination,painful urination,burning when i pee","UTIs cause burning when urinating, urgency, frequent small amounts, cloudy or smelly urine and lower belly discomfort. A doctor can test and treat. Fever, back pain or vomiting need prompt care."],
+["What does blood in urine mean?","blood in urine,bloody urine,red urine,pink urine","Blood in urine can be from infection, kidney stones, medicines or more serious conditions. It should always be checked by a doctor, even if it only happens once."],
+["Why are my lymph nodes swollen?","swollen lymph nodes,swollen glands,lump in neck","Lymph nodes usually swell during infections like colds or sore throats and settle in 2 to 3 weeks. See a doctor for hard, fixed or growing nodes, or ones lasting over 3 weeks, especially with fever or weight loss."],
+["Why do I have chills?","chills,shivering,shaking cold","Chills often come with fever or infection as the body tries to warm up. Rest, fluids and a light blanket help. Shaking chills with high fever, confusion or fast breathing need urgent evaluation."],
+["How do I stop hiccups?","hiccups,hiccup","Try holding your breath briefly, sipping cold water slowly or swallowing a teaspoon of sugar. Hiccups usually stop on their own. See a doctor if they last more than 48 hours."],
+["What causes leg pain or calf swelling?","calf pain,leg pain,calf swelling,leg swelling","Leg pain may come from muscle strain, cramps or nerve problems. A swollen, warm, painful calf, especially on one side, may be a blood clot and needs urgent medical evaluation."],
+["Why do I get nosebleeds?","nosebleed,nose bleed,bleeding nose","Dry air, nose picking, colds and allergies commonly cause nosebleeds. Sit up, lean forward and pinch the soft part of the nose for 10 to 15 minutes. Seek care if it will not stop or happens often."],
+["Why is my vision blurry?","blurry vision,blurred vision,cannot see clearly","Blurry vision can be from tired eyes, needing glasses, dry eyes or migraines, but also diabetes or eye disease. Sudden vision loss or blurred vision with weakness or headache is an emergency."],
+["Why do I feel weak all over?","weakness,feel weak,body weakness","General weakness may come from illness, poor sleep, anemia, dehydration, low blood sugar or medicines. Sudden weakness on one side or face drooping is a stroke warning and needs emergency help."],
+["Why do I feel cold all the time?","feel cold all the time,always cold,cold hands feet","Feeling cold can relate to low iron, thyroid problems, poor circulation, low body weight or not enough sleep. See a doctor if it is persistent or comes with fatigue and other symptoms."],
+["Why do I have a sore or swollen tongue?","sore tongue,swollen tongue,tongue pain","Tongue soreness can come from burns, ulcers, infection like thrush or vitamin deficiencies. See a doctor if it lasts over 2 weeks, and urgently if swelling affects breathing."],
+["How can I tell if I have a viral or bacterial infection?","viral or bacterial,bacterial infection,viral infection,antibiotics needed","Viral infections like colds are common and do not respond to antibiotics. Bacterial infections often last longer, worsen after improving or cause localised pain and pus. A doctor can examine or test to decide."],
+["What should I do if I feel unwell and do not know why?","feel unwell,feel sick,not feeling well,something wrong","Note your symptoms, when they began and anything that makes them better or worse. Rest, hydrate and check your temperature. If symptoms are severe, getting worse or you are worried, contact a doctor."]
+];
+
+const KB_body = [
+["What is acid reflux?","acid reflux,gerd,reflux","Acid reflux happens when stomach acid flows back into the esophagus, causing heartburn or a sour taste. Smaller meals, avoiding late meals, weight management and limiting trigger foods help. Frequent reflux needs medical review."],
+["How do I treat indigestion?","indigestion,dyspepsia,upset stomach","Eat slowly, avoid heavy, fatty or spicy meals, limit alcohol and caffeine, and do not lie down right after eating. Antacids may help. See a doctor if it is frequent, or with weight loss or vomiting."],
+["Why do I have so much gas?","gas,flatulence,gassy,excessive gas","Gas builds up from swallowed air, fizzy drinks and foods like beans, onions and cabbage. Eat slowly and track trigger foods. See a doctor if it comes with severe pain, weight loss or blood in stool."],
+["What are signs of a stomach ulcer?","ulcer,stomach ulcer,peptic ulcer","Ulcers cause burning upper stomach pain, often related to meals, plus nausea or bloating. Common causes are H. pylori infection and anti-inflammatory painkillers. Black stools or vomiting blood needs urgent care."],
+["What is irritable bowel syndrome?","ibs,irritable bowel","IBS is a common gut disorder causing cramps, bloating, diarrhea or constipation without visible damage. Stress management, food diary, regular meals and sometimes dietary changes help. A doctor can rule out other conditions."],
+["What should I do for food poisoning?","food poisoning,bad food,contaminated food","Rest and sip fluids or oral rehydration solution often. Most cases settle in 1 to 3 days. Seek care for blood in stool, high fever, severe dehydration, or if you are pregnant, elderly or very young."],
+["What is stomach flu?","stomach flu,gastroenteritis,stomach bug","Stomach flu is usually a viral gut infection causing vomiting and diarrhea. Rest, fluids and handwashing are key. Dehydration is the main risk, so seek help if you cannot keep fluids down."],
+["What is lactose intolerance?","lactose intolerance,lactose,milk intolerance","Lactose intolerance means the gut cannot fully digest milk sugar, causing gas, bloating and diarrhea after dairy. Lactose-free products or lactase tablets may help. It is different from a milk allergy."],
+["What is celiac disease?","celiac,coeliac,gluten intolerance","Celiac disease is an immune reaction to gluten that damages the gut. Symptoms include diarrhea, bloating, fatigue and anemia. Get tested before starting a gluten-free diet, since testing needs gluten in your diet."],
+["What are the symptoms of gallstones?","gallstones,gallbladder,gall bladder","Gallstones may cause sudden pain in the upper right belly after fatty meals, with nausea. Fever, yellow skin or persistent severe pain needs urgent evaluation."],
+["What are the symptoms of appendicitis?","appendicitis,appendix","Appendicitis often starts with pain near the navel that moves to the lower right abdomen, with nausea, fever and loss of appetite. It is an emergency and needs prompt medical care."],
+["How do I treat hemorrhoids?","hemorrhoids,haemorrhoids,piles","Eat more fiber, drink water, avoid straining, and try warm baths and over-the-counter creams. See a doctor if bleeding is frequent, pain is severe, or symptoms do not improve in a week."],
+["What does blood in stool mean?","blood in stool,bloody stool,rectal bleeding","Bright red blood is often from hemorrhoids or small tears, but it should be checked by a doctor, especially if it recurs, with pain or changes in bowel habits."],
+["What does black stool mean?","black stool,black poop,tarry stool","Black, sticky stool can signal bleeding in the upper digestive tract, though iron tablets or some foods can darken stool. If unexplained, see a doctor urgently."],
+["What is a hernia?","hernia,bulge groin","A hernia is when tissue pushes through a weak spot in muscle, often in the groin or belly wall, causing a bulge. Many need surgery eventually. Sudden pain, vomiting or a hard tender bulge is an emergency."],
+["What is fatty liver disease?","fatty liver,liver fat,nafld","Fatty liver means extra fat in the liver, often linked to excess weight, diabetes and diet. Weight loss, exercise, less sugar and alcohol can improve it. A doctor can check liver tests and scarring risk."],
+["What is hepatitis?","hepatitis,hepatitis a,hepatitis b,hepatitis c,liver inflammation","Hepatitis is liver inflammation, most often from viruses (A, B, C), alcohol or medicines. Symptoms can include yellow skin, dark urine and fatigue. Vaccines exist for A and B; see a doctor for testing."],
+["What are the symptoms of kidney stones?","kidney stones,kidney stone,renal colic","Kidney stones typically cause severe pain in the side or back that comes in waves, sometimes with nausea and blood in urine. Fever, vomiting or inability to pass urine needs urgent care. Drinking water helps prevention."],
+["What are signs of kidney problems?","kidney disease,kidney problems,kidney failure,kidney function","Early kidney disease may have no symptoms. Later signs include swelling, tiredness, foamy urine and changes in urination. Blood and urine tests detect it; diabetes and high blood pressure raise risk."],
+["How can I prevent urinary tract infections?","prevent uti,prevent urinary infection,recurrent uti","Drink enough water, urinate when needed, wipe front to back, urinate after sex and avoid irritating products. If infections keep returning, see a doctor for further assessment."],
+["What is an enlarged prostate?","enlarged prostate,bph,prostate","Benign prostate enlargement is common with age and causes weak stream, frequent urination and nighttime trips. It is not cancer, but a doctor should assess symptoms and check the prostate."],
+["What is sciatica?","sciatica,sciatic nerve,leg shooting pain","Sciatica is pain running from the lower back down a leg due to a pinched nerve. Gentle movement, heat and stretching help. Leg weakness or bladder or bowel changes need urgent care."],
+["What is a slipped disc?","slipped disc,herniated disc,disc prolapse","A slipped disc occurs when disc material presses on nearby nerves, causing back or leg pain, numbness or weakness. Most improve with time, movement and physio. Severe weakness or bladder trouble needs urgent care."],
+["What are the types of arthritis?","arthritis,types of arthritis,arthritic","Arthritis means joint inflammation. Common types include osteoarthritis from wear and tear, rheumatoid arthritis from the immune system, and gout from uric acid. Diagnosis guides the right treatment."],
+["What is osteoarthritis?","osteoarthritis,wear and tear arthritis","Osteoarthritis is gradual joint cartilage wear causing pain and stiffness, usually in knees, hips and hands. Staying active, weight control, strengthening exercises and pain relief help."],
+["What is rheumatoid arthritis?","rheumatoid,ra arthritis,morning stiffness","Rheumatoid arthritis is an autoimmune disease causing swollen, stiff, painful joints, often worst in the morning and on both sides of the body. Early treatment prevents damage, so see a doctor."],
+["What is gout?","gout,uric acid,big toe pain","Gout is a painful arthritis caused by uric acid crystals, often starting in the big toe with redness and swelling. Fluids, limiting alcohol and certain meats help. A doctor can prescribe treatment."],
+["What is osteoporosis?","osteoporosis,brittle bones,bone density,weak bones","Osteoporosis weakens bones and raises fracture risk. Calcium, vitamin D, weight-bearing exercise, not smoking and limiting alcohol protect bones. A bone density scan can assess risk."],
+["What is the difference between a sprain and a strain?","sprain,strain,sprained ankle,pulled muscle","A sprain is an injured ligament (joint) and a strain is an injured muscle or tendon. Rest, ice, compression and elevation help early. See a doctor if you cannot bear weight or the joint looks deformed."],
+["What is tendonitis?","tendonitis,tendinitis,tendon pain","Tendonitis is irritation of a tendon from overuse, causing pain with movement. Rest, ice, gradual strengthening and technique changes help. Persistent pain needs a doctor or physiotherapist."],
+["What is carpal tunnel syndrome?","carpal tunnel,wrist numbness,hand tingling","Carpal tunnel compresses a nerve in the wrist, causing tingling or numbness in the thumb and fingers, often at night. Wrist splints, breaks and ergonomics help. Persistent cases need medical review."],
+["What is frozen shoulder?","frozen shoulder,shoulder stiffness,shoulder pain","Frozen shoulder causes pain and stiffness that limit movement, often lasting months. Gentle stretching and physiotherapy help. See a doctor for ongoing shoulder pain."],
+["What causes knee pain?","knee pain,knees hurt,sore knee","Knee pain can come from overuse, arthritis, ligament or meniscus injury. Rest, ice, supportive footwear and strengthening may help. Swelling, locking or inability to bear weight needs evaluation."],
+["What is plantar fasciitis?","plantar fasciitis,heel pain,foot arch pain","Plantar fasciitis causes heel pain, worst with first steps in the morning. Stretching, supportive shoes, rest and calf strengthening help. See a doctor if pain lasts more than a few weeks."],
+["What are shin splints?","shin splints,shin pain,front leg pain running","Shin splints cause pain along the front of the lower leg from running or sudden activity increases. Rest, ice, proper shoes and gradual training help. Pain at rest may suggest a stress fracture."],
+["What is fibromyalgia?","fibromyalgia,widespread pain","Fibromyalgia causes widespread muscle pain, fatigue and sleep problems. Gentle regular exercise, sleep care and stress management help, and a doctor can guide treatment."],
+["What is restless legs syndrome?","restless legs,legs cannot stay still,leg urge to move","Restless legs cause an urge to move the legs, especially in the evening. Iron deficiency, pregnancy and some medicines can contribute. Exercise, routine and caffeine reduction help; see a doctor if it disturbs sleep."],
+["What are varicose veins?","varicose veins,spider veins,enlarged veins","Varicose veins are swollen, twisted veins, usually in the legs. Movement, leg elevation and compression stockings help. See a doctor for pain, skin changes, bleeding or sores."],
+["What are the signs of a blood clot in the leg?","blood clot,dvt,deep vein thrombosis","A leg clot can cause swelling, warmth, redness and pain, usually in one leg. If you also have chest pain or breathlessness, a clot may have reached the lungs, which is an emergency."],
+["What is anemia?","anemia,anaemia,low hemoglobin,low haemoglobin","Anemia means too few healthy red blood cells, causing tiredness, paleness and breathlessness. Causes include low iron, B12 or folate, or blood loss. A blood test finds the cause and guides treatment."],
+["What are signs of iron deficiency?","iron deficiency,low iron,low ferritin","Signs include fatigue, pale skin, brittle nails, hair loss, restless legs and breathlessness. A blood test confirms it. Iron-rich foods help, and a doctor can advise on supplements."],
+["What are signs of vitamin B12 deficiency?","b12 deficiency,vitamin b12,low b12","Low B12 can cause tiredness, tingling, memory problems, a sore tongue and anemia. It is more common in vegans and older adults. A blood test confirms it and treatment is available."],
+["What are signs of vitamin D deficiency?","vitamin d deficiency,low vitamin d,vitamin d","Low vitamin D may cause bone pain, muscle weakness and tiredness, though often there are no symptoms. Safe sun exposure and foods help; a blood test and a doctor can advise on supplements."],
+["Why do I feel dizzy when I stand up?","dizzy when standing,orthostatic,standing up dizzy,low blood pressure","Standing quickly can cause a brief blood pressure drop. Stand up slowly, drink fluids and avoid long standing in heat. Frequent episodes or fainting should be checked by a doctor."],
+["What causes vertigo?","vertigo,spinning,room spinning","Vertigo is a spinning feeling, often from inner-ear issues such as BPPV. Move slowly, avoid sudden head movements and sit during an episode. Seek urgent care if it comes with weakness, speech or vision changes."],
+["Why do I bruise easily?","bruise easily,easy bruising,bruises","Easy bruising can come from age, sun-damaged skin, medicines like blood thinners or low platelets. See a doctor if bruises are large, unexplained or you bleed easily."],
+["Why are my hands and feet always cold?","cold hands,cold feet,poor circulation","Cold extremities may come from poor circulation, low iron, thyroid issues or Raynaud's. Keep warm, avoid smoking and see a doctor if fingers turn white or blue, or you have sores."],
+["Why are my muscles sore after exercise?","muscle soreness,doms,sore after workout","Delayed muscle soreness peaks 1 to 2 days after unfamiliar exercise. Gentle movement, hydration, sleep and protein help recovery. See a doctor for severe pain, dark urine or marked swelling."],
+["Why do I get leg cramps at night?","night cramps,leg cramps at night,calf cramps night","Night cramps are common and can relate to muscle fatigue, dehydration, certain medicines or aging. Stretch the calf, stay hydrated and move regularly. Frequent cramps need a doctor's review."],
+["What is the difference between a stress fracture and a sprain?","stress fracture,bone pain running","Stress fractures are small bone cracks from repetitive load and usually cause focal bone pain that worsens with activity. A sprain affects ligaments. Persistent focal pain needs imaging by a doctor."],
+["What is a pinched nerve?","pinched nerve,trapped nerve","A pinched nerve causes pain, tingling or weakness where a nerve is compressed. Rest, posture changes and gentle stretching help. See a doctor if symptoms are persistent or worsening."],
+["What causes foot pain?","foot pain,sore feet,feet hurt","Foot pain commonly comes from ill-fitting shoes, plantar fasciitis, arthritis or overuse. Supportive footwear, rest and stretching help. Persistent or swollen, red feet need a doctor's check."],
+["What are the signs of a hip problem?","hip pain,hip hurts,groin pain","Hip or groin pain may come from arthritis, muscle strain or bursitis. Pain with walking, stiffness or limping should be assessed, especially after a fall."],
+["What is a muscle knot and how do I treat it?","muscle knot,trigger point,tight muscle","Muscle knots are tight, tender spots from stress or overuse. Heat, gentle stretching, massage and movement breaks help. See a doctor if the pain persists or spreads."],
+["What causes swelling in the face or lips?","face swelling,lip swelling,swollen face","Face or lip swelling can come from allergy, infection or dental problems. Swelling with trouble breathing, a tight throat or hives needs emergency help right away."]
+];
+
+const KB_chronic = [
+["What is diabetes?","diabetes,type 1 diabetes,type 2 diabetes","Diabetes means blood sugar stays too high because the body lacks insulin (type 1) or cannot use it well (type 2). Healthy eating, activity, weight control and medicines when needed manage it. Regular check-ups prevent complications."],
+["What are the symptoms of diabetes?","diabetes symptoms,signs of diabetes,excessive thirst","Common signs are increased thirst, frequent urination, tiredness, blurred vision, slow-healing wounds and weight loss. A simple blood test can check for it, so see a doctor if you notice these."],
+["What is prediabetes?","prediabetes,pre diabetes,borderline diabetes","Prediabetes means blood sugar is higher than normal but not yet diabetes. Weight loss, regular exercise and a healthier diet can often prevent or delay type 2 diabetes. Ask your doctor about testing."],
+["What is a normal blood sugar level?","normal blood sugar,blood sugar level,normal glucose","Fasting blood sugar is usually about 70 to 99 mg/dL (3.9 to 5.5 mmol/L). 100 to 125 suggests prediabetes and 126 or more on repeated tests suggests diabetes. A doctor should interpret your results."],
+["What should I do for low blood sugar?","low blood sugar,hypoglycemia,hypoglycaemia,sugar low","If you can swallow safely, take about 15 g of fast sugar such as juice or glucose tablets, recheck in 15 minutes, then eat a snack. If the person is confused or unconscious, call emergency services."],
+["How can I lower my blood sugar naturally?","lower blood sugar,reduce blood sugar,control blood sugar","Eat more fiber and whole foods, cut sugary drinks, stay active after meals, sleep well and manage weight. If you take diabetes medicine, ask your doctor before changing anything."],
+["What is high blood pressure?","high blood pressure,hypertension,high bp","High blood pressure often has no symptoms but raises the risk of heart attack and stroke. Less salt, weight control, activity, limited alcohol and medicines when advised control it. Get it measured regularly."],
+["What is a normal blood pressure?","normal blood pressure,blood pressure range,bp reading,normal bp","About 120/80 mmHg is considered normal. Readings of 130/80 or higher are elevated by US guidelines, and 140/90 or higher is high by many European ones. A doctor should confirm with repeated measurements."],
+["How can I lower my blood pressure naturally?","lower blood pressure,reduce blood pressure,lower bp","Cut salt, eat more fruit, vegetables and whole grains, exercise regularly, keep a healthy weight, limit alcohol, stop smoking and manage stress. Do not stop prescribed medicines without medical advice."],
+["What is high cholesterol?","high cholesterol,cholesterol,ldl","High LDL cholesterol builds up in arteries and raises heart disease risk, usually without symptoms. A blood test checks it. Diet, exercise and sometimes medicines help."],
+["How can I lower my cholesterol?","lower cholesterol,reduce cholesterol,cholesterol diet","Eat more fiber, vegetables, nuts, fish and olive oil; limit saturated and trans fats; stay active and maintain a healthy weight. A doctor may add medicines if your risk is high."],
+["What are the signs of a heart attack?","heart attack,heart attack signs,myocardial infarction","Warning signs include chest pressure or pain, spreading to the arm, jaw or back, sweating, nausea and breathlessness. Women may have milder or atypical signs. Call emergency services immediately."],
+["What are the signs of a stroke?","stroke signs,signs of stroke,fast stroke,stroke symptoms","Think FAST: Face drooping, Arm weakness, Speech difficulty, Time to call emergency services. Other signs are sudden vision loss, severe headache or loss of balance. Every minute matters."],
+["What is heart failure?","heart failure,weak heart,congestive heart","Heart failure means the heart does not pump as well as it should, causing breathlessness, swelling and fatigue. It is managed with medicines, lifestyle changes and regular follow-up with a doctor."],
+["What is atrial fibrillation?","atrial fibrillation,afib,irregular heartbeat,irregular pulse","Atrial fibrillation is an irregular, often fast heart rhythm that raises stroke risk. Symptoms include palpitations and tiredness. A doctor can diagnose it with an ECG and recommend treatment."],
+["What is coronary artery disease?","coronary artery disease,heart disease,clogged arteries,angina","Coronary artery disease occurs when heart arteries narrow from plaque, causing chest pain with effort or heart attacks. Prevention includes not smoking, healthy diet, activity and controlling blood pressure and cholesterol."],
+["What is asthma?","asthma,wheezing,wheeze","Asthma is a long-term airway condition causing wheeze, cough, chest tightness and breathlessness. Reliever and preventer inhalers, trigger avoidance and an action plan from your doctor control it."],
+["What should I do during an asthma attack?","asthma attack,asthma emergency,inhaler not working","Sit upright, stay calm and use your reliever inhaler as prescribed. If it does not help quickly, breathing is very hard or lips look blue, call emergency services."],
+["What is COPD?","copd,emphysema,chronic bronchitis","COPD is a long-term lung disease, usually from smoking, causing breathlessness and chronic cough. Stopping smoking, inhalers, vaccines and pulmonary rehab slow its impact. See a doctor for persistent breathlessness."],
+["What is the difference between pneumonia and bronchitis?","pneumonia,bronchitis,chest infection","Bronchitis inflames the airways, usually from a virus, and often settles by itself. Pneumonia infects the lung tissue and brings fever, chest pain and breathlessness. A doctor can tell them apart."],
+["What is sleep apnea?","sleep apnea,sleep apnoea,stop breathing sleep","Sleep apnea means breathing repeatedly pauses during sleep, causing loud snoring, gasping and daytime sleepiness. It raises heart disease risk, so see a doctor for a sleep study."],
+["What is hypothyroidism?","hypothyroidism,underactive thyroid,low thyroid","An underactive thyroid causes tiredness, weight gain, feeling cold, dry skin and low mood. A blood test diagnoses it and daily thyroid hormone tablets treat it effectively."],
+["What is hyperthyroidism?","hyperthyroidism,overactive thyroid,thyroid","An overactive thyroid can cause weight loss, rapid heartbeat, anxiety, sweating and tremor. Blood tests confirm it and treatment is available, so see a doctor."],
+["What is PCOS?","pcos,polycystic ovary,polycystic ovaries","PCOS is a hormonal condition causing irregular periods, excess hair growth, acne and sometimes fertility problems. Healthy weight, activity and medicines can help. See a doctor for diagnosis."],
+["How can I prevent migraines?","prevent migraine,migraine triggers,migraine prevention","Keep regular sleep and meals, stay hydrated, manage stress and track triggers such as certain foods or alcohol. If you have frequent attacks, a doctor can discuss preventive treatment."],
+["What is Parkinson's disease?","parkinson,parkinsons,tremor","Parkinson's affects movement, causing tremor, stiffness and slowness. It develops gradually and treatments can ease symptoms. See a doctor if you notice tremor or movement changes."],
+["What is Alzheimer's disease?","alzheimer,alzheimers,alzheimer's","Alzheimer's is the most common cause of dementia, causing progressive memory loss and confusion. Early assessment helps with planning and support. Healthy habits may lower risk."],
+["What is the difference between dementia and normal forgetting?","dementia,forgetfulness,memory loss,forgetting","Occasional forgetfulness is normal with age. Dementia affects daily life, such as getting lost in familiar places or repeating questions. A doctor can assess memory problems."],
+["What is multiple sclerosis?","multiple sclerosis,ms disease","Multiple sclerosis is an immune condition affecting the nerves, causing numbness, vision problems, weakness and fatigue. Treatments can reduce relapses. Diagnosis needs a neurologist."],
+["What is lupus?","lupus,sle","Lupus is an autoimmune disease causing joint pain, fatigue, rashes and sometimes organ inflammation. Treatment is individual and needs specialist follow-up."],
+["What are the warning signs of cancer?","cancer signs,cancer symptoms,warning signs cancer","Possible warning signs include an unexplained lump, persistent cough, blood in urine or stool, unexplained weight loss, a changing mole or sores that do not heal. These have many causes, so get them checked."],
+["How can I reduce my risk of cancer?","reduce cancer risk,prevent cancer,cancer prevention","Avoid smoking, limit alcohol, eat plenty of plants, stay active, protect skin from the sun, keep a healthy weight, get vaccines like HPV and hepatitis B, and attend recommended screenings."],
+["What is tuberculosis?","tuberculosis,tb","TB is a bacterial infection mainly of the lungs, causing a long cough, fever, night sweats and weight loss. It is curable with a full course of antibiotics. See a doctor if symptoms persist."],
+["What is HIV?","hiv,aids","HIV is a virus that weakens the immune system. It is spread through blood, sex and from mother to baby. Testing is simple, and modern treatment lets people live long, healthy lives and prevents transmission."],
+["What are the symptoms of COVID-19?","covid,covid-19,coronavirus,covid symptoms","COVID-19 can cause fever, cough, sore throat, tiredness, aches and loss of taste or smell, or can be mild. Rest and test if suspected. Seek care for breathing difficulty or if you are high risk."],
+["What is long COVID?","long covid,post covid,covid fatigue","Long COVID means symptoms such as fatigue, breathlessness or brain fog lasting weeks to months after infection. Pacing activity and speaking to a doctor can help."],
+["What is chronic kidney disease?","chronic kidney disease,ckd","CKD is gradual loss of kidney function, often from diabetes or high blood pressure. Blood and urine tests detect it. Controlling blood pressure and sugar slows progression."],
+["What health risks come with obesity?","obesity,overweight risks,obese","Obesity raises the risk of type 2 diabetes, high blood pressure, heart disease, sleep apnea, joint problems and some cancers. Even a 5 to 10% weight loss brings benefits."],
+["What is metabolic syndrome?","metabolic syndrome,insulin resistance","Metabolic syndrome is a cluster of belly fat, high blood pressure, high blood sugar and abnormal cholesterol that raises heart and diabetes risk. Lifestyle changes help reverse it."],
+["What is cirrhosis?","cirrhosis,liver scarring,liver disease","Cirrhosis is advanced liver scarring from causes like alcohol, hepatitis or fatty liver. Early signs may be subtle. Avoiding alcohol and treating the cause slows damage."],
+["What is Crohn's disease?","crohn,crohns,crohn's,inflammatory bowel","Crohn's is a chronic inflammatory bowel disease causing abdominal pain, diarrhea, weight loss and fatigue. It needs specialist care and treatment to control inflammation."],
+["What is ulcerative colitis?","ulcerative colitis,colitis","Ulcerative colitis is long-term inflammation of the colon causing bloody diarrhea, urgency and cramps. A doctor can diagnose it with tests and offer treatments."],
+["How do I manage chronic pain?","chronic pain,long term pain,persistent pain","Chronic pain is often best managed with a mix of gentle activity, sleep, stress management, physiotherapy and medicines as advised. Talk to your doctor about a plan."],
+["What are high triglycerides?","triglycerides,high triglycerides","High triglycerides are blood fats that rise with sugar, alcohol, excess weight and diabetes. Cutting sugar and alcohol, exercising and losing weight help; a doctor may add medicines."],
+["What is a heart murmur?","heart murmur,murmur","A heart murmur is an extra sound heard during the heartbeat. Many are harmless, especially in children, but some signal valve problems. A doctor may order an echocardiogram."],
+["What is HbA1c?","hba1c,a1c,glycated hemoglobin","HbA1c is a blood test showing average blood sugar over about 3 months. Below 5.7% is normal, 5.7 to 6.4% suggests prediabetes and 6.5% or higher suggests diabetes. Your doctor sets personal targets."],
+["What is a hypertensive crisis?","hypertensive crisis,very high blood pressure,blood pressure 180","A reading of 180/120 or higher is a hypertensive crisis. If you have chest pain, breathlessness, severe headache, weakness or vision changes, call emergency services. Otherwise rest and retest."],
+["What is epilepsy?","epilepsy,seizures,seizure disorder","Epilepsy is a condition with recurring seizures caused by abnormal brain activity. Medicines control seizures in most people. During a seizure, protect the person from injury and call emergency help if it lasts over 5 minutes."],
+["What is a stroke and how can I prevent it?","prevent stroke,stroke risk,stroke prevention","Stroke happens when blood flow to the brain is blocked or a vessel bursts. Controlling blood pressure, not smoking, healthy diet, exercise and treating irregular heart rhythm reduce risk."],
+["What is a blood clot?","what is blood clot,clotting,thrombosis","A blood clot is a clump of blood that can block circulation. Risk rises with immobility, surgery, long travel, smoking and some medicines. Sudden swelling, chest pain or breathlessness needs urgent care."],
+["What is inflammation?","inflammation,inflamed,inflammatory","Inflammation is the body's response to injury or infection, causing redness, heat, swelling and pain. Short-term inflammation is helpful; chronic inflammation is linked with many diseases and should be evaluated."],
+["What is an autoimmune disease?","autoimmune,immune system attacks","Autoimmune diseases occur when the immune system attacks healthy tissue. Examples include type 1 diabetes, lupus and rheumatoid arthritis. Diagnosis involves blood tests and specialist care."],
+["How is high blood pressure diagnosed?","diagnose hypertension,measure blood pressure,blood pressure test","Diagnosis uses repeated readings, ideally at home or with 24-hour monitoring. Sit quietly for 5 minutes, back supported and arm at heart level. A doctor interprets the results."],
+["What is an ECG?","ecg,ekg,electrocardiogram","An ECG is a quick painless test recording the heart's electrical activity. It helps detect rhythm problems, heart strain or past heart attacks."]
+];
+
+const KB_nutrition = [
+["What is a healthy diet?","healthy diet,healthy eating,eat healthy,balanced diet","A healthy diet focuses on vegetables, fruit, whole grains, legumes, nuts, fish or lean protein and healthy oils, while limiting sugary drinks, processed meats and ultra-processed foods."],
+["How much water should I drink a day?","how much water,water intake,drink water,hydration","Needs vary, but around 1.5 to 2 liters from fluids is common. Pale yellow urine is a good sign. You may need more in heat, illness or exercise."],
+["How much protein do I need?","protein intake,how much protein,protein needs","Most adults need about 0.8 g of protein per kg of body weight daily; active people and older adults may need more. Include beans, eggs, dairy, fish, poultry, tofu or nuts."],
+["What is a healthy breakfast?","healthy breakfast,breakfast ideas,breakfast","Good options include oats with fruit, eggs with whole-grain toast, yogurt with nuts or a vegetable omelet. Aim for protein, fiber and limited added sugar."],
+["Is skipping breakfast bad?","skip breakfast,is breakfast important,breakfast necessary","Breakfast is not essential for everyone. What matters is total diet quality and energy through the day. If skipping leads to overeating or low energy, eating earlier may suit you better."],
+["Is intermittent fasting healthy?","intermittent fasting,fasting,16:8","Intermittent fasting can help some people manage weight, but it is not better than other approaches for everyone. Avoid it in pregnancy, eating disorders or with diabetes medicine unless a doctor agrees."],
+["Is the keto diet safe?","keto,ketogenic,low carb diet","A keto diet is very low in carbs and may aid short-term weight loss but can cause side effects and nutrient gaps. Speak to a doctor first if you have diabetes, kidney or liver disease or are pregnant."],
+["What is the Mediterranean diet?","mediterranean diet,mediterranean","The Mediterranean diet centers on vegetables, fruit, whole grains, legumes, olive oil, nuts and fish with little red meat. It is linked to better heart health and longevity."],
+["Is a vegetarian diet healthy?","vegetarian,vegetarian diet,plant based","A well-planned vegetarian diet can be very healthy. Make sure you get enough protein, iron, calcium, zinc, iodine and vitamin B12 from foods or supplements."],
+["Do vegans need supplements?","vegan,vegan diet,vegan supplements","Vegans need a reliable vitamin B12 source, and often vitamin D, and should pay attention to iron, calcium, iodine and omega-3. A dietitian can help plan."],
+["Are carbohydrates bad for me?","carbs,carbohydrates,are carbs bad","Carbs are not bad. Whole grains, fruit, beans and vegetables are healthy sources, while sugary drinks and refined snacks should be limited."],
+["How much sugar is too much?","sugar intake,too much sugar,added sugar,sugar","The WHO suggests keeping added sugars below 10% of daily calories, ideally under 5%. Sugary drinks and sweets are the biggest sources."],
+["Are artificial sweeteners safe?","artificial sweeteners,sweetener,diet soda,aspartame","Approved sweeteners are considered safe in normal amounts. They can help cut sugar, but water, tea or coffee without sugar is a better habit overall."],
+["How much salt is healthy?","salt intake,too much salt,sodium,salt","The WHO recommends less than 5 g of salt (about a teaspoon) per day. Most salt comes from processed foods, bread and sauces, so check labels."],
+["Which fats are healthy?","healthy fats,good fats,unsaturated fat,saturated fat","Unsaturated fats from olive oil, nuts, seeds, avocado and fish are healthier choices. Limit saturated fats from fatty meats and butter, and avoid trans fats."],
+["What are omega-3 fatty acids?","omega 3,omega-3,fish oil","Omega-3s are healthy fats found in oily fish, flaxseed, chia and walnuts. They support heart and brain health. Aim for oily fish about twice a week."],
+["Why is fiber important?","fiber,fibre,dietary fiber","Fiber supports digestion, helps control cholesterol and blood sugar and keeps you full. Good sources are whole grains, legumes, vegetables, fruit, nuts and seeds. Increase it gradually with water."],
+["Are probiotics useful?","probiotics,probiotic,gut bacteria,gut health","Probiotics may help in some situations such as after antibiotics, but benefits vary by strain. Fermented foods and a high-fiber diet also support gut health."],
+["Do I need a multivitamin?","multivitamin,do i need vitamins,vitamin pills","Most people eating a varied diet do not need a multivitamin. Some groups benefit from specific supplements, such as folic acid in pregnancy or B12 for vegans. Ask a doctor or pharmacist."],
+["Are supplements safe?","supplements safe,dietary supplements,herbal supplements","Supplements are not risk-free. They can interact with medicines and some are poorly regulated. Choose reputable brands, avoid high doses and tell your doctor what you take."],
+["Is caffeine bad for me?","caffeine,too much caffeine,caffeine intake","For most adults, up to about 400 mg of caffeine a day (around 4 cups of coffee) is considered safe. Too much can cause jitters, poor sleep and palpitations. Pregnant women should limit to about 200 mg."],
+["Is coffee good or bad for health?","coffee,coffee health,drinking coffee","Moderate coffee is generally safe and may have some health benefits. Limit sugar and cream, and cut back if it affects sleep, anxiety or reflux."],
+["Is tea healthy?","tea,green tea,herbal tea","Tea, especially green and black, contains antioxidants and counts toward hydration. Herbal teas are generally fine, but check with a doctor if pregnant or on medicines."],
+["Are energy drinks bad for me?","energy drinks,energy drink","Energy drinks have high caffeine and sugar and can raise heart rate and blood pressure. They are not recommended for children, teens or pregnant women."],
+["How does alcohol affect my health?","alcohol,drinking alcohol,alcohol health,how much alcohol","No level of alcohol is completely risk-free. It raises the risk of liver disease, cancer, high blood pressure and accidents. Many guidelines advise limits and alcohol-free days; less is better."],
+["How can I lose weight safely?","lose weight,weight loss,how to lose weight,slim down","Aim for gradual loss of about 0.5 to 1 kg per week with balanced meals, smaller portions, fewer sugary and ultra-processed foods, regular activity and good sleep. Avoid crash diets."],
+["How many calories do I need a day?","calories,how many calories,calorie needs","Typical needs are about 1,600 to 2,400 for women and 2,000 to 3,000 for men, depending on age, size and activity. A dietitian can calculate your personal target."],
+["What is BMI?","bmi,body mass index,healthy weight","BMI compares weight to height. 18.5 to 24.9 is considered healthy for most adults. It does not show body fat distribution, so waist size and overall health matter too."],
+["How do I lose belly fat?","belly fat,lose belly fat,stomach fat,abdominal fat","You cannot target fat from one area. A calorie deficit, protein, fiber, less sugar and alcohol, strength and cardio exercise, and good sleep reduce overall and belly fat."],
+["How can I speed up my metabolism?","metabolism,slow metabolism,boost metabolism","Metabolism is mostly set by body size, muscle and age. Building muscle, eating enough protein, staying active and sleeping well help. Be cautious of products promising quick boosts."],
+["How can I gain weight healthily?","gain weight,weight gain,underweight,build weight","Eat regular, energy-dense meals and snacks such as nuts, dairy, whole grains and healthy oils, add strength training and consider a doctor review if you are unintentionally underweight."],
+["What are healthy snacks?","healthy snacks,snack ideas,snacking","Good snacks include fruit, nuts, yogurt, hummus with vegetables, boiled eggs or whole-grain crackers. Aim for protein and fiber to stay full."],
+["Is eating late at night bad?","eating at night,late night eating,midnight snack","Late heavy meals can worsen reflux and sleep. Total daily intake and food quality matter more. Try finishing dinner 2 to 3 hours before bed."],
+["Is fast food bad for health?","fast food,junk food,takeaway","Frequent fast food is high in salt, saturated fat, sugar and calories. Occasionally is fine. Choose grilled options, smaller portions and water instead of sugary drinks."],
+["What are ultra-processed foods?","processed food,ultra processed,ultra-processed","Ultra-processed foods are industrial products with additives, such as sugary cereals, chips and instant meals. Regularly eating a lot of them is linked to weight gain and chronic disease."],
+["Is organic food healthier?","organic food,organic,is organic better","Organic food may have fewer pesticide residues, but evidence for major nutrition differences is limited. Eating plenty of fruit and vegetables matters more than whether they are organic."],
+["Should I go gluten-free?","gluten free,gluten-free,gluten","Unless you have celiac disease or gluten sensitivity, there is no proven need to avoid gluten. Whole grains are healthy for most people. Test for celiac before cutting gluten."],
+["How do I know if I have a food allergy?","food allergy,allergic to food,food allergies","Food allergies cause symptoms like hives, swelling, vomiting or breathing trouble soon after eating. A doctor or allergist can test. Severe reactions need emergency treatment."],
+["Do detox diets work?","detox,detox diet,cleanse","Your liver and kidneys already detoxify the body. Detox diets and cleanses have no proven benefit and can be harmful. Healthy eating and hydration are safer."],
+["Does vitamin C prevent colds?","vitamin c,vitamin c cold","Vitamin C does not prevent colds for most people and may only slightly shorten them. A varied diet with fruit and vegetables provides enough for most."],
+["What foods are high in iron?","iron rich foods,foods with iron,high iron foods","Iron-rich foods include red meat, poultry, fish, lentils, beans, tofu, spinach and fortified cereals. Vitamin C-rich foods help you absorb plant-based iron."],
+["What foods are high in calcium?","calcium foods,calcium rich,high calcium foods","Calcium sources include dairy, fortified plant milks, tofu with calcium, sardines with bones, kale and almonds. Vitamin D helps absorption."],
+["What foods are high in potassium?","potassium foods,potassium rich,high potassium","Bananas, potatoes, beans, spinach, avocado and oranges are good sources. People with kidney disease or on certain medicines should check with their doctor first."],
+["Do I need magnesium?","magnesium,magnesium supplement","Magnesium is found in nuts, seeds, whole grains and leafy greens. Most people get enough from food. Check with your doctor before taking supplements, especially with kidney disease."],
+["What does zinc do?","zinc,zinc supplement","Zinc supports immunity and wound healing. It is found in meat, shellfish, legumes and seeds. High-dose supplements can cause nausea and copper deficiency."],
+["Which foods are good for the heart?","foods for heart,heart healthy foods,heart healthy diet","Vegetables, fruit, whole grains, legumes, nuts, oily fish and olive oil support heart health. Limit salt, processed meat and sugary drinks."],
+["Which foods are good for the brain?","foods for brain,brain foods,brain health food","Oily fish, berries, leafy greens, nuts, whole grains and olive oil support brain health, along with regular exercise, sleep and social activity."],
+["How can I boost my immune system?","boost immunity,immune system,strengthen immune system","Sleep well, eat a varied diet, exercise regularly, manage stress, avoid smoking, limit alcohol and stay up to date with vaccines. No single food or supplement can guarantee immunity."],
+["What should I drink to rehydrate?","rehydrate,electrolytes,oral rehydration,sports drink","Water is usually enough. During vomiting, diarrhea or heavy sweating, oral rehydration solutions replace salts and fluids better than plain water or sugary drinks."],
+["Is sugar addictive?","sugar addiction,sugar cravings,craving sweets","Sugar can drive cravings by stimulating reward pathways. Regular meals with protein and fiber, enough sleep and gradually cutting sugary drinks help reduce cravings."],
+["Why am I always hungry?","always hungry,constant hunger,increased appetite","Constant hunger can be due to too little protein or fiber, poor sleep, stress, dehydration, or conditions like diabetes or thyroid problems. See a doctor if it is new or with weight change."]
+];
+
+const KB_lifestyle = [
+["How much exercise do I need?","how much exercise,exercise per week,physical activity,exercise recommendations","Adults should aim for at least 150 minutes of moderate activity or 75 minutes of vigorous activity a week, plus muscle-strengthening on 2 or more days. Any movement is better than none."],
+["What is the best exercise for weight loss?","exercise weight loss,best exercise lose weight,burn fat","A mix of cardio such as walking, cycling or swimming and strength training works best, together with a healthy diet. Choose activities you enjoy so you can keep going."],
+["Is walking 10,000 steps a day necessary?","10000 steps,steps a day,how many steps","10,000 is a handy target, but benefits start much earlier. Many studies show gains at 6,000 to 8,000 steps. Increase gradually and keep it regular."],
+["Why is strength training important?","strength training,weight training,resistance training,lifting weights","Strength training builds muscle and bone, supports metabolism, balance and joint health, and lowers risk of falls and chronic disease. Two sessions a week bring real benefits."],
+["Is cardio or weight training better?","cardio vs weights,cardio or strength,which exercise better","Both matter. Cardio improves heart and lung health, and strength training builds muscle and bone. A combination is ideal."],
+["Should I stretch before or after exercise?","stretching,stretch before exercise,flexibility","Do light movement or dynamic warm-ups before exercise and static stretching afterward or on rest days. Stretching improves flexibility but is not a guaranteed injury preventer."],
+["Why is warming up important?","warm up,warming up,cool down","A warm-up raises heart rate and loosens muscles, making exercise feel better and reducing injury risk. Spend 5 to 10 minutes on gentle movement first."],
+["How do I start exercising as a beginner?","beginner exercise,start exercising,begin workout,get fit","Start with 10 to 20 minutes of brisk walking most days, add light strength exercises and increase gradually. See a doctor first if you have heart disease, chest pain, or other health conditions."],
+["Is exercise safe with heart disease?","exercise heart disease,exercise with heart condition","Regular activity is usually beneficial for heart conditions, but the type and intensity should be guided by your doctor or a cardiac rehab team. Stop and seek help for chest pain or severe breathlessness."],
+["How do I build muscle?","build muscle,muscle growth,gain muscle,get stronger","Lift progressively heavier weights 2 to 4 times per week, eat enough protein and calories, sleep 7 to 9 hours and be consistent. Results take weeks to months."],
+["Do I need protein shakes?","protein shakes,protein powder,whey","Most people can meet protein needs from food. Shakes are a convenient option for some athletes, but they are not essential. Check labels for added sugar."],
+["How many rest days do I need?","rest days,recovery,overtraining","Most people benefit from 1 to 2 rest days a week. Persistent fatigue, poor sleep, declining performance or recurrent injuries may signal overtraining."],
+["How can I prevent running injuries?","running injuries,prevent running injury,runner knee","Increase mileage gradually, wear supportive shoes, include strength work and rest days, and warm up. Persistent pain should be assessed by a physiotherapist or doctor."],
+["What are the benefits of yoga?","yoga,yoga benefits,pilates","Yoga can improve flexibility, balance, strength, stress and sleep. Choose a style suited to your fitness level and tell the instructor about injuries."],
+["How can I improve my posture?","posture,bad posture,slouching,sit straight","Keep your screen at eye level, feet flat, back supported and take movement breaks every 30 to 60 minutes. Strengthening the core and upper back helps."],
+["Is sitting all day bad for health?","sitting too much,sedentary,sitting all day,desk job","Long sitting raises risks for heart disease and diabetes. Stand and move for a few minutes every hour and aim for regular exercise during the week."],
+["How much sleep do I need?","how much sleep,hours of sleep,sleep needs","Most adults need 7 to 9 hours per night, teenagers 8 to 10 and school-age children 9 to 12. Quality and regular timing matter as much as quantity."],
+["How can I treat insomnia?","insomnia,cannot sleep,can't sleep,trouble sleeping,sleep problem","Keep fixed sleep and wake times, avoid caffeine late, limit screens before bed, keep the room dark and cool, and relax before sleep. Persistent insomnia benefits from CBT-I; see a doctor."],
+["What are tips for better sleep?","better sleep,improve sleep,sleep tips,sleep hygiene","Follow a regular schedule, get daylight in the morning, exercise, avoid heavy meals and alcohol at night, and keep your bedroom quiet, dark and cool."],
+["Are naps good for you?","napping,naps,nap during day","Short naps of 10 to 20 minutes can boost alertness. Long or late naps may disturb night sleep. Constant daytime sleepiness needs a doctor's review."],
+["What is sleepwalking?","sleepwalking,sleep walking,walking in sleep","Sleepwalking is common in children and often outgrown. Keep the home safe, stick to regular sleep and avoid sleep deprivation. See a doctor if it is frequent or dangerous."],
+["Why do I snore?","snoring,snore,loud snoring","Snoring happens when airways narrow during sleep. Weight, alcohol, sleeping on the back and nasal blockage contribute. Loud snoring with gasping or daytime tiredness may be sleep apnea."],
+["How can I stop nightmares?","nightmares,bad dreams,night terrors","Regular sleep, stress reduction and avoiding alcohol and late heavy meals may help. Frequent nightmares or those linked to trauma should be discussed with a doctor or therapist."],
+["Is melatonin safe?","melatonin,sleep supplement","Melatonin can help with jet lag or shift work for short-term use, but dose and quality vary. Ask a doctor or pharmacist, especially for children, pregnancy or if you take other medicines."],
+["Why do I wake up at 3 a.m.?","wake up 3am,waking at night,wake up early,middle of night","Night waking can come from stress, alcohol, caffeine, a hot room, or mood issues. Keep a calm routine, avoid screens, and speak to a doctor if it persists."],
+["How can I manage stress?","stress,manage stress,stressed,reduce stress","Try regular exercise, enough sleep, breathing exercises, time outdoors, talking to someone you trust and breaking tasks into steps. If stress affects daily life, consider professional support."],
+["What is anxiety?","anxiety,anxious,worry,always worried","Anxiety is persistent worry or fear that can cause a racing heart, restlessness and trouble sleeping. Therapy, lifestyle changes and sometimes medicine help. Speak to a doctor if it interferes with life."],
+["What should I do during a panic attack?","panic attack,panic,panicking","Remind yourself it will pass, breathe slowly in through the nose and out through the mouth, ground yourself by naming things you see, and stay where you feel safe. Frequent attacks deserve professional help."],
+["What are signs of depression?","depression,depressed,signs of depression,feeling low","Signs include persistent low mood, loss of interest, tiredness, sleep or appetite changes, hopelessness and trouble concentrating. Depression is treatable; please talk to a doctor or counselor."],
+["What is burnout?","burnout,burn out,work exhaustion","Burnout is exhaustion from prolonged work stress, with cynicism and reduced performance. Rest, boundaries, support and sometimes professional help are important."],
+["How can I calm down quickly?","calm down,relax,anger,overwhelmed","Slow breathing, a short walk, a cold drink of water, stretching or naming what you feel can help you settle. If you often feel overwhelmed, a counselor can help."],
+["Does meditation work?","meditation,mindfulness,breathing exercises","Meditation and mindfulness can reduce stress and improve focus and sleep for many people. Even 5 to 10 minutes a day helps. It works best alongside other healthy habits."],
+["What can I do about loneliness?","loneliness,lonely,feeling alone,isolated","Small steps help: contact a friend, join a group or class, volunteer, spend time outdoors and consider talking to a counselor. Loneliness is common and can affect health, so reaching out matters."],
+["What is ADHD?","adhd,attention deficit,hyperactivity,cannot focus","ADHD involves ongoing inattention, impulsivity or hyperactivity that affects daily life. It can continue into adulthood. A qualified clinician can assess and recommend support or treatment."],
+["How can I improve my concentration?","concentration,focus better,improve focus,cannot concentrate","Sleep well, exercise, eat regularly, reduce multitasking and notifications, and use short focused work blocks with breaks. Persistent trouble concentrating deserves medical review."],
+["How can I improve my memory?","improve memory,memory tips,better memory","Sleep, exercise, a healthy diet, learning new things, staying social and managing stress support memory. Sudden or worsening memory loss should be reviewed by a doctor."],
+["How can I stay motivated?","motivation,unmotivated,lack of motivation","Set small, clear goals, track progress, build routines, reward yourself and find a friend for support. Persistent loss of motivation with low mood may signal depression."],
+["How do I cope with grief?","grief,grieving,loss of loved one,bereavement","Grief is a natural response to loss and has no timetable. Talk about your feelings, keep routines, rest and lean on support. If grief feels overwhelming or lasts and disrupts life, seek counseling."],
+["How can I build self-esteem?","self esteem,self-esteem,confidence,feel worthless","Notice and challenge harsh self-talk, set achievable goals, celebrate progress, spend time with supportive people and take care of your body. Therapy can help if low self-worth persists."],
+["What is social anxiety?","social anxiety,shy,fear of people","Social anxiety is an intense fear of being judged in social situations. It can be treated with therapy such as CBT and sometimes medicine. See a doctor if it limits your life."],
+["What is OCD?","ocd,obsessive compulsive,compulsions","OCD involves unwanted repeated thoughts and compulsive behaviors that take up time and cause distress. Effective treatments include therapy and medicines. See a doctor for assessment."],
+["How are phobias treated?","phobia,phobias,fear of","Phobias respond well to gradual exposure therapy and CBT. A doctor or therapist can help you plan treatment."],
+["What are signs of an eating disorder?","eating disorder,anorexia,bulimia,binge eating","Warning signs include preoccupation with weight or food, extreme restriction, bingeing or purging, intense fear of weight gain and withdrawing from meals. Eating disorders are treatable; please talk to a doctor soon."],
+["When should I see a therapist?","see a therapist,therapy,counseling,counselling,psychologist","Consider therapy if worry, sadness, anger or stress last for weeks, affect work, relationships or sleep, or you feel stuck. You do not need a crisis to seek support."],
+["Is too much screen time bad for health?","screen time,too much screen,phone addiction,social media","Heavy screen time can disturb sleep, strain eyes, reduce activity and affect mood. Take breaks, avoid screens 1 hour before bed and keep a balance with offline activity."],
+["How can I reduce eye strain from screens?","screen eye strain,digital eye strain,computer eyes","Use the 20-20-20 rule: every 20 minutes look at something 20 feet (6 m) away for 20 seconds. Adjust brightness, blink often and position the screen slightly below eye level."],
+["How can I stay healthy while working at a desk?","desk health,office health,ergonomics,work from home","Set up your chair, screen and keyboard ergonomically, take movement breaks hourly, drink water, stretch and make time for exercise before or after work."],
+["What are the benefits of walking?","benefits of walking,walking daily,walk every day","Walking lifts mood, supports heart health, helps weight control, strengthens bones and improves sleep. A brisk 30-minute walk most days is a great start."],
+["Does exercise help with depression and anxiety?","exercise mental health,exercise for anxiety,exercise depression","Regular physical activity can reduce symptoms of depression and anxiety and improve sleep and self-esteem. It works best alongside other support when needed."],
+["What is a good way to stay healthy as I get older?","healthy aging,staying healthy older,healthy ageing,elderly health","Stay active, eat well, keep social connections, attend check-ups, take medicines as prescribed, protect hearing and vision, prevent falls and keep your mind active."],
+["How can I prevent falls in older adults?","prevent falls,fall prevention,falls elderly","Keep walkways clear, use good lighting, wear sturdy shoes, do balance and strength exercises, review medicines with a doctor and get vision checked."]
+];
+
+const KB_womenkids = [
+["Why are my periods irregular?","irregular periods,irregular period,period late,cycle irregular","Cycles vary, but irregularity can come from stress, weight change, PCOS, thyroid problems or perimenopause. See a doctor if periods are very irregular, absent for 3 months or you could be pregnant."],
+["How can I ease period pain?","period pain,menstrual cramps,period cramps,dysmenorrhea","Heat, gentle exercise and over-the-counter pain relief can help. See a doctor if pain is severe, getting worse or disrupts daily life, as conditions like endometriosis may be involved."],
+["What counts as a heavy period?","heavy period,heavy periods,heavy bleeding,menorrhagia","Soaking a pad or tampon every hour, passing large clots or periods lasting over 7 days are signs of heavy bleeding. Heavy periods can cause anemia, so see a doctor."],
+["What is PMS?","pms,premenstrual,mood swings period","PMS includes mood changes, bloating, tender breasts and tiredness in the days before a period. Exercise, sleep, balanced meals and less caffeine and alcohol help. See a doctor if severe."],
+["Why have I missed my period?","missed period,period late,no period,amenorrhea","Pregnancy is the first thing to check. Stress, weight change, intense exercise, PCOS, thyroid issues and breastfeeding can also delay periods. See a doctor if it persists for 3 months."],
+["What are early signs of pregnancy?","pregnancy signs,early pregnancy,am i pregnant,pregnancy symptoms","Common early signs are a missed period, nausea, tender breasts, tiredness and frequent urination. A home pregnancy test from the first day of a missed period is reliable."],
+["How can I cope with morning sickness?","morning sickness,pregnancy nausea,nausea pregnant","Eat small, frequent meals, keep crackers by the bed, try ginger, and sip fluids. See a doctor if you cannot keep food or fluids down."],
+["What foods should I avoid during pregnancy?","foods avoid pregnancy,pregnancy diet,pregnant avoid","Avoid alcohol, raw or undercooked meat, fish and eggs, unpasteurized dairy, high-mercury fish and excess caffeine. Wash produce and follow your midwife's advice."],
+["Is exercise safe during pregnancy?","exercise pregnancy,pregnant exercise,pregnancy workout","Moderate exercise such as walking, swimming and prenatal yoga is generally safe and beneficial. Avoid contact sports and risky activities, and ask your doctor or midwife."],
+["Should I take prenatal vitamins?","prenatal vitamins,folic acid,folate pregnancy","Folic acid is recommended before conception and in early pregnancy to reduce neural tube defects. Your doctor may advise vitamin D or other supplements."],
+["When should I call a doctor during pregnancy?","pregnancy warning signs,pregnancy bleeding,pregnancy emergency,reduced baby movement","Call promptly for vaginal bleeding, severe abdominal pain, fluid leaking, severe headache or vision changes, swelling of face and hands, fever, or reduced baby movements."],
+["What are the basics of breastfeeding?","breastfeeding,breast feeding,nursing baby,latch","Breastfeed on demand, check a deep latch and watch for wet nappies and weight gain. Pain, cracked nipples or low supply deserve help from a midwife or lactation consultant."],
+["What are common menopause symptoms?","menopause,perimenopause,menopausal","Hot flashes, night sweats, mood changes, sleep trouble, vaginal dryness and irregular periods are common. Menopause usually occurs around age 51. Treatments are available, so talk to a doctor."],
+["How can I manage hot flashes?","hot flashes,hot flushes,hot flash","Dress in layers, keep rooms cool, avoid triggers such as alcohol, spicy food and caffeine, and try slow breathing. A doctor can discuss other options."],
+["What contraception options are available?","contraception,birth control,contraceptive,pill iud","Options include condoms, the pill, patch, ring, implant, injection, IUD and sterilization. Condoms also protect against STIs. A doctor or clinic can help choose what suits you."],
+["What is emergency contraception?","emergency contraception,morning after pill,plan b","Emergency contraception reduces pregnancy risk after unprotected sex. The sooner it is used the better, and some options work up to 5 days. A pharmacist or clinic can advise."],
+["What are signs of a yeast infection?","yeast infection,thrush,vaginal itching","Yeast infections cause itching, soreness and thick white discharge. Pharmacy antifungal treatments help. See a doctor if it is the first time, recurrent or you are pregnant."],
+["What is bacterial vaginosis?","bacterial vaginosis,bv,fishy discharge","BV causes thin grey discharge with a fishy smell. It needs treatment with prescribed antibiotics, so see a doctor or clinic."],
+["How often should I get tested for STIs?","sti test,std test,sexually transmitted,sexual health check","Get tested when you have a new partner, symptoms, or unprotected sex, and at least yearly if at risk. Many STIs have no symptoms. Condoms and vaccines (HPV, hepatitis B) help prevent them."],
+["What is HPV?","hpv,human papillomavirus","HPV is a very common virus spread through sexual contact. Some types cause warts and others can cause cervical and other cancers. Vaccination and cervical screening are effective protections."],
+["What is endometriosis?","endometriosis","Endometriosis occurs when tissue similar to the womb lining grows elsewhere, causing painful periods, pelvic pain and sometimes fertility problems. See a doctor if you suspect it."],
+["What are fibroids?","fibroids,uterine fibroids","Fibroids are non-cancerous growths in the womb that can cause heavy periods and pelvic pressure. Many need no treatment. A doctor can advise with an ultrasound."],
+["What should I do if I find a breast lump?","breast lump,lump in breast,breast pain","Most breast lumps are not cancer, but any new lump, dimpling, nipple discharge or skin change should be checked promptly by a doctor."],
+["How often should I have a Pap smear?","pap smear,cervical screening,smear test","Cervical screening is usually every 3 to 5 years depending on age, country and test type. Follow your national program and ask your doctor."],
+["When should I start mammograms?","mammogram,breast screening","Programs differ, but routine screening often begins between ages 40 and 50 and continues every 1 to 2 years. Speak with your doctor if you have a family history."],
+["What can cause infertility?","infertility,cant get pregnant,trying to conceive,fertility","Causes include ovulation problems, blocked tubes, low sperm count, age and lifestyle factors. See a doctor after 12 months of trying, or 6 months if over 35."],
+["What should I do when my baby has a fever?","baby fever,infant fever,child fever,toddler fever","For babies under 3 months, any fever needs urgent medical care. For older children, give fluids, dress lightly and seek help if the child is very drowsy, has a rash, breathing trouble or fever beyond 3 days."],
+["How can I soothe a teething baby?","teething,teething baby,baby teeth","Offer a clean cold teething ring, gently rub the gums and use extra cuddles. Teething rarely causes high fever, so see a doctor for fever or illness."],
+["What is colic?","colic,baby crying,crying baby","Colic means prolonged crying in a healthy baby, often in the first months. Hold, rock and use white noise. See a doctor if there is fever, vomiting or poor feeding."],
+["How much sleep does a baby need?","baby sleep,infant sleep,newborn sleep","Newborns sleep around 14 to 17 hours a day in short stretches. Always put babies on their back to sleep on a firm flat surface with nothing loose in the cot."],
+["When should I start solid foods for my baby?","solid foods baby,weaning,baby food,start solids","Most babies are ready at around 6 months, when they can sit with support and show interest in food. Continue milk feeds and introduce foods gradually."],
+["Which vaccines do children need?","childhood vaccines,child vaccination,baby vaccines,immunisation schedule","Childhood schedules protect against diseases like measles, polio, whooping cough and meningitis. Schedules vary by country, so follow your national program and ask your pediatrician."],
+["How can I tell if my child has an ear infection?","ear infection child,child ear pain,toddler pulling ear","Signs include ear pain, fever, irritability, trouble sleeping and tugging at the ear. Many settle without antibiotics, but see a doctor for severe symptoms or discharge."],
+["What is croup?","croup,barking cough","Croup is a viral infection causing a barking cough and noisy breathing in young children, worse at night. Stay calm, keep the child upright and seek urgent help if breathing is difficult."],
+["What is chickenpox?","chickenpox,chicken pox,varicella","Chickenpox causes an itchy blistering rash with fever. It is usually mild in children but can be serious in adults or pregnant women. Keep nails short, avoid scratching and stay home until scabs form."],
+["What is hand, foot and mouth disease?","hand foot mouth,hfmd","Hand, foot and mouth disease is a viral illness causing mouth sores and a rash on hands and feet. It usually clears in 7 to 10 days. Keep the child hydrated and see a doctor if drinking poorly."],
+["Why does my child wet the bed?","bedwetting,bed wetting,enuresis","Bedwetting is common in children and often resolves with time. Avoid punishment, limit drinks before bed and encourage toilet use. See a doctor if it starts suddenly or persists after age 7."],
+["How do I know if my child is growing well?","child growth,child development,growth chart,child height weight","Pediatricians track growth on charts and review milestones. Differences are normal, so look at the overall trend. Talk to a doctor if your child falls behind, loses skills or you are worried."],
+["How do I handle toddler tantrums?","tantrums,toddler tantrum,child meltdown","Stay calm, keep the child safe, avoid giving in to demands and talk about feelings afterward. Consistent routines, naps and snacks prevent many tantrums."],
+["How much screen time is okay for children?","screen time children,kids screen time,children tablet","Experts advise little or no screen time under 2, and limited, high-quality content for older children. Keep screens out of bedrooms and avoid them before bed."],
+["How do I treat head lice?","head lice,lice,nits","Use a treatment recommended by a pharmacist and comb with a fine-toothed comb on damp hair, repeating after a week. Check household members and avoid sharing combs and hats."],
+["What is diaper rash and how do I treat it?","diaper rash,nappy rash","Change diapers often, clean gently, let skin air dry and use a barrier cream. See a doctor if the rash is severe, blistered or does not clear."],
+["Why does my child have a cough?","child cough,kid cough,toddler cough","Most childhood coughs are caused by viral infections and settle within 2 to 3 weeks. Seek care for fast or difficult breathing, a high fever, blue lips or wheeze."],
+["What is a febrile seizure?","febrile seizure,fever seizure,fever convulsion","A febrile seizure is a convulsion triggered by fever in young children. Place the child on their side, do not put anything in the mouth and call emergency services if it lasts over 5 minutes."],
+["What causes erectile dysfunction?","erectile dysfunction,ed,impotence","ED can stem from circulation problems, diabetes, medicines, stress, smoking or low testosterone. It can be an early sign of heart disease, so see a doctor; effective treatments exist."],
+["What are signs of low testosterone?","low testosterone,low t,testosterone","Signs include low sex drive, fatigue, mood changes, reduced muscle and erectile problems, but these have many causes. A blood test and a doctor assessment are needed."],
+["How do I check for testicular cancer?","testicular cancer,testicular exam,testicle lump","Check monthly after a warm shower, rolling each testicle gently. See a doctor for any lump, swelling, heaviness or persistent ache. It is highly treatable when found early."],
+["Why am I losing my hair?","hair loss,losing hair,balding,thinning hair","Hair loss can come from genetics, stress, illness, thyroid problems, iron deficiency or hormones. See a doctor if sudden, patchy or with other symptoms."],
+["Should men get prostate checks?","prostate check,psa test,prostate cancer screening","Prostate cancer screening, such as a PSA test, involves benefits and risks, so discuss with your doctor, particularly from age 50 or earlier with a family history."],
+["How can I improve male fertility?","male fertility,sperm count,low sperm","Avoid smoking, heavy alcohol and heat exposure, keep a healthy weight, exercise and eat a balanced diet. A semen analysis can assess fertility if conceiving takes longer than expected."]
+];
+
+const KB_skinsenses = [
+["How can I treat acne?","acne,pimples,pimple,breakouts,zits","Wash gently twice a day, avoid squeezing spots, use non-comedogenic products and try over-the-counter benzoyl peroxide or salicylic acid. See a doctor for severe, painful or scarring acne."],
+["What is eczema?","eczema,atopic dermatitis,dry itchy skin","Eczema causes dry, itchy, inflamed skin. Moisturize often, avoid triggers and harsh soaps, and use treatments as prescribed. See a doctor if it is widespread or infected."],
+["What is psoriasis?","psoriasis,scaly patches","Psoriasis causes thick, red, scaly patches due to an overactive immune system. Moisturizers and prescribed treatments help. See a doctor for diagnosis and options."],
+["How can I help dry skin?","dry skin,flaky skin,skin dryness","Use lukewarm water, mild cleansers and moisturize within minutes of bathing. Drink water and use a humidifier in dry weather. See a doctor if it is itchy or cracked."],
+["How do I treat sunburn?","sunburn,sun burn,burnt by sun","Cool the skin with cool water or compresses, apply aloe or moisturizer, drink water and avoid more sun. Blistering over large areas, fever or confusion needs medical help."],
+["How should I use sunscreen?","sunscreen,spf,sun protection,suncream","Use broad-spectrum SPF 30 or higher, apply generously 15 minutes before going out and reapply every 2 hours or after swimming. Add shade, hats and clothing."],
+["How can I tell if a mole is dangerous?","mole,moles,skin cancer,melanoma,changing mole","Use ABCDE: Asymmetry, irregular Border, uneven Color, Diameter over 6 mm and Evolving over time. Any changing, bleeding or new unusual mole should be checked by a doctor."],
+["What causes skin rashes?","rash,skin rash,red rash,rashes","Rashes can result from allergies, eczema, infections, heat or medicines. Avoid scratching and irritants. See a doctor for rash with fever, rapid spreading, blistering or breathing problems."],
+["What causes hives?","hives,urticaria,welts","Hives are itchy raised welts often triggered by allergies, infections or medicines. Antihistamines help. Hives with swelling of the lips, throat or breathing trouble is an emergency."],
+["Why am I itchy all over?","itchy skin,itching,pruritus,itchy all over","Itching can come from dry skin, allergies, eczema, scabies or sometimes liver, kidney or thyroid problems. Moisturize and avoid irritants. See a doctor if it lasts more than 2 weeks."],
+["What is ringworm?","ringworm,tinea,fungal rash","Ringworm is a fungal skin infection causing a red, ring-shaped itchy rash, unrelated to worms. Over-the-counter antifungal creams usually work. See a doctor if it persists."],
+["How can I treat athlete's foot?","athlete's foot,athletes foot,foot fungus","Keep feet clean and dry, change socks often and use antifungal cream or powder. See a doctor if it does not improve, or if you have diabetes."],
+["What are warts?","warts,verruca,plantar wart","Warts are harmless skin growths caused by HPV and often disappear on their own. Over-the-counter treatments can help. See a doctor if they are painful, spreading or on the face."],
+["What are cold sores?","cold sores,herpes lip,fever blister","Cold sores are caused by the herpes simplex virus and appear as blisters on the lips. Antiviral creams may help early. They are contagious, so avoid kissing and sharing items."],
+["What is shingles?","shingles,herpes zoster","Shingles causes a painful blistering rash on one side of the body, caused by the chickenpox virus reactivating. See a doctor quickly, as antivirals work best early. A vaccine is available."],
+["How can I treat dandruff?","dandruff,flaky scalp,itchy scalp","Use anti-dandruff shampoos with ingredients like zinc pyrithione, ketoconazole or selenium sulfide. See a doctor if the scalp is very red, sore or not improving."],
+["What causes nail fungus?","nail fungus,toenail fungus,thick yellow nail","Nail fungus makes nails thick, yellow and brittle. It is slow to treat, so see a doctor or pharmacist for antifungal options."],
+["How do I treat an ingrown toenail?","ingrown toenail,ingrown nail","Soak the foot in warm water, keep it clean, wear roomy shoes and cut nails straight across. See a doctor for pus, spreading redness or if you have diabetes."],
+["How should I treat insect bites?","insect bites,bug bites,mosquito bite,bee sting","Wash with soap and water, apply a cold compress and an anti-itch cream. Seek urgent help if there is face or throat swelling, trouble breathing or spreading infection."],
+["What should I do about a tick bite?","tick bite,tick,lyme disease","Remove the tick with fine tweezers close to the skin, pulling straight up, then clean the area. See a doctor if a rash spreads, you get fever or flu-like symptoms."],
+["What is scabies?","scabies,mites,itchy at night","Scabies is a contagious skin infestation causing intense itching, especially at night. It needs prescribed treatment, and close contacts and bedding should be treated too."],
+["How can I reduce scars?","scars,scar treatment,scarring,stretch marks","Keep wounds clean and moist, protect from sun and avoid picking scabs. Silicone gels may help. Stretch marks fade over time. See a dermatologist for raised or painful scars."],
+["What causes excessive sweating?","excessive sweating,hyperhidrosis,sweaty hands","Hyperhidrosis can be primary or linked to thyroid problems, infections, anxiety or medicines. Antiperspirants, clinical-strength products and medical treatments exist. See a doctor if sudden or with other symptoms."],
+["What causes red eyes?","red eye,red eyes,bloodshot eyes","Red eyes can come from allergies, dryness, irritation or infection. Do not wear contacts, wash hands and use lubricating drops. See a doctor if pain, vision change, light sensitivity or discharge."],
+["What is pink eye?","pink eye,conjunctivitis,eye discharge","Pink eye is inflammation of the eye's lining with redness, watering and sometimes sticky discharge. It is often viral and very contagious. Wash hands, avoid sharing towels and see a doctor if severe."],
+["How can I treat dry eyes?","dry eyes,dry eye,gritty eyes","Use lubricating eye drops, blink often, take screen breaks and avoid smoke and dry air. See an eye doctor if symptoms persist."],
+["What is a stye?","stye,sty,eyelid bump","A stye is a painful red lump on the eyelid. Warm compresses several times a day help it drain. See a doctor if it persists or vision is affected."],
+["What are eye floaters?","floaters,eye floaters,spots in vision,flashes of light","Floaters are small specks drifting in vision and are usually harmless. A sudden shower of floaters, flashes of light or a dark curtain needs urgent eye assessment."],
+["How often should I get my eyes checked?","eye exam,eye test,optician,eye check","Adults should have an eye exam about every 2 years, or yearly if you have diabetes, a family history of eye disease or wear glasses. Children also need checks."],
+["What is glaucoma?","glaucoma,eye pressure","Glaucoma damages the optic nerve, often from high eye pressure, and may have no early symptoms. Regular eye exams detect it, and treatment prevents vision loss."],
+["What causes ear pain?","ear pain,earache,ear ache,ear infection","Ear pain may result from infection, wax, jaw problems or a sore throat. Pain relief and a warm cloth can ease symptoms. See a doctor for severe pain, discharge, fever or hearing loss."],
+["How do I safely remove ear wax?","ear wax,earwax,blocked ear","Do not use cotton buds. Use ear drops or olive oil to soften wax, and see a doctor or pharmacist if blocked or if you have ear problems."],
+["What causes hearing loss?","hearing loss,cannot hear,hard of hearing,deaf","Hearing loss can result from wax, infection, loud noise, aging or other conditions. Sudden hearing loss is an emergency. See a doctor or audiologist for a hearing test."],
+["What causes ringing in the ears?","tinnitus,ringing ears,ear ringing","Tinnitus is hearing ringing or buzzing without an outside sound. It can result from loud noise, wax, medicines or hearing loss. See a doctor if it is persistent, one-sided or sudden."],
+["What is swimmer's ear?","swimmer's ear,swimmers ear,ear water","Swimmer's ear is an outer ear canal infection causing pain and itching after water exposure. Keep ears dry and see a doctor for ear drops."],
+["What can I do about a toothache?","toothache,tooth pain,dental pain,tooth hurts","Rinse with warm salt water, use over-the-counter pain relief and avoid very hot or cold food. See a dentist soon, urgently if there is swelling, fever or trouble swallowing."],
+["How do I prevent cavities?","cavities,tooth decay,dental caries","Brush twice daily with fluoride toothpaste, clean between teeth, limit sugary snacks and drinks and see a dentist regularly."],
+["Why do my gums bleed?","bleeding gums,gum bleeding,gums bleed,gingivitis","Bleeding gums are often a sign of gum inflammation from plaque. Brush gently, floss daily and see a dentist. Persistent bleeding may point to other problems."],
+["How can I get rid of bad breath?","bad breath,halitosis,smelly breath","Brush teeth and tongue, floss, drink water, avoid tobacco and have regular dental cleanings. Persistent bad breath may relate to gum disease, tonsil stones or reflux."],
+["Do I need my wisdom teeth removed?","wisdom teeth,wisdom tooth","Wisdom teeth only need removal if they cause pain, infection, decay or crowding. A dentist can examine and take X-rays."],
+["How often should I brush my teeth?","brush teeth,brushing teeth,how often brush,flossing","Brush for 2 minutes twice a day with fluoride toothpaste, clean between teeth daily and replace your toothbrush every 3 months."],
+["What causes mouth ulcers?","mouth ulcer,mouth ulcers,canker sore","Mouth ulcers are common and heal within 1 to 2 weeks. Triggers include injury, stress and some deficiencies. See a doctor or dentist if an ulcer lasts more than 3 weeks."],
+["What causes dry mouth?","dry mouth,xerostomia,saliva","Dry mouth can come from dehydration, medicines, mouth breathing or conditions like diabetes. Sip water, chew sugar-free gum and see a dentist or doctor if persistent."],
+["Why do I grind my teeth?","teeth grinding,bruxism,clenching jaw","Grinding is often related to stress and sleep. It can wear teeth and cause jaw pain. A dentist can provide a night guard, and stress reduction can help."],
+["Why are my teeth sensitive?","sensitive teeth,tooth sensitivity","Sensitivity can come from worn enamel, gum recession or cavities. Use desensitizing toothpaste, brush gently and see a dentist."],
+["What is a dental abscess?","dental abscess,tooth abscess,gum swelling,tooth infection","A dental abscess is a pocket of pus from infection, causing throbbing pain, swelling and fever. It needs prompt dental treatment. Facial swelling with trouble breathing or swallowing is an emergency."],
+["How can I stop snoring or mouth breathing?","mouth breathing,breathe through mouth","Treat nasal blockage, keep a healthy weight and try sleeping on your side. Persistent mouth breathing can be due to allergies or enlarged tonsils; see a doctor."],
+["What helps with motion sickness?","motion sickness,car sick,sea sick,travel sickness","Sit facing forward, look at the horizon, get fresh air, avoid heavy meals and consider medicine recommended by a pharmacist. Ginger may also help."]
+];
+
+const KB_firstaid = [
+["Can I take paracetamol and ibuprofen together?","paracetamol and ibuprofen,tylenol and advil,acetaminophen and ibuprofen","In many adults they can be used together or alternated, but each has maximum daily doses. Follow the label and ask a pharmacist if you have stomach, kidney, liver or heart conditions, or are pregnant."],
+["What is the difference between paracetamol and ibuprofen?","paracetamol vs ibuprofen,acetaminophen vs ibuprofen,tylenol vs advil","Paracetamol (acetaminophen) reduces pain and fever, while ibuprofen also reduces inflammation but can irritate the stomach and kidneys. Always follow label directions and ask a pharmacist."],
+["Do antibiotics work for colds?","antibiotics for cold,antibiotics for flu,antibiotics virus","No. Antibiotics only work on bacteria, not viruses like colds and flu. Unnecessary use contributes to antibiotic resistance."],
+["What is antibiotic resistance?","antibiotic resistance,superbugs,resistant bacteria","Antibiotic resistance occurs when bacteria change so antibiotics no longer work. Use antibiotics only when prescribed, take them as directed and never share them."],
+["Should I finish my antibiotic course?","finish antibiotics,antibiotic course,stop antibiotics early","Take antibiotics exactly as prescribed. Your doctor will tell you if a shorter course is enough; do not stop early without advice, and never save leftovers."],
+["What should I do if I miss a dose of medicine?","missed dose,forgot medicine,forgot to take pill","Check the leaflet or ask a pharmacist, since advice depends on the medicine. In general, take it when you remember unless it is nearly time for the next dose. Never double up unless told to."],
+["Can I drink alcohol while taking medicine?","alcohol and medication,alcohol with antibiotics,drink on medication","Alcohol can interact with many medicines, including painkillers, sedatives and some antibiotics. Check the leaflet or ask your pharmacist."],
+["Can I use expired medicine?","expired medicine,expiry date,out of date medicine","It is best not to use expired medicines, as they may be less effective or unsafe. Return old medicines to a pharmacy for safe disposal."],
+["How should I store medicines?","store medicine,medicine storage,keep medicines","Keep medicines in their original packaging, in a cool, dry place away from sunlight and out of the reach of children. Some need refrigeration; check the label."],
+["Are generic medicines as good as brand names?","generic medicine,generic drugs,brand name","Generic medicines contain the same active ingredient and are held to the same quality standards as brand names. They are usually cheaper."],
+["Should I take aspirin every day?","daily aspirin,aspirin heart,low dose aspirin","Do not start daily aspirin on your own, as it can cause serious bleeding. It may be recommended by a doctor for people with certain heart conditions."],
+["Can painkillers harm my stomach?","painkillers stomach,nsaids stomach,ibuprofen stomach","Anti-inflammatory painkillers like ibuprofen and aspirin can irritate the stomach lining. Take them with food, use the lowest dose for the shortest time and ask your doctor if you have ulcers."],
+["Do antihistamines make you drowsy?","antihistamine,antihistamines,drowsy allergy medicine","Some older antihistamines cause drowsiness, while newer ones are usually less sedating. Avoid driving if you feel sleepy and check with a pharmacist."],
+["Is cough syrup effective?","cough syrup,cough medicine,cough suppressant","Evidence for many cough syrups is limited. Honey, fluids and rest work for many. Cough medicines are not recommended for young children."],
+["Can I use nasal decongestant spray long term?","nasal spray,decongestant spray,rebound congestion","Do not use decongestant sprays for more than 3 days, as they can cause rebound congestion. Saline sprays are safe for longer use."],
+["Can herbal remedies interact with medicines?","herbal remedies,herbal medicine,st john's wort","Yes. Some herbs, such as St John's wort, can interfere with prescribed medicines. Tell your doctor and pharmacist about everything you take."],
+["Which medicines are safe in pregnancy?","medicine pregnancy,safe medication pregnant,pregnancy drugs","Always check with your doctor, midwife or pharmacist before taking any medicine or supplement in pregnancy, as safety varies."],
+["How do I give medicine to a child safely?","children's medicine,child medicine dose,kids paracetamol dose","Child doses depend on weight and the exact product, so follow the product label or your doctor's or pharmacist's advice, and use the measuring device provided. Never guess a dose."],
+["How should I treat a minor cut?","cut,minor cut,small wound,scrape","Wash hands, clean the wound with running water, apply gentle pressure to stop bleeding, then cover with a clean dressing. Seek care for deep wounds, wounds that gape, or signs of infection."],
+["How do I treat a burn?","burn,burns,scald,burnt skin","Cool the burn under cool running water for about 20 minutes, remove jewelry, and cover loosely with cling film or a clean non-fluffy cloth. Do not use ice or butter. Seek care for large, deep or facial burns."],
+["How do I stop a nosebleed?","stop nosebleed,how to stop nose bleeding","Sit up, lean forward and pinch the soft part of the nose for 10 to 15 minutes. Seek care if it lasts longer, follows a head injury or happens frequently."],
+["What should I do if an adult is choking?","choking,choking adult,something stuck throat","If they cannot cough, speak or breathe, call emergency services, give 5 back blows between the shoulder blades, then 5 abdominal thrusts, and repeat until help arrives."],
+["What should I do if a baby is choking?","baby choking,infant choking","Call emergency services. Support the baby face down along your forearm and give up to 5 back blows, then turn them over and give up to 5 chest thrusts using two fingers. Never do abdominal thrusts on a baby."],
+["How do I perform CPR?","cpr,cardiopulmonary resuscitation,not breathing,cardiac arrest","Call emergency services, then push hard and fast in the center of the chest at about 100 to 120 compressions a minute, 5 to 6 cm deep. Use an AED if available. A first aid course gives hands-on training."],
+["What should I do if someone faints?","someone fainted,person fainted,first aid fainting","Lay them on their back and raise their legs, loosen tight clothing and ensure fresh air. They should recover in a minute or two. Call emergency services if they do not wake quickly or are injured."],
+["How can I help someone having a seizure?","seizure first aid,help seizure,someone having seizure","Stay calm and note the time. Cushion the head, remove hazards, never restrain them or put anything in the mouth, and turn them onto their side afterward. Call emergency services if it lasts over 5 minutes."],
+["How should I treat a sprain?","sprain treatment,sprained ankle treatment,rice","Rest, apply ice for 15 to 20 minutes, use a compression bandage and raise the limb. See a doctor if you cannot put weight on it, or it looks deformed."],
+["How do I know if a bone is broken?","broken bone,fracture,suspected fracture","Signs include severe pain, swelling, bruising, deformity and inability to use the limb. Immobilize it, avoid moving it and seek urgent care."],
+["What should I do for a bee sting?","bee sting,wasp sting,insect sting","Remove the stinger by scraping, wash the area and apply a cold pack. Seek emergency help for swelling of the face or throat, trouble breathing or dizziness."],
+["What should I do after a snake bite?","snake bite,snakebite","Keep the person calm and still, remove tight items, keep the bite below the heart and call emergency services. Do not cut, suck the wound or apply a tourniquet."],
+["What are the signs of heat stroke?","heat stroke,heatstroke,heat exhaustion,overheating","Signs are very high temperature, confusion, hot dry or sweaty skin, rapid pulse and collapse. Call emergency services, move the person to shade and cool them with water."],
+["What should I do for hypothermia?","hypothermia,very cold,exposure cold","Move the person indoors, remove wet clothes, wrap in blankets and give warm sweet drinks if awake. Call emergency services if shivering stops or they are drowsy or confused."],
+["How do I treat frostbite?","frostbite,frostnip","Move to a warm place, immerse in warm (not hot) water and avoid rubbing. Do not use direct heat. Seek medical care."],
+["What should I do if I get chemical in my eye?","chemical in eye,eye splash,eye injury","Rinse the eye with clean running water for at least 15 to 20 minutes and seek urgent medical help."],
+["How do I remove something from my eye?","something in eye,foreign body eye,dust in eye","Do not rub. Wash your hands, blink or rinse with clean water. If it does not come out, or the eye is painful or injured, see a doctor."],
+["What should I do after a head injury?","head injury,hit head,concussion","Rest and watch for vomiting, severe headache, confusion, drowsiness, weakness or seizures. Seek urgent care if any of these appear, or if there was loss of consciousness."],
+["What are the signs of a concussion?","concussion signs,concussion symptoms","Symptoms include headache, dizziness, confusion, nausea, memory problems and sensitivity to light. Rest, avoid sport and see a doctor, and seek emergency care if symptoms worsen."],
+["What should I do after an animal bite?","animal bite,dog bite,cat bite","Wash with soap and running water for several minutes and cover. See a doctor promptly, as tetanus, antibiotics or rabies treatment may be needed."],
+["What should I do if someone swallowed something poisonous?","poisoning,swallowed poison,poison","Call your local poison center or emergency number immediately. Do not make the person vomit unless told to, and keep the container to show responders."],
+["What are the signs of a severe allergic reaction?","anaphylaxis,severe allergic reaction,allergic shock","Signs include swelling of the face or throat, wheeze, trouble breathing, hives, dizziness or collapse. Use an epinephrine auto-injector if prescribed and call emergency services immediately."],
+["How do I stop heavy bleeding?","heavy bleeding,bleeding wound,stop bleeding","Press firmly on the wound with a clean cloth, raise the injured area if possible and call emergency services. Add more cloth rather than removing soaked pads."],
+["What should I do for an electric shock?","electric shock,electrocution","Do not touch the person until the power is switched off. Call emergency services, and check breathing. Even minor shocks should be assessed, as heart rhythm can be affected."],
+["How do I remove a splinter?","splinter,remove splinter","Wash the area, use clean tweezers to pull the splinter out at the angle it went in, then clean again. See a doctor for deep splinters or signs of infection."],
+["How should I treat a blister?","blister,blisters,friction blister","Keep it clean and covered and avoid popping it. If it bursts, wash and cover. See a doctor if it is infected or very large."],
+["What should be in a first aid kit?","first aid kit,first aid supplies","Include plasters, sterile dressings, gauze, bandages, antiseptic wipes, tweezers, scissors, gloves, a thermometer, pain relief, burn dressings and an emergency contact list."],
+["When should I call an ambulance?","call ambulance,when to call 911,call emergency,emergency number","Call emergency services for chest pain, severe breathing trouble, stroke signs, heavy bleeding, unconsciousness, serious injury, seizures that do not stop or any life-threatening situation."],
+["What should I do for hypoglycemia in a person with diabetes?","diabetic low blood sugar,diabetic emergency","If awake and able to swallow, give fast sugar such as juice or glucose, then a snack. If unconscious or confused, call emergency services and do not give food or drink."],
+["How do I treat a minor eye injury?","black eye,eye bruise,eye hit","Apply a cold compress gently without pressing on the eye. Seek urgent care for vision changes, severe pain, blood in the eye or double vision."],
+["What should I do for a swallowed object by a child?","child swallowed object,swallowed coin,swallowed battery","Call emergency services or poison control immediately, especially for batteries or magnets, which can be dangerous. Do not induce vomiting."]
+];
+
+const KB_prevention = [
+["Hello","hello,hi,hey,good morning,good evening,good afternoon","Hello, and welcome. I am Dr. Amelia Hart, a virtual doctor. Tell me what is on your mind, such as a symptom, a health worry or a lifestyle question, and I will do my best to help."],
+["Thank you","thank you,thanks,thank u,appreciate","You are very welcome. Please take care, and do not hesitate to ask if anything else worries you."],
+["Goodbye","goodbye,bye,see you,take care","Take care of yourself, and come back any time you have a health question. Wishing you good health."],
+["How are you?","how are you,how do you do,how is it going","I am doing well, thank you for asking. More importantly, how are you feeling today?"],
+["Are you a real doctor?","real doctor,are you human,are you a doctor,are you ai,who are you","I am a virtual doctor assistant, a computer program that shares general health information. I am not a human doctor, cannot examine you and do not replace professional medical care."],
+["Can you diagnose me?","diagnose me,diagnosis,what do i have,do i have","I cannot diagnose conditions. I can explain what common symptoms may mean and when to seek care. For a diagnosis, please see a doctor who can examine you and run tests."],
+["Is this chat private?","private chat,privacy,is my data safe,confidential","This demo runs in your browser and does not send your messages to a server. Still, avoid sharing sensitive personal details in any online tool."],
+["What can I ask you?","what can i ask,what can you do,help,topics","You can ask about common symptoms, illnesses, medicines, nutrition, exercise, sleep, mental well-being, women's, men's and children's health, first aid and prevention."],
+["Which vaccines should adults have?","adult vaccines,vaccines adults,recommended vaccines,vaccination","Recommended adult vaccines usually include tetanus boosters, yearly flu, COVID-19, and others such as pneumococcal, shingles, hepatitis B and HPV depending on age and risk. Ask your doctor for your schedule."],
+["Should I get a flu shot?","flu shot,flu vaccine,influenza vaccine,flu jab","Yearly flu vaccination is recommended for older adults, pregnant women, people with chronic conditions and healthcare workers, and is a good idea for most others. Ask your doctor or pharmacist."],
+["Are vaccines safe?","vaccine safe,vaccines safe,vaccine side effects,vaccine myths","Vaccines are rigorously tested and monitored. Mild effects like a sore arm or low fever are common, and serious reactions are rare. Vaccines prevent many serious diseases."],
+["Do I need a tetanus shot?","tetanus,tetanus shot,lockjaw","Adults usually need a tetanus booster every 10 years, or sooner after a dirty or deep wound if the last dose was over 5 years ago. Check with your doctor."],
+["What should I do before traveling abroad?","travel health,travel vaccines,traveling abroad,travel advice","See a doctor or travel clinic 6 to 8 weeks before travel for vaccines and malaria advice, pack medicines and a first aid kit, buy insurance and follow food and water safety."],
+["How can I beat jet lag?","jet lag,jetlag,time zone","Shift your sleep schedule gradually before travel, get daylight at your destination, stay hydrated, avoid heavy alcohol and caffeine, and take a short nap if needed."],
+["What is altitude sickness?","altitude sickness,mountain sickness,high altitude","Altitude sickness causes headache, nausea and tiredness at high elevations. Ascend gradually, rest and hydrate. Descend and seek help if you develop severe breathlessness, confusion or lack of coordination."],
+["How should I wash my hands properly?","wash hands,handwashing,hand hygiene,hand sanitizer","Wet hands, use soap, rub for at least 20 seconds including between fingers and under nails, then rinse and dry. Use alcohol-based sanitizer with at least 60% alcohol when soap is unavailable."],
+["How often should I have a health check-up?","health check,check up,checkup,annual physical","Many adults benefit from a check-up every 1 to 3 years, more often with chronic conditions. Check blood pressure, weight, cholesterol and blood sugar, and review vaccines and screenings."],
+["What blood tests are commonly done?","blood test,blood tests,cbc,full blood count,blood work","Common tests include a full blood count, blood sugar, cholesterol, kidney, liver and thyroid tests, and vitamin levels. Your doctor chooses tests based on your symptoms and risks."],
+["When should I get my cholesterol checked?","cholesterol check,cholesterol test,lipid test","Many adults should have cholesterol checked from around age 40, or earlier with risk factors such as family history, diabetes or high blood pressure. Your doctor sets the schedule."],
+["Which cancer screenings do I need?","cancer screening,screening tests,screening","Common screenings include cervical, breast, colorectal and sometimes lung and prostate screening, depending on age, sex and risk factors. Ask your doctor which apply to you."],
+["When should I have a colonoscopy?","colonoscopy,colon cancer screening,bowel screening","Colorectal screening usually starts around 45 to 50 and sooner with family history or symptoms. Options include stool tests and colonoscopy; ask your doctor."],
+["How often should I check my skin?","skin check,skin self exam,check moles","Check your skin monthly for new or changing moles and spots, and see a doctor for anything unusual. People at high risk may need regular dermatology checks."],
+["How can I quit smoking?","quit smoking,stop smoking,smoking cessation,give up cigarettes","Set a quit date, tell friends and family, consider nicotine replacement or prescription medicines, avoid triggers and get support from a doctor or quitline. Most people need several attempts."],
+["Is vaping safe?","vaping,vape,e-cigarette,e cigarette","Vaping is less harmful than smoking for adult smokers who switch fully, but it is not risk-free and contains nicotine. It is not recommended for non-smokers, teens or pregnant women."],
+["Is secondhand smoke harmful?","secondhand smoke,passive smoking","Yes. Secondhand smoke raises the risk of heart disease, lung cancer and asthma, and is especially harmful to children and pregnant women. Keep homes and cars smoke-free."],
+["What are the risks of recreational drugs?","recreational drugs,drug use,cannabis,marijuana,cocaine","Recreational drugs can harm the brain, heart and mental health, and mixing substances is especially risky. If you or someone else is in trouble, seek medical help; support services are available."],
+["How can I practice safe sex?","safe sex,condoms,protection sex","Use condoms consistently, get regular STI testing, consider HPV and hepatitis B vaccines, talk with partners and ask about PrEP if you are at higher risk of HIV."],
+["How can I protect myself from the sun?","sun safety,sun protection tips,avoid sunburn","Seek shade between 11 am and 3 pm, wear a hat, sunglasses and covering clothes and use SPF 30 or higher sunscreen. Avoid tanning beds."],
+["How do I stay safe in hot weather?","hot weather,heatwave,heat safety","Drink water often, avoid strenuous activity in the heat, wear light clothing, stay in shade or cool places and check on older or vulnerable neighbors."],
+["How do I stay healthy in cold weather?","cold weather,winter health,cold safety","Dress in layers, keep your home warm, eat regular hot meals, stay active, wash hands to avoid winter infections and get recommended vaccines."],
+["How does air pollution affect health?","air pollution,pollution,smog","Air pollution can worsen asthma, heart and lung disease. On high-pollution days, limit outdoor exercise, keep windows closed and consider a mask or indoor air filter."],
+["Is mold in the house dangerous?","mold,mould,damp house","Mold can trigger allergies, asthma and breathing problems. Fix leaks, ventilate, clean small areas with detergent and seek professional help for large areas."],
+["Is loud noise bad for hearing?","loud noise,noise hearing,earphones volume","Yes. Prolonged noise above 85 dB can damage hearing. Keep headphone volume below 60% and use hearing protection at concerts and with machinery."],
+["How do I find a good doctor?","find a doctor,choose doctor,find a gp,primary care","Ask for referrals, check qualifications and reviews, consider location and language, and look for a doctor who listens and explains clearly."],
+["What questions should I ask my doctor?","questions for doctor,ask my doctor,doctor questions","Ask what is wrong, what tests or treatments are needed, benefits and risks, what to expect, when to follow up and what warning signs to watch for."],
+["How can I prepare for a doctor's appointment?","prepare doctor appointment,doctor visit,before appointment","Write down symptoms, timing and questions, bring a list of medicines and past records, and take a friend if helpful. Be honest and specific."],
+["Should I get a second opinion?","second opinion","A second opinion is reasonable for major diagnoses or treatments, or if you are unsure. Good doctors support it."],
+["What is telemedicine?","telemedicine,telehealth,online doctor,video consultation","Telemedicine means seeing a clinician by phone or video. It is useful for follow-ups, minor illnesses and advice, but some problems need an in-person exam."],
+["How do I read my lab results?","lab results,read test results,blood results,reference range","Lab reports show your value next to a reference range, but results must be interpreted with your symptoms and history. Ask your doctor to explain anything marked abnormal."],
+["What is a normal heart rate?","normal heart rate,resting heart rate,pulse rate,heart rate","A normal resting heart rate for adults is about 60 to 100 beats per minute. Fit people may be lower. See a doctor if it is consistently very fast or slow or with symptoms."],
+["What is a normal body temperature?","normal body temperature,normal temperature,body temperature","Normal is usually around 36.1 to 37.2°C (97 to 99°F). A fever is generally 38°C (100.4°F) or higher."],
+["What is a normal oxygen level?","oxygen level,oxygen saturation,spo2,pulse oximeter","A normal blood oxygen saturation is about 95 to 100%. Readings under 92 to 94 with symptoms need medical advice, and severe breathlessness is an emergency."],
+["How do I take my temperature?","take temperature,thermometer,measure temperature","Use a digital thermometer under the tongue, in the ear, on the forehead or under the arm per the instructions, and wait a few minutes after eating, drinking or exercise. For babies, ask a health professional."],
+["How do I check my pulse?","check pulse,take pulse,measure pulse","Place two fingers on the inside of your wrist below the thumb, count beats for 30 seconds and multiply by 2. Note the rhythm as well as the rate."],
+["How can I live longer?","live longer,longevity,live healthy long,healthy lifestyle","Eat plenty of plants, stay active, sleep well, avoid smoking, limit alcohol, keep a healthy weight, manage stress, stay socially connected and keep up with check-ups."],
+["What are the habits of a healthy lifestyle?","healthy lifestyle,healthy habits,stay healthy","The basics are balanced meals, regular activity, 7 to 9 hours of sleep, not smoking, limited alcohol, stress management, social contact and regular preventive care."],
+["How can I improve my overall health?","improve health,get healthier,better health","Start small: walk daily, add vegetables, drink water, sleep on a schedule and see your doctor for check-ups. Gradual, consistent changes work best."],
+["What should I do if I feel anxious about my health?","health anxiety,hypochondria,worried about health","Health worries are common. Limit symptom searching, focus on facts from reliable sources and talk with a doctor. If worry takes over your life, therapy can help."],
+["How reliable is health information online?","online health information,google symptoms,dr google","Online information can be helpful but also misleading. Prefer official health organizations and hospitals, check dates, and discuss concerns with a health professional."],
+["What is a pulse oximeter?","pulse oximeter device,finger oximeter","A pulse oximeter clips on a finger to estimate oxygen levels. It can be helpful but is not perfect, so interpret readings with symptoms and medical advice."],
+["What is preventive care?","preventive care,prevention,preventive medicine","Preventive care means vaccines, screenings, healthy habits and regular check-ups that find or prevent problems early, which is often easier and cheaper to treat."],
+["What should I do if I have a medical emergency?","medical emergency,emergency help,i need urgent help","Call your local emergency number immediately (112 in the EU, 911 in the US). Stay with the person, follow the dispatcher's instructions and do not wait for an online response."]
+];
+
+const knowledge = [KB_symptoms, KB_body, KB_chronic, KB_nutrition, KB_lifestyle, KB_womenkids, KB_skinsenses, KB_firstaid, KB_prevention]
+  .flat()
+  .map(([question, keywords, answer], index) => ({
+    id: index,
+    question,
+    keywords: keywords.split(",").map((k) => k.trim()).filter(Boolean),
+    answer
+  }));
+
+const STOP = new Set(("a an the and or of to in on at for with is are was were be been am i me my you your it its this that these those do does did can could should would will what how why when where which who whom about from as by if so than then there their they them we our us have has had not no any some more most very just also into over under up down out off too get got").split(" "));
+
+function normalize(value) {
+  return value.toLowerCase().replace(/[^a-z0-9\s']/g, " ").replace(/'/g, "").replace(/\s+/g, " ").trim();
+}
+
+function stem(word) {
+  if (word.length > 5 && word.endsWith("ing")) return word.slice(0, -3);
+  if (word.length > 4 && word.endsWith("es")) return word.slice(0, -2);
+  if (word.length > 3 && word.endsWith("s") && !word.endsWith("ss")) return word.slice(0, -1);
+  if (word.length > 4 && word.endsWith("ed")) return word.slice(0, -2);
+  return word;
+}
+
+const tokens = (text) => normalize(text).split(" ").filter(Boolean).map(stem);
+const contentTokens = (text) => tokens(text).filter((t) => !STOP.has(t) && t.length > 1);
+
+const index = knowledge.map((entry) => ({
+  entry,
+  keywords: entry.keywords.map((k) => tokens(k)),
+  questionTokens: new Set(contentTokens(entry.question))
+}));
+
+function containsSequence(haystack, needle) {
+  if (!needle.length) return false;
+  for (let i = 0; i <= haystack.length - needle.length; i++) {
+    let ok = true;
+    for (let j = 0; j < needle.length; j++) {
+      if (haystack[i + j] !== needle[j]) { ok = false; break; }
+    }
+    if (ok) return true;
+  }
+  return false;
+}
+
+function findAnswer(question) {
+  const inputTokens = tokens(question);
+  const inputContent = new Set(inputTokens.filter((t) => !STOP.has(t) && t.length > 1));
+  if (!inputContent.size) return null;
+
+  let best = null;
+  let bestScore = 0;
+
+  for (const item of index) {
+    let score = 0;
+    for (const kw of item.keywords) {
+      if (containsSequence(inputTokens, kw)) score += 4 + kw.length * 2;
+      else if (kw.length > 1 && kw.every((t) => STOP.has(t) || inputContent.has(t)) && kw.some((t) => !STOP.has(t))) score += 3 + kw.length * 2;
+    }
+    let overlap = 0;
+    for (const t of item.questionTokens) if (inputContent.has(t)) overlap++;
+    score += overlap * 1.5;
+    if (item.questionTokens.size && overlap / item.questionTokens.size >= 0.7) score += 4;
+    if (score > bestScore) { bestScore = score; best = item.entry; }
+  }
+  return bestScore >= 6 ? best : null;
+}
+
+const SUICIDE = /(suicid|kill myself|end my life|want to die|take my own life|hurt myself|self harm|self-harm|don'?t want to live)/;
+const EMERGENCY = [
+  /chest (pain|pressure|tightness).*(arm|jaw|sweat|breath)/,
+  /(severe|crushing) chest pain/,
+  /(can'?t|cannot|unable to) breathe/,
+  /(struggling|gasping) (to|for) (breathe|air)/,
+  /face (is )?drooping|slurred speech|sudden weakness|sudden numbness/,
+  /(unconscious|unresponsive|not breathing|stopped breathing)/,
+  /(heavy|severe|won'?t stop) bleeding|bleeding (heavily|won'?t stop)/,
+  /(took|taken|swallowed) .*(overdose|too many pills|poison|bleach)/,
+  /overdose/,
+  /(throat|tongue|lips|face) (is )?(closing|swelling)/,
+  /coughing (up )?blood|vomiting blood|vomiting up blood/,
+  /(having|had) (a )?(heart attack|stroke|seizure)/,
+  /sudden (vision loss|loss of vision)/,
+  /\b(i have|i am having|i'm having|i feel|i got|my .* has|he has|she has)\b.*(chest pain|chest pressure|chest tightness)/,
+  /\b(i have|i am having|i'm having|having|has)\b.*(difficulty breathing|trouble breathing|shortness of breath|hard to breathe)/
+];
+const QUESTION_START = /^(what|how|why|when|which|who|can|could|is|are|does|do|should|tell me about)\b/;
+const PERSONAL = /\b(i|im|i'm|my|me|he|she|someone|help|now|right now|currently)\b/;
+
+function getReply(question) {
+  const text = normalize(question).replace(/’/g, "'");
+  const raw = question.toLowerCase();
+
+  if (SUICIDE.test(raw)) {
+    return {
+      kind: "emergency",
+      text: "I am really sorry you are going through this, and I am glad you said it out loud. You deserve support right now. If you might act on these thoughts or are in immediate danger, please call your local emergency number now (112 in the EU, 911 in the US). You can also reach a crisis line in your country, and findahelpline.com lists free 24/7 services worldwide. If you can, please tell someone you trust that you are not okay and ask them to stay with you."
+    };
+  }
+
+  const informational = QUESTION_START.test(text) && !PERSONAL.test(text);
+  if (!informational && EMERGENCY.some((re) => re.test(raw))) {
+    return {
+      kind: "emergency",
+      text: "What you describe may be a medical emergency. Please call your local emergency number now (112 in the EU, 911 in the US) or go to the nearest emergency department. Do not wait for an online reply. If you can, ask someone nearby to stay with you, and unlock the door for responders."
+    };
+  }
+
+  const match = findAnswer(question);
+  if (match) return { kind: "normal", text: match.answer, id: match.id };
+
+  return {
+    kind: "normal",
+    text: "Thank you for telling me. I do not have specific information on that yet. Could you describe your main symptom, how long it has lasted and how severe it is? You can also pick one of the suggested questions below. For personal advice or if you are worried, please speak with a doctor or pharmacist."
+  };
+}
+
+function randomQuestions(count, excludeIds = []) {
+  const pool = knowledge.filter((e) => !excludeIds.includes(e.id) && e.question.length < 60 && !/^(hello|thank you|goodbye|how are you)/i.test(e.question));
+  const picked = [];
+  const used = new Set();
+  while (picked.length < count && used.size < pool.length) {
+    const i = Math.floor(Math.random() * pool.length);
+    if (used.has(i)) continue;
+    used.add(i);
+    picked.push(pool[i]);
+  }
+  return picked.map((e) => e.question);
+}
+
+const totalQuestions = knowledge.length;
+
+const DOCTOR = {
+  name: "Dr. Amelia Hart",
+  short: "DR. HART",
+  title: "Virtual General Practitioner",
+  focus: ["General health", "Symptoms", "Nutrition", "Mental well-being", "First aid", "Prevention"]
+};
+
+const AGE_GROUPS = ["Under 18", "18–39", "40–64", "65+"];
+const STORAGE_KEY = "ask-a-doctor-patient";
+
+/* لینک‌ها: این صفحه و Emergency.html هر دو در پوشه pages هستند، index.html یک پوشه بالاتر است */
+const LINKS = {
+  home: "../index.html",
+  emergency: "Emergency.html"
+};
+
+/* رشته‌ی base64 عکس دکتر را اینجا بگذارید (مثلاً "data:image/jpeg;base64,...").
+   اگر خالی بماند، تصویر SVG پیش‌فرض نمایش داده می‌شود. */
+const DOCTOR_PHOTO = "../image/650770214950426883.jpg";
+
+const FLOATERS = [
+  { type: "cross", left: 6, size: 22, delay: 0, duration: 26 },
+  { type: "pill", left: 16, size: 30, delay: 6, duration: 32 },
+  { type: "drop", left: 27, size: 18, delay: 12, duration: 28 },
+  { type: "cross", left: 38, size: 14, delay: 3, duration: 34 },
+  { type: "dot", left: 49, size: 12, delay: 9, duration: 24 },
+  { type: "pill", left: 58, size: 26, delay: 15, duration: 30 },
+  { type: "cross", left: 69, size: 24, delay: 5, duration: 36 },
+  { type: "drop", left: 79, size: 16, delay: 18, duration: 27 },
+  { type: "dot", left: 88, size: 10, delay: 2, duration: 31 },
+  { type: "cross", left: 94, size: 18, delay: 11, duration: 29 }
+];
+
+function loadPatient() {
+  try {
+    const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "null");
+    if (saved && typeof saved === "object") {
+      return {
+        name: String(saved.name || "").slice(0, 24),
+        age: AGE_GROUPS.includes(saved.age) ? saved.age : AGE_GROUPS[1],
+        photo: typeof saved.photo === "string" && saved.photo.startsWith("data:image/") ? saved.photo : ""
+      };
+    }
+  } catch { /* storage unavailable */ }
+  return { name: "", age: AGE_GROUPS[1], photo: "" };
+}
+
+function savePatient(patient) {
+  try { window.localStorage.setItem(STORAGE_KEY, JSON.stringify(patient)); } catch { /* ignore */ }
+}
+
+function greeting(name) {
+  const who = name.trim() ? `Hello, ${name.trim()}!` : "Hello!";
+  return `${who} I'm ${DOCTOR.name}, your virtual doctor. I can talk through common symptoms, medicines, nutrition, sleep, mental well-being, first aid and prevention. What would you like to ask today?`;
+}
+
+function timeNow() {
+  return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+}
+
+function initials(name) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "";
+  return (parts[0][0] + (parts[1]?.[0] || "")).toUpperCase();
+}
+
+function DoctorAvatar({ uid, className = "" }) {
+  const [failed, setFailed] = useState(false);
+  if (DOCTOR_PHOTO && !failed) {
+    return <img className={className} src={DOCTOR_PHOTO} alt={DOCTOR.name} onError={() => setFailed(true)} />;
+  }
+  return (
+    <svg className={className} viewBox="0 0 120 120" role="img" aria-label={DOCTOR.name}>
+      <defs>
+        <linearGradient id={`docbg-${uid}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#e3f3ff" />
+          <stop offset="1" stopColor="#bfe8ee" />
+        </linearGradient>
+      </defs>
+      <rect width="120" height="120" fill={`url(#docbg-${uid})`} />
+      <path d="M12 120c2-27 21-40 48-40s46 13 48 40z" fill="#ffffff" />
+      <path d="M46 82l14 20 14-20" fill="none" stroke="#c9dcec" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="53" y="68" width="14" height="18" rx="6" fill="#f0c3a0" />
+      <path d="M35 54c0-21 12-32 25-32s25 11 25 32c0 9-2 17-5 22H40c-3-5-5-13-5-22z" fill="#4a2f23" />
+      <ellipse cx="60" cy="54" rx="17" ry="20" fill="#f6d1b0" />
+      <path d="M42 50c2-14 12-21 21-21 9 0 16 6 17 20-6-6-14-9-23-9-6 0-11 4-15 10z" fill="#4a2f23" />
+      <circle cx="53" cy="56" r="1.9" fill="#26384a" />
+      <circle cx="67" cy="56" r="1.9" fill="#26384a" />
+      <path d="M54 64q6 5 12 0" stroke="#b5654f" strokeWidth="2" strokeLinecap="round" fill="none" />
+      <path d="M46 84c0 16 6 22 14 22M74 84c0 16-6 22-14 22" stroke="#35c6d4" strokeWidth="3" strokeLinecap="round" fill="none" />
+      <circle cx="60" cy="108" r="4.5" fill="#12345a" />
+      <path d="M86 98h8M90 94v8" stroke="#2478e5" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PatientAvatar({ name, photo, className = "" }) {
+  const text = initials(name);
+  return (
+    <div className={`mc-patient-avatar ${className}`} aria-hidden="true">
+      {photo ? (
+        <img src={photo} alt="" />
+      ) : text ? (
+        <span>{text}</span>
+      ) : (
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" /><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z" fill="currentColor" /></svg>
+      )}
+    </div>
+  );
+}
+
+function Background() {
+  return (
+    <div className="mc-bg" aria-hidden="true">
+      <div className="mc-orb mc-orb-one" />
+      <div className="mc-orb mc-orb-two" />
+      <div className="mc-ring mc-ring-a" />
+      <div className="mc-ring mc-ring-b" />
+      <div className="mc-ecg mc-ecg-a" />
+      <div className="mc-ecg mc-ecg-b" />
+      {FLOATERS.map((f, i) => (
+        <span
+          key={i}
+          className={`mc-float mc-float-${f.type}`}
+          style={{ left: `${f.left}%`, "--s": `${f.size}px`, animationDelay: `-${f.delay}s`, animationDuration: `${f.duration}s` }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function MedicalChat() {
+  const [patient, setPatient] = useState(loadPatient);
+  const [messages, setMessages] = useState(() => [
+    { id: 1, role: "assistant", kind: "normal", text: greeting(loadPatient().name), time: timeNow() }
+  ]);
+  const [input, setInput] = useState("");
+  const [typing, setTyping] = useState(false);
+  const [suggestions, setSuggestions] = useState(() => randomQuestions(6));
+  const conversationRef = useRef(null);
+  const timerRef = useRef(null);
+  const nextIdRef = useRef(2);
+
+  const asked = messages.filter((m) => m.role === "user").length;
+  const patientLabel = patient.name.trim() ? patient.name.trim().toUpperCase() : "YOU";
+
+  useEffect(() => {
+    const el = conversationRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [messages, typing]);
+
+  useEffect(() => () => { if (timerRef.current) window.clearTimeout(timerRef.current); }, []);
+
+  function updatePatient(changes) {
+    const next = { ...patient, ...changes };
+    setPatient(next);
+    savePatient(next);
+  }
+
+  function handlePhoto(event) {
+    const file = event.target.files && event.target.files[0];
+    event.target.value = "";
+    if (!file || !file.type.startsWith("image/")) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const size = 160;
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const side = Math.min(img.width, img.height);
+        canvas.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+        updatePatient({ photo: canvas.toDataURL("image/jpeg", 0.85) });
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function sendMessage(value = input) {
+    const question = value.trim();
+    if (!question || typing) return;
+
+    setMessages((current) => [...current, { id: nextIdRef.current++, role: "user", kind: "normal", text: question, time: timeNow() }]);
+    setInput("");
+    setTyping(true);
+
+    const reply = getReply(question);
+    const delay = 600 + Math.min(reply.text.length * 6, 1100);
+    timerRef.current = window.setTimeout(() => {
+      setMessages((current) => [...current, { id: nextIdRef.current++, role: "assistant", kind: reply.kind, text: reply.text, time: timeNow() }]);
+      setSuggestions(randomQuestions(6));
+      setTyping(false);
+      timerRef.current = null;
+    }, delay);
+  }
+
+  function resetChat() {
+    if (timerRef.current) { window.clearTimeout(timerRef.current); timerRef.current = null; }
+    setTyping(false);
+    setInput("");
+    setMessages([{ id: nextIdRef.current++, role: "assistant", kind: "normal", text: greeting(patient.name), time: timeNow() }]);
+    setSuggestions(randomQuestions(6));
+  }
+
+  function handleKeyDown(event) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  }
+
+  return (
+    <main className="mc-page">
+      <Background />
+
+      <section className="mc-shell">
+        <nav className="mc-nav" aria-label="Site navigation">
+          <a href={LINKS.home}>← Home</a>
+          <a href={LINKS.emergency} className="mc-nav-alert">Emergency</a>
+        </nav>
+
+        <header className="mc-intro">
+          <div className="mc-eyebrow">
+            <a href={LINKS.emergency} aria-label="Emergency page"><span className="mc-eyebrow-dot" /></a>
+            YOUR HEALTH, MADE CLEARER
+          </div>
+          <h1>Ask. Understand. <span>Feel Better.</span></h1>
+          <p>Talk with {DOCTOR.name}, your virtual doctor, and get a clearer starting point for your health questions.</p>
+        </header>
+
+        <div className="mc-layout">
+          <aside className="mc-side" aria-label="Profiles">
+            <section className="mc-profile mc-doctor-card" aria-label="Doctor profile">
+              <div className="mc-doctor-photo">
+                <span className="mc-doctor-ring" />
+                <DoctorAvatar uid="side" className="mc-doctor-svg" />
+                <span className="mc-online-dot" title="Online" />
+              </div>
+              <div className="mc-doctor-info">
+                <div className="mc-profile-tag">YOUR DOCTOR</div>
+                <h2>{DOCTOR.name}</h2>
+                <p className="mc-doctor-title">{DOCTOR.title}</p>
+                <span className="mc-ai-badge">AI-powered virtual assistant</span>
+              </div>
+              <div className="mc-stats">
+                <div><strong>{totalQuestions}+</strong><span>Topics</span></div>
+                <div><strong>24/7</strong><span>Available</span></div>
+                <div><strong>&lt;2s</strong><span>Replies</span></div>
+              </div>
+              <div className="mc-doctor-about">
+                <div className="mc-profile-tag">AREAS OF GUIDANCE</div>
+                <ul>
+                  {DOCTOR.focus.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </div>
+            </section>
+
+            <section className="mc-profile mc-patient-card" aria-label="Patient profile">
+              <div className="mc-photo-col">
+                <PatientAvatar name={patient.name} photo={patient.photo} />
+                <label className="mc-photo-btn">
+                  {patient.photo ? "Change" : "Add photo"}
+                  <input type="file" accept="image/*" hidden onChange={handlePhoto} />
+                </label>
+                {patient.photo && (
+                  <button type="button" className="mc-photo-remove" onClick={() => updatePatient({ photo: "" })}>Remove</button>
+                )}
+              </div>
+              <div className="mc-patient-fields">
+                <div className="mc-profile-tag">PATIENT PROFILE</div>
+                <label className="mc-field">
+                  <span>Your name</span>
+                  <input
+                    type="text"
+                    value={patient.name}
+                    maxLength={24}
+                    placeholder="Enter your name"
+                    onChange={(event) => updatePatient({ name: event.target.value })}
+                    autoComplete="given-name"
+                  />
+                </label>
+                <label className="mc-field">
+                  <span>Age group</span>
+                  <select value={patient.age} onChange={(event) => updatePatient({ age: event.target.value })}>
+                    {AGE_GROUPS.map((group) => <option key={group} value={group}>{group}</option>)}
+                  </select>
+                </label>
+                <div className="mc-visit">Questions asked today: <strong>{asked}</strong></div>
+              </div>
+            </section>
+          </aside>
+
+          <section className="mc-card" aria-label="Chat with the virtual doctor">
+            <header className="mc-header">
+              <div className="mc-brand">
+                <div className="mc-header-avatar">
+                  <DoctorAvatar uid="head" className="mc-header-svg" />
+                  <span className="mc-online-dot" />
+                </div>
+                <div>
+                  <h2>{DOCTOR.name}</h2>
+                  <div className="mc-status"><span /> Online · {DOCTOR.title}</div>
+                </div>
+              </div>
+              <button className="mc-reset" type="button" onClick={resetChat} title="Start a new conversation">
+                <span aria-hidden="true">↻</span> New chat
+              </button>
+            </header>
+
+            <div className="mc-conversation" ref={conversationRef} aria-live="polite" aria-relevant="additions">
+              <div className="mc-date-divider"><span>TODAY</span></div>
+
+              {messages.map((message) => (
+                <article className={`mc-message mc-${message.role}`} key={message.id}>
+                  {message.role === "assistant" ? (
+                    <div className="mc-message-avatar mc-doctor-mini"><DoctorAvatar uid={`m${message.id}`} className="mc-mini-svg" /></div>
+                  ) : (
+                    <PatientAvatar name={patient.name} photo={patient.photo} className="mc-message-avatar mc-user-avatar" />
+                  )}
+                  <div className="mc-message-content">
+                    <div className="mc-sender">
+                      {message.role === "assistant" ? DOCTOR.short : patientLabel}
+                      <time>{message.time}</time>
+                    </div>
+                    <div className={`mc-bubble ${message.kind === "emergency" ? "mc-emergency" : ""}`}>
+                      {message.kind === "emergency" && <strong className="mc-alert-title">⚠ Important</strong>}
+                      {message.text}
+                    </div>
+                  </div>
+                </article>
+              ))}
+
+              {typing && (
+                <article className="mc-message mc-assistant">
+                  <div className="mc-message-avatar mc-doctor-mini"><DoctorAvatar uid="typing" className="mc-mini-svg" /></div>
+                  <div className="mc-message-content">
+                    <div className="mc-sender">{DOCTOR.short} IS TYPING…</div>
+                    <div className="mc-typing" aria-label="The doctor is typing"><i /><i /><i /></div>
+                  </div>
+                </article>
+              )}
+            </div>
+
+            <div className="mc-suggestions">
+              <div className="mc-suggestion-top">
+                <div className="mc-suggestion-heading">SUGGESTED QUESTIONS</div>
+                <button type="button" className="mc-shuffle" disabled={typing} onClick={() => setSuggestions(randomQuestions(6))}>
+                  <span aria-hidden="true">⟳</span> More ideas
+                </button>
+              </div>
+              <div className="mc-suggestion-list">
+                {suggestions.map((item) => (
+                  <button type="button" key={item} disabled={typing} onClick={() => sendMessage(item)}>
+                    {item}<span aria-hidden="true">↗</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <form className="mc-composer" onSubmit={(event) => { event.preventDefault(); sendMessage(); }}>
+              <label className="mc-input-label" htmlFor="mc-question">YOUR QUESTION</label>
+              <div className="mc-input-row">
+                <textarea
+                  id="mc-question"
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Describe what you would like to know..."
+                  rows={1}
+                  maxLength={700}
+                />
+                <button className="mc-send" type="submit" disabled={!input.trim() || typing} aria-label="Send message">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.4 20.2 21 12 3.4 3.8l.1 6.4 12.1 1.8-12.1 1.8z" fill="currentColor" /></svg>
+                </button>
+              </div>
+              <div className="mc-input-foot"><span>Enter to send · Shift + Enter for a new line</span><span>{input.length}/700</span></div>
+            </form>
+          </section>
+        </div>
+
+        <aside className="mc-disclaimer">
+          <span className="mc-info-icon">i</span>
+          <p><strong>Important:</strong> {DOCTOR.name} is a virtual assistant, not a human doctor. It shares general educational information only, cannot diagnose conditions and does not replace professional medical advice. If you think you may have a medical emergency, call your local emergency number immediately.</p>
+        </aside>
+
+        <footer className="mc-footer">ASK A DOCTOR <span>•</span> GENERAL HEALTH INFORMATION</footer>
+      </section>
+    </main>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<MedicalChat />);
+</script>
+</body>
+</html>
