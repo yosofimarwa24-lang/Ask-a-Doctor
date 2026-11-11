@@ -2550,6 +2550,33 @@ body {
 }
 
 
+/* ===================== PRIMARY BUTTON (shared base) ===================== */
+
+.primary-btn {
+    min-height: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 13px;
+    padding: 0 28px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2878d4, #1762b4);
+    color: #ffffff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(40, 120, 212, .24);
+    transition: .3s ease;
+}
+
+.primary-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px rgba(40, 120, 212, .32);
+    color: #ffffff;
+}
+
+
 /* ===================== FINAL CALL TO ACTION ===================== */
 
 .final-cta {
@@ -2608,34 +2635,43 @@ body {
     position: relative;
     z-index: 2;
     flex-shrink: 0;
-    background: var(--consult-white);
-    color: var(--consult-navy);
+    background: #ffffff;
+    color: #12345a;
     box-shadow: none;
 }
 
 .final-cta .primary-btn:hover {
     background: #eaf5ff;
-    color: var(--consult-blue);
+    color: #2878d4;
 }
 
 
 /* ===================== REVEAL ANIMATION ===================== */
+
+/* NOTE: initial hiding removed — elements are visible by default so the
+   page never renders blank if JS fails. The .reveal class now only styles
+   the transition; script.js can still animate by toggling .visible. */
 
 .consultation-section .reveal,
 .trust-section .reveal,
 .methods-section .reveal,
 .booking-section .reveal,
 .final-cta .reveal {
-    opacity: 0;
-    transform: translateY(25px);
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity .7s ease, transform .7s ease;
 }
 
 .consultation-section .reveal.active,
+.consultation-section .reveal.visible,
 .trust-section .reveal.active,
+.trust-section .reveal.visible,
 .methods-section .reveal.active,
+.methods-section .reveal.visible,
 .booking-section .reveal.active,
-.final-cta .reveal.active {
+.booking-section .reveal.visible,
+.final-cta .reveal.active,
+.final-cta .reveal.visible {
     opacity: 1;
     transform: translateY(0);
 }

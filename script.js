@@ -123,6 +123,13 @@ function observeRevealElements(){
     }
 
     document.querySelectorAll(".reveal:not(.visible)").forEach(element=>{
+        /* fallback: anything already inside the viewport is revealed immediately,
+           without waiting for the observer's async callback */
+        const rect=element.getBoundingClientRect();
+        if(rect.top<window.innerHeight&&rect.bottom>0){
+            element.classList.add("visible");
+            return;
+        }
         revealObserver.observe(element);
     });
 }
