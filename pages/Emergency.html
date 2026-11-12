@@ -10,9 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-
 <style>
-    
+
 :root {
     --blue: #2478e5;
     --dark: #102c50;
@@ -57,294 +56,330 @@ button {
     width: min(1200px, 92%);
     margin: auto;
 }
-/* Fix navbar layout */
-header.navbar {
-    width: min(1200px, 92%);
-    min-height: 68px;
-    margin: 12px auto;
-    padding: 7px 15px;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
+
+/* ================= NAVBAR ================= */
+
+nav.navbar {
+    font-family: 'DM Sans', sans-serif;
     position: relative;
-    z-index: 100;
-    background: rgba(255, 255, 255, .85);
-    border: 1px solid #e4edf6;
-    border-radius: 50px;
-    box-shadow: 0 8px 30px rgba(31, 111, 171, .09);
+    z-index: 1000;
+    width: calc(92% + 3cm);
+    max-width: 1500px;
+    min-height: 102px;
+    margin: 18px auto;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(228, 237, 246, .9);
+    border-radius: 60px;
+    box-shadow: 0 10px 30px rgba(0, 120, 200, .10);
+    animation: navDrop .8s cubic-bezier(.2, .8, .2, 1) both;
 }
 
-header.navbar .navbar-brand {
-    flex: 0 0 auto;
+nav.navbar .nav-container {
+    width: 100%;
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin: 0;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+nav.navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
     color: var(--dark);
     text-decoration: none;
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 800;
-    line-height: 1.2;
+    letter-spacing: -.5px;
+    transition: none;
 }
 
-header.navbar .logo-icon {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
+nav.navbar .navbar-brand:hover {
+    color: var(--dark);
+    transform: none;
+}
+
+nav.navbar .logo-icon {
+    width: 55px;
+    height: 55px;
+    flex: 0 0 55px;
     display: grid;
     place-items: center;
-    border-radius: 50% 50% 50% 12%;
-    color: #fff;
-    background: linear-gradient(135deg, #03b6e9, #0873c4);
-    font-size: 23px;
-    box-shadow: none;
+    border-radius: 17px;
+    color: white;
+    background: linear-gradient(135deg, #2478e5, #28c5d5);
+    font-size: 25px;
 }
 
-header.navbar .brand-text small {
-    display: block;
-    margin-top: 3px;
-    font-size: 10px;
-    font-weight: 500;
-}
-
-header.navbar .navbar-collapse {
-    flex-grow: 0;
-    align-items: center;
-}
-
-header.navbar .navbar-nav {
+nav.navbar .brand-text {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+}
+
+nav.navbar .brand-text small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0;
+}
+
+nav.navbar .navbar-collapse {
+    display: flex;
     align-items: center;
-    gap: 4px;
-    margin: 0;
+    flex: 1;
+    justify-content: space-between;
+}
+
+nav.navbar .navbar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 0 auto;
     padding: 0;
     list-style: none;
 }
 
-header.navbar .navbar-nav li {
-    list-style: none;
-}
-
-header.navbar .nav-link {
+nav.navbar .nav-link {
     display: block;
-    padding: 10px 12px !important;
+    padding: 12px 13px;
     border-radius: 30px;
     color: var(--dark);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
+    background: transparent;
+    transition: background .3s ease, color .3s ease,
+                transform .3s ease, box-shadow .3s ease;
 }
 
-header.navbar .nav-link:hover,
-header.navbar .nav-link.active {
+/* Hover فقط هنگام قرار گرفتن نشانگر روی لینک */
+
+nav.navbar .nav-link:hover {
     color: #fff;
-    background: linear-gradient(135deg, #0788ca, #00a9d9);
+    background: linear-gradient(135deg, #0788ca, #00a2d6);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 140, 205, .20);
 }
 
-header.navbar .nav-icons {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 0 8px 0 14px;
-}
+/* لینک فعال همیشه مشکی باقی بماند */
 
-header.navbar .nav-icons a {
+nav.navbar .nav-link.active {
     color: var(--dark);
-    font-size: 19px;
-    text-decoration: none;
-}
-
-header.navbar .navbar-toggler {
-    display: none;
-    border: 0;
-    color: var(--dark);
+    background: transparent;
     box-shadow: none;
 }
 
-@media (max-width: 991px) {
-    header.navbar {
-        flex-wrap: wrap;
-        border-radius: 24px;
+nav.navbar .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    flex-shrink: 0;
+}
+
+nav.navbar .nav-icons a {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    background: transparent;
+    border-radius: 50%;
+    font-size: 21px;
+    text-decoration: none;
+    transition: color .3s ease, transform .3s ease,
+                background .3s ease;
+}
+
+nav.navbar .nav-icons a:hover {
+    color: #35b8ed;
+    background: rgba(53, 184, 237, .08);
+    transform: scale(1.12);
+}
+
+nav.navbar .navbar-toggler {
+    display: none;
+    width: 43px;
+    height: 43px;
+    border: 1px solid #e4edf6;
+    border-radius: 13px;
+    color: #111;
+    background: transparent;
+    font-size: 21px;
+    transition: color .3s, background .3s, transform .3s;
+}
+
+nav.navbar .navbar-toggler:hover {
+    color: #35b8ed;
+    background: rgba(53, 184, 237, .08);
+    transform: scale(1.05);
+}
+
+@keyframes navDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-35px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes navItemIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+
+    nav.navbar {
+        width: 96%;
+        min-height: 85px;
+        padding: 18px 25px;
+        border-radius: 30px;
     }
 
-    header.navbar .navbar-toggler {
-        display: block;
+    nav.navbar .nav-container {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
     }
 
-    header.navbar .navbar-collapse:not(.show) {
+    nav.navbar .navbar-toggler {
+        display: grid;
+        place-items: center;
+        justify-self: end;
+    }
+
+    nav.navbar .navbar-collapse {
         display: none;
+        grid-column: 1 / -1;
+        width: 100%;
+        padding: 12px 0 5px;
     }
 
-    header.navbar .navbar-collapse.show {
+    nav.navbar .navbar-collapse.show {
         display: flex;
-        flex: 0 0 100%;
         flex-direction: column;
-        align-items: flex-start;
-        padding: 12px 4px 8px;
+        align-items: stretch;
+        animation: navItemIn .35s ease both;
     }
 
-    header.navbar .navbar-nav {
+    nav.navbar .navbar-nav {
+        width: 100%;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 5px;
+    }
+
+    nav.navbar .navbar-nav li {
         width: 100%;
     }
 
-    header.navbar .nav-icons {
-        padding: 12px 10px 0;
+    nav.navbar .nav-link {
+        width: 100%;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    nav.navbar .nav-icons {
+        align-self: flex-start;
+        padding: 12px 10px 5px;
     }
 }
+
+/* MOBILE */
 
 @media (max-width: 550px) {
-    header.navbar {
-        width: 94%;
+
+    nav.navbar {
+        width: 96%;
+        min-height: 75px;
+        margin: 10px auto;
+        padding: 15px 17px;
+        border-radius: 22px;
     }
 
-    header.navbar .navbar-brand {
-        font-size: 17px;
+    nav.navbar .navbar-brand {
+        gap: 9px;
+        font-size: 18px;
     }
 
-    header.navbar .logo-icon {
-        width: 43px;
-        height: 43px;
-        flex-basis: 43px;
-    }
-}
-/* Navbar copied from index.html, adapted to index9.html */
-.navbar {
-    width: min(1200px, 92%);
-    margin: 15px auto;
-    padding: 7px 15px;
-    background: rgba(255, 255, 255, .75);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 60px;
-    box-shadow: 0 8px 30px rgba(31, 111, 171, .09);
-}
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--dark);
-    font-size: 21px;
-    font-weight: 800;
-    line-height: 1.2;
-    text-decoration: none;
-}
-
-.navbar-brand:hover {
-    color: var(--dark);
-}
-
-.logo-icon {
-    width: 52px;
-    height: 52px;
-    flex: 0 0 52px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    background: linear-gradient(135deg, #03b6e9, #0873c4);
-    border-radius: 50% 50% 50% 12%;
-    font-size: 24px;
-    transform: rotate(-5deg);
-}
-
-.logo-icon i {
-    transform: rotate(5deg);
-}
-
-.brand-text small {
-    display: block;
-    margin-top: 3px;
-    font-size: 10px;
-    font-weight: 500;
-}
-
-.navbar-collapse {
-    align-items: center;
-}
-
-.navbar-nav {
-    align-items: center;
-    gap: 5px;
-    margin: 0 auto;
-}
-
-.navbar .nav-link {
-    padding: 10px 13px !important;
-    border-radius: 30px;
-    color: var(--dark);
-    font-size: 12px;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: .3s;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link.active {
-    color: white;
-    background: linear-gradient(135deg, #0788ca, #00a9d9);
-}
-
-.nav-icons {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 0 15px;
-}
-
-.nav-icons a {
-    color: var(--dark);
-    font-size: 20px;
-    text-decoration: none;
-}
-
-.navbar-toggler {
-    border: 0;
-    color: var(--dark);
-    box-shadow: none !important;
-}
-
-@media (max-width: 991px) {
-    .navbar {
-        border-radius: 28px;
-    }
-
-    .navbar-collapse {
-        padding: 15px;
-    }
-
-    .navbar-nav {
-        align-items: flex-start;
-    }
-
-    .nav-icons {
-        padding: 15px 0 0;
-    }
-}
-
-@media (max-width: 550px) {
-    .navbar {
-        width: 94%;
-        padding: 7px 12px;
-    }
-
-    .navbar-brand {
-        font-size: 17px;
-    }
-
-    .logo-icon {
-        width: 43px;
-        height: 43px;
-        flex-basis: 43px;
+    nav.navbar .logo-icon {
+        width: 45px;
+        height: 45px;
+        flex-basis: 45px;
         font-size: 21px;
+        border-radius: 14px;
+    }
+
+    nav.navbar .brand-text small {
+        font-size: 9px;
+    }
+
+    nav.navbar .navbar-toggler {
+        width: 40px;
+        height: 40px;
+        font-size: 19px;
+    }
+
+    nav.navbar .nav-link {
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+
+    nav.navbar .nav-icons {
+        gap: 14px;
+    }
+
+    nav.navbar .nav-icons a {
+        width: 38px;
+        height: 38px;
+        font-size: 20px;
     }
 }
-/* HERO */
+
+@media (max-width: 360px) {
+
+    nav.navbar {
+        width: 97%;
+        padding: 12px;
+    }
+
+    nav.navbar .navbar-brand {
+        font-size: 15px;
+    }
+
+    nav.navbar .logo-icon {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+    }
+
+    nav.navbar .brand-text small {
+        font-size: 8px;
+    }
+}
+
+/* ================= HERO ================= */
 
 .hero {
     position: relative;
@@ -977,14 +1012,6 @@ header.navbar .navbar-toggler {
 }
 
 @media(max-width: 550px) {
-    .navbar {
-        padding: 17px 0;
-    }
-
-    .logo {
-        font-size: 19px;
-    }
-
     .hero {
         padding: 48px 0 60px;
     }
@@ -1034,15 +1061,6 @@ header.navbar .navbar-toggler {
 }
 
 @media(max-width: 360px) {
-    .logo {
-        font-size: 16px;
-    }
-
-    .logo-icon {
-        width: 39px;
-        height: 39px;
-    }
-
     .booking-card,
     .map-card {
         padding: 16px;
@@ -1061,6 +1079,9 @@ header.navbar .navbar-toggler {
         transition-duration: .01ms !important;
     }
 }
+
+/* ================= FINAL FOOTER ================= */
+
 #ad-final {
   --navy: #102c4c;
   --cyan: #27c5cf;
@@ -1085,6 +1106,7 @@ header.navbar .navbar-toggler {
 }
 
 /* موج بالای فوتر */
+
 #ad-final .wave-divider {
   position: absolute;
   z-index: 5;
@@ -1123,6 +1145,7 @@ header.navbar .navbar-toggler {
 }
 
 /* فوتر */
+
 #ad-final .footer {
   position: relative;
   padding: 105px 0 22px;
@@ -1337,6 +1360,7 @@ header.navbar .navbar-toggler {
     animation: none;
   }
 }
+
 #ad-final .back-top {
   position: fixed !important;
   z-index: 99999 !important;
@@ -1376,6 +1400,7 @@ header.navbar .navbar-toggler {
     height: 44px;
   }
 }
+
 #ad-final .footer-column {
   direction: ltr;
   text-align: left;
@@ -1388,277 +1413,81 @@ header.navbar .navbar-toggler {
   direction: ltr;
   text-align: left;
 }
-/* ===== NAVBAR FIX + ANIMATION ===== */
-header.navbar {
-    font-family: 'Poppins', 'DM Sans', sans-serif;
-    width: 92%;
-    max-width: none;
-    min-height: 97px;
-    margin: 18px auto;
-    padding: 0 20px;
-    background: rgba(255, 255, 255, .92);
-    border: 0;
-    border-radius: 60px;
-    box-shadow: 0 10px 30px rgba(0, 120, 200, .10);
-    animation: navDrop .8s cubic-bezier(.2, .8, .2, 1) both;
-}
-
-header.navbar .navbar-brand {
-    gap: 12px;
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: -.5px;
-    transition: transform .3s;
-}
-
-header.navbar .navbar-brand:hover {
-    transform: translateX(4px);
-}
-
-header.navbar .logo-icon {
-    width: 65px;
-    height: 65px;
-    flex: 0 0 65px;
-    font-size: 30px;
-    transition: transform .4s, box-shadow .4s;
-}
-
-header.navbar .navbar-brand:hover .logo-icon {
-    transform: rotate(-12deg) scale(1.06);
-    box-shadow: 0 10px 25px rgba(3, 150, 220, .35);
-}
-
-header.navbar .logo-icon i {
-    animation: heartBeat 2.4s ease-in-out infinite;
-}
-
-header.navbar .brand-text small {
-    margin-top: 2px;
-    font-size: 13px;
-    font-weight: 500;
-}
-
-header.navbar .navbar-nav {
-    gap: 8px;
-}
-
-header.navbar .navbar-nav .nav-link {
-    padding: 14px 20px !important;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background .3s, color .3s, transform .3s, box-shadow .3s;
-}
-
-header.navbar .navbar-nav .nav-link:hover,
-header.navbar .navbar-nav .nav-link.active {
-    color: #fff;
-    background: linear-gradient(135deg, #0788ca, #00a2d6);
-}
-
-header.navbar .navbar-nav .nav-link:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 140, 205, .28);
-}
-
-header.navbar .navbar-nav li {
-    animation: navItemIn .6s ease both;
-}
-header.navbar .navbar-nav li:nth-child(1) { animation-delay: .25s; }
-header.navbar .navbar-nav li:nth-child(2) { animation-delay: .32s; }
-header.navbar .navbar-nav li:nth-child(3) { animation-delay: .39s; }
-header.navbar .navbar-nav li:nth-child(4) { animation-delay: .46s; }
-header.navbar .navbar-nav li:nth-child(5) { animation-delay: .53s; }
-header.navbar .navbar-nav li:nth-child(6) { animation-delay: .60s; }
-
-header.navbar .nav-icons {
-    gap: 24px;
-    padding: 0 10px 0 0;
-    animation: navItemIn .6s ease .7s both;
-}
-
-header.navbar .nav-icons a {
-    font-size: 26px;
-    transition: color .3s, transform .3s;
-}
-
-header.navbar .nav-icons a:hover {
-    color: #0788ca;
-    transform: translateY(-3px) scale(1.15);
-}
-
-/* دسکتاپ: لوگو چپ | منو وسط | آیکن‌ها راست */
-@media (min-width: 992px) {
-    header.navbar {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-    }
-
-    header.navbar .navbar-brand {
-        justify-self: start;
-    }
-
-    header.navbar .navbar-collapse {
-        display: contents;
-    }
-
-    header.navbar .navbar-nav {
-        justify-self: center;
-    }
-
-    header.navbar .nav-icons {
-        justify-self: end;
-    }
-}
-
-/* موبایل و تبلت */
-@media (max-width: 991px) {
-    header.navbar {
-        width: 94%;
-        min-height: 72px;
-        margin: 12px auto;
-        padding: 10px 18px;
-        border-radius: 30px;
-    }
-
-    header.navbar .navbar-brand {
-        font-size: 20px;
-    }
-
-    header.navbar .logo-icon {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
-        font-size: 23px;
-    }
-
-    header.navbar .navbar-toggler {
-        margin-left: auto;
-        font-size: 24px;
-        background: none;
-        cursor: pointer;
-    }
-
-    header.navbar .navbar-nav .nav-link {
-        padding: 11px 16px !important;
-        font-size: 15px;
-    }
-
-    header.navbar .navbar-collapse.show {
-        animation: navItemIn .4s ease both;
-    }
-}
-
-@keyframes navDrop {
-    from { opacity: 0; transform: translateY(-45px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes navItemIn {
-    from { opacity: 0; transform: translateY(-12px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes heartBeat {
-    0%, 100% { transform: rotate(5deg) scale(1); }
-    14%      { transform: rotate(5deg) scale(1.18); }
-    28%      { transform: rotate(5deg) scale(1); }
-    42%      { transform: rotate(5deg) scale(1.12); }
-    70%      { transform: rotate(5deg) scale(1); }
-}
-
-.navbar-toggler {
-    transition: color .3s ease, background-color .3s ease,
-                border-color .3s ease, box-shadow .3s ease;
-}
-
-.navbar-toggler:hover {
-    color: #0788ca;
-    background-color: rgba(7, 136, 202, .08);
-    border-color: rgba(7, 136, 202, .35);
-}
-
-.nav-icons a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: color .3s ease, transform .3s ease;
-}
-
-.nav-icons a:hover {
-    color: #0788ca !important;
-    transform: translateY(-2px);
-}
-
-.carousel-indicator:hover {
-    background: #168acb;
-    transform: scale(1.18);
-}
 
 </style>
-
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid nav-container">
+<!-- ================= NAVBAR ================= -->
 
-            <a class="navbar-brand" href="#home">
-                <div class="logo-icon">
-                    <i class="bi bi-heart-pulse"></i>
-                </div>
-                <div class="brand-text">
-                    Ask a Doctor
-                    <small>Your Health, Our Priority.</small>
-                </div>
-            </a>
+<nav class="navbar">
+    <div class="container-fluid nav-container">
 
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainNavbar"
-                    aria-controls="mainNavbar"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <i class="bi bi-list fs-2"></i>
-            </button>
-
-            <div class="collapse navbar-collapse" id="mainNavbar">
-
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#specialties">Specialties</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#doctors">Doctors</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#consultation">Consultation</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./pages/Emergency.html">Emergency</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./pages/AskADoctor.html">AskADoctor</a>
-                    </li>
-                </ul>
-
-                <div class="nav-icons">
-                    <a href="#search" aria-label="Search" class="text-decoration-none text-reset">
-                        <i class="bi bi-search"></i>
-                    </a>
-                    <a href="#profile" aria-label="Profile" class="text-decoration-none text-reset">
-                        <i class="bi bi-person-circle"></i>
-                    </a>
-                </div>
-
+        <a class="navbar-brand" href="../index.html#home">
+            <div class="logo-icon">
+                <i class="fa-solid fa-heart-pulse"></i>
             </div>
+
+            <div class="brand-text">
+                Ask a Doctor
+                <small>Your Health, Our Priority.</small>
+            </div>
+        </a>
+
+        <button class="navbar-toggler"
+                type="button"
+                id="navbarToggler"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="navbar-collapse" id="mainNavbar">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html#home">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html#specialties">Specialties</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html#doctors">Doctors</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html#consultation">Consultation</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="./Emergency.html">Emergency</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="./AskADoctor.html">AskADoctor</a>
+                </li>
+            </ul>
+
+            <div class="nav-icons">
+                <a href="../index.html#search" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </a>
+
+                <a href="../index.html#profile" aria-label="Profile">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+            </div>
+
         </div>
-    </nav>
+    </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+
 <section class="hero">
     <div class="ambient"></div>
 
@@ -1700,6 +1529,8 @@ header.navbar .nav-icons a:hover {
 
     </div>
 </section>
+
+<!-- ================= MAIN SECTION ================= -->
 
 <section class="main-section">
     <div class="container">
@@ -1857,6 +1688,9 @@ header.navbar .nav-icons a:hover {
         </div>
     </div>
 </section>
+
+<!-- ================= FOOTER ================= -->
+
 <section id="ad-final">
   <footer class="footer">
     <div class="wave-divider" style="--wave-color:#ffffff" aria-hidden="true">
@@ -1874,6 +1708,7 @@ header.navbar .nav-icons a:hover {
 
     <div class="container">
       <div class="footer-grid">
+
         <div class="footer-brand">
           <a href="#ad-final" class="brand-logo">
             <span class="brand-symbol">
@@ -1919,19 +1754,23 @@ header.navbar .nav-icons a:hover {
 
         <div class="footer-column">
           <h3>Get in touch</h3>
+
           <div class="footer-contact">
             <i class="fa-regular fa-envelope"></i>
             <span>hello@askadoctor.help</span>
           </div>
+
           <div class="footer-contact">
             <i class="fa-solid fa-location-dot"></i>
             <span>Online healthcare platform</span>
           </div>
+
           <div class="footer-contact">
             <i class="fa-regular fa-clock"></i>
             <span>Explore our online services</span>
           </div>
         </div>
+
       </div>
 
       <div class="footer-bottom">
@@ -1942,13 +1781,68 @@ header.navbar .nav-icons a:hover {
         </span>
       </div>
     </div>
+
     <button class="back-top" id="backTop" aria-label="Back to top">
-  <i class="fa-solid fa-arrow-up"></i>
-</button>
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
   </footer>
 </section>
 
+<!-- ================= JAVASCRIPT ================= -->
+
 <script>
+
+/* NAVBAR MOBILE MENU */
+
+const navbarToggler = document.getElementById("navbarToggler");
+const mainNavbar = document.getElementById("mainNavbar");
+
+if (navbarToggler && mainNavbar) {
+
+    navbarToggler.addEventListener("click", function () {
+
+        const isOpen = mainNavbar.classList.toggle("show");
+
+        navbarToggler.setAttribute("aria-expanded", String(isOpen));
+
+        navbarToggler.innerHTML = isOpen
+            ? '<i class="fa-solid fa-xmark"></i>'
+            : '<i class="fa-solid fa-bars"></i>';
+    });
+
+    mainNavbar.querySelectorAll(".nav-link").forEach(link => {
+
+        link.addEventListener("click", function () {
+
+            if (window.innerWidth <= 1100) {
+
+                mainNavbar.classList.remove("show");
+
+                navbarToggler.setAttribute("aria-expanded", "false");
+
+                navbarToggler.innerHTML =
+                    '<i class="fa-solid fa-bars"></i>';
+            }
+        });
+    });
+
+    window.addEventListener("resize", function () {
+
+        if (window.innerWidth > 1100) {
+
+            mainNavbar.classList.remove("show");
+
+            navbarToggler.setAttribute("aria-expanded", "false");
+
+            navbarToggler.innerHTML =
+                '<i class="fa-solid fa-bars"></i>';
+        }
+    });
+}
+
+/* LOCATION ELEMENTS */
+
 const locationInput = document.getElementById("locationInput");
 const googleMap = document.getElementById("googleMap");
 const confirmBtn = document.getElementById("confirmBtn");
@@ -1982,6 +1876,7 @@ function showLocation(address) {
     confirmedAddress.value = "";
 
     confirmBtn.disabled = false;
+
     confirmBtn.innerHTML =
         '<i class="fa-solid fa-circle-check"></i> Confirm My Location';
 
@@ -2021,13 +1916,18 @@ locationInput.addEventListener("keydown", function(event) {
 /* RESET CONFIRMATION */
 
 locationInput.addEventListener("input", function() {
+
     confirmedLocation = "";
     selectedCoordinates = null;
     confirmedAddress.value = "";
+
     confirmBtn.disabled = true;
+
     confirmBtn.innerHTML =
         '<i class="fa-solid fa-circle-check"></i> Confirm My Location';
+
     confirmBtn.style.background = "";
+
     mapStatus.textContent = "Search again to update the map.";
 });
 
@@ -2042,6 +1942,7 @@ gpsBtn.addEventListener("click", function() {
     }
 
     gpsBtn.disabled = true;
+
     gpsBtn.innerHTML =
         '<i class="fa-solid fa-spinner fa-spin"></i> Finding location...';
 
@@ -2074,6 +1975,7 @@ gpsBtn.addEventListener("click", function() {
                 lat.toFixed(6) + ", " + lon.toFixed(6);
 
             confirmBtn.disabled = false;
+
             confirmBtn.innerHTML =
                 '<i class="fa-solid fa-circle-check"></i> Confirm My Location';
 
@@ -2085,6 +1987,7 @@ gpsBtn.addEventListener("click", function() {
                 "Your GPS position has been found. Please confirm it.";
 
             gpsBtn.disabled = false;
+
             gpsBtn.innerHTML =
                 '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location';
         },
@@ -2095,6 +1998,7 @@ gpsBtn.addEventListener("click", function() {
                 "Unable to get your location. Please allow location access or enter your address manually.";
 
             gpsBtn.disabled = false;
+
             gpsBtn.innerHTML =
                 '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location';
         },
@@ -2185,6 +2089,7 @@ document.getElementById("ambulanceForm").addEventListener("submit", function(eve
     console.log("Ambulance request:", request);
 
     formStatus.style.color = "#159b69";
+
     formStatus.textContent =
         "Demo request validated successfully! No ambulance has been dispatched.";
 
@@ -2210,19 +2115,23 @@ document.querySelectorAll(".reveal").forEach(element => {
     observer.observe(element);
 });
 
+/* CURRENT YEAR */
 
-  document.getElementById("currentYear").textContent = new Date().getFullYear();
+document.getElementById("currentYear").textContent =
+    new Date().getFullYear();
 
+/* BACK TO TOP */
 
-  const backTop = document.getElementById("backTop");
+const backTop = document.getElementById("backTop");
 
-  window.addEventListener("scroll", () => {
+window.addEventListener("scroll", () => {
     backTop.classList.toggle("show", window.scrollY > 450);
-  }, { passive: true });
+}, { passive: true });
 
-  backTop.addEventListener("click", () => {
+backTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  });
+});
+
 </script>
 
 </body>
